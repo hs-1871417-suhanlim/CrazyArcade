@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete 5 resources" deleteContents="false" description="Delete 5 resources" element1="/JavaGameClient" element2="/JavaGameClient2" element3="/JavaGameServer" element4="/test" element5="/YScramble-1player" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="5" stamp="1668081692552"/>
+</session>
