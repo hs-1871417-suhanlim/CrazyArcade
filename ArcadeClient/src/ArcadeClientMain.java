@@ -16,9 +16,13 @@ import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.ActionEvent;
 
-public class ArcadeClientMain extends JFrame {
+public class ArcadeClientMain extends JFrame{
+	
+
 		
 	/**
 	 * 
@@ -30,10 +34,8 @@ public class ArcadeClientMain extends JFrame {
 	private JTextField txtPortNumber;
 	public ImageIcon bg = null;
 	JScrollPane scrollPane;
+	
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -47,10 +49,8 @@ public class ArcadeClientMain extends JFrame {
 		});
 	}
 	
-	/**
-	 * Create the frame.
-	 */
-	public ArcadeClientMain() {
+
+	public ArcadeClientMain() {  // 생성자 ------------------------
 		
 		ImageIcon bg = new ImageIcon("./connectIMG/login.jpg");//배경화면
 		
@@ -140,6 +140,7 @@ public class ArcadeClientMain extends JFrame {
 			setVisible(false);
 		}
 	}
+	
 	
 	
 	
