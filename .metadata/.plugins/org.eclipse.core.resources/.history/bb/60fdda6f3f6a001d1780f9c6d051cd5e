@@ -1,0 +1,10 @@
+import java.awt.Point;
+
+public class Map {
+
+	public int [][] mapInfo = new int[13][15];//맵 2차원 배열 정보
+	Point dis;//물풍선의 표시 좌표. 실제 좌표보다 *100 상태이다.
+	Point pos;//물풍선의 계산 좌표. 실제 좌표보다 *100 상태이다.
+
+	
+}

@@ -92,6 +92,27 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	//int level;//게임 레벨
 	
 	
+	int bkimg; //block1...8 블록이미지
+	int bkx,bky;//타일블록 위치
+	//int hkx,hky;//타일블록 위치
+	
+	int[][] MapArray = { //맵
+			{0, 3, 2, 3, 2, 8, 0, 0, 1, 8, 5, 2, 5, 0, 5}, 
+			{0, 4, 1, 4, 1, 7, 1, 0, 0, 7, 2, 3, 0, 0, 1}, 
+			{0, 0, 3, 2, 3, 8, 0, 1, 1, 8, 5, 1, 5, 1, 5},
+			{1, 4, 1, 4, 1, 7, 1, 0, 0, 7, 3, 2, 3, 2, 3},
+			{2, 3, 2, 3, 2, 8, 0, 0, 1, 8, 5, 1, 5, 1, 5},
+			{3, 4, 3, 4, 3, 7, 1, 1, 0, 0, 2, 3, 2, 3, 2},
+			{7, 8, 7, 8, 7, 8, 0, 0, 1, 8, 7, 8, 7, 8, 7},
+			{2, 3, 2, 3, 2, 0, 1, 0, 0, 7, 2, 4, 2, 4, 2},
+			{6, 1, 6, 1, 6, 8, 0, 1, 1, 8, 3, 2, 3, 2, 3},
+			{3, 2, 3, 2, 3, 7, 1, 0, 0, 7, 1, 4, 1, 4, 1},
+			{6, 0, 6, 1, 6, 8, 0, 0, 1, 8, 2, 3, 2, 3, 0},
+			{0, 0, 2, 3, 2, 7, 1, 1, 0, 7, 1, 4, 1, 4, 0},
+			{6, 0, 6, 2, 6, 8, 0, 0, 1, 8, 3, 2, 3, 0, 0}
+	 					};
+	
+	
 	int myx,myy;//플레이어 위치. 화면 좌표계에 *100 된 상태.
 	int myspeed;//플레이어 이동 속도
 	int mydegree;//플레이어 이동 방향
@@ -173,8 +194,8 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		//addWindowListener(new MyWindowAdapter());//윈도우의 닫기 버튼 활성화
 		
 		this.gamescreen = new GameScreen(this); //화면 묘화를 위한 캔버스 객체
-        this.gamescreen.setBounds(0, 0, this.gScreenWidth, this.gScreenHeight);
-        this.add(this.gamescreen);//Canvas 객체를 프레임에 올린다
+        this.gamescreen.setBounds(0, 0, 1029, 780);
+        getContentPane().add(this.gamescreen);//Canvas 객체를 프레임에 올린다
         
         this.systeminit();
         this.initialize();
@@ -182,6 +203,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
         //초기화
         Init_GAME(); 
 		Init_MY();
+		MapGenerator();//맵
 		status = 2;
 		mymode = 2;
 		
@@ -298,11 +320,11 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	
 	public void showFrame() { //프레임 그리기------------------------------------------
 		setTitle("게임방"); //프레임 타이틀 지정
-		setSize(1045,785);//프레임 크기
+		setSize(1045,819);//프레임 크기
 		setResizable(false); //창크기 변경불가
 		setLocationRelativeTo(null);//창 가운데 뜨게
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(null);
+		getContentPane().setLayout(null);
 		setVisible(true);
 	}
 	
@@ -565,9 +587,13 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		//각종 이미지 설정
 		gamescreen.bg=makeImage("./play_bg.png");//bg.png
 
-		//일단 블록 한 종류로
-		//for(i=0;i<10;i++) gamescreen.block[i]=makeImage("./title/block3.png"); 
-		gamescreen.block=makeImage("./tile/block3.png"); 
+		//일단 블록 여러 종류로
+		//for(i=0;i<8;i++) gamescreen.block[i]=makeImage("./title/block" + i + ".png"); 
+		//gamescreen.block[0]=makeImage("./tile/block3.png"); 
+		for(i=1;i<12;i++) {
+	         gamescreen.block[i]=makeImage("./tile/block"+i+".png");
+		 }
+		
 		
 		//물풍선
 		for(i=0;i<4;i++) 
@@ -610,8 +636,8 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		
 		//플레이어의 x,y는 *100된 상태
 		//리스폰 장소
-		myx=20000;
-		myy=23000; 
+		myx=5000;
+		myy=17000; 
 		
 		myspeed=4; //속도
 		mydegree=-1; //방향
@@ -681,7 +707,29 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		if(myx>78000) myx=78000;
 		if(myy<3800) myy=3800;
 		if(myy>69000) myy=69000;
+		
+		//블록제한도 여기에 추가 해야됨.
 	}
+	
+	/////
+	
+	/*------------------   맵   ------------------------*/
+	public void MapGenerator(){
+		 for(int i=1;i<12;i++) {
+	         gamescreen.block[i]=makeImage("./tile/block"+i+".png");
+		 }
+		Init_MapDATA();
+	} 
+	
+	
+	/*------------------   맵 정보   ------------------------*/
+	public void Init_MapDATA(){
+		bkx=52;//블럭 생성 위치
+		bky=52;
+	}
+	
+	
+	
 	
 	/////
 	
@@ -701,5 +749,5 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		}	
 		return img;
 	}
-
+	
 }
