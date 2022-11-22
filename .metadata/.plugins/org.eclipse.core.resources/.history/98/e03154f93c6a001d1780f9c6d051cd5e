@@ -1,0 +1,11 @@
+import java.awt.Point;
+
+public class MapObj {
+
+	public int [][] mapInfo = new int[13][15];//맵 2차원 배열 정보
+	public MapObject [][] objects = new MapObject[13][15];
+	private Player [] players = new Player[4];
+	
+
+	
+}
