@@ -65,7 +65,10 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     public static final int DOWN_PRESSED = 0x002;
     public static final int LEFT_PRESSED = 0x004;
     public static final int RIGHT_PRESSED = 0x008;
-    public static final int BUBBLE_PRESSED = 0x010;
+    
+    //버블 뜬금없이 생겼던게 조합따라 스페이스바 눌린걸로 판단됐던거같음
+    //그래서 20으로 확 올려줌
+    public static final int BUBBLE_PRESSED = 0x020;
 
     GameScreen gamescreen;//Canvas 객체를 상속한 화면 묘화 메인 클래스
     
@@ -73,7 +76,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	boolean roof=true;//스레드 루프 정보
 	//Random rnd = new Random();	 // 랜덤 선언
 	
-	int bubbleCnt = 10;
+	int bubbleCnt = 4; //버블 싱크
 
     
     //게임 제어를 위한 변수	
@@ -96,22 +99,61 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	int bkx,bky;//타일블록 위치
 	//int hkx,hky;//타일블록 위치
 	
-	   int[][] MapArray = { //맵
-			   {0, 3, 2, 3, 2, 8, 0, 0, 1, 8, 5, 2, 5, 0, 5}, 
-			   {0, 4, 1, 4, 1, 7, 1, 0, 0, 7, 2, 3, 0, 0, 1}, 
-			   {0, 0, 3, 2, 3, 8, 0, 1, 1, 8, 5, 1, 5, 1, 5},
-			   {1, 4, 1, 4, 1, 7, 1, 0, 0, 7, 3, 2, 3, 2, 3},
-			   {2, 3, 2, 3, 2, 8, 0, 0, 1, 8, 5, 1, 5, 1, 5},
-			   {3, 4, 3, 4, 3, 7, 1, 1, 0, 0, 2, 3, 2, 3, 2},
-			   {7, 8, 7, 8, 7, 8, 0, 0, 1, 8, 7, 8, 7, 8, 7},
-			   {2, 3, 2, 3, 2, 0, 1, 0, 0, 7, 2, 4, 2, 4, 2},
-			   {6, 1, 6, 1, 6, 8, 0, 1, 1, 8, 3, 2, 3, 2, 3},
-			   {3, 2, 3, 2, 3, 7, 1, 0, 0, 7, 1, 4, 1, 4, 1},
-			   {6, 0, 6, 1, 6, 8, 0, 0, 1, 8, 2, 3, 2, 3, 0},
-			   {0, 0, 2, 3, 2, 7, 1, 1, 0, 7, 1, 4, 1, 4, 0},
-			   {6, 0, 6, 2, 6, 8, 0, 0, 1, 8, 3, 2, 3, 0, 0},
-		                   };
+	// 0 - 빈블럭, 1 - 박스, 2 - 빨강블럭, 3 - 주황블럭, 4 - 주황집
+	// 5 - 노랑집, 6 - 파랑집, 7 - 나무, 8 - 풀
 	
+//	   int[][] MapArray = { //맵
+//			   {0, 3, 2, 3, 2, 8, 0, 0, 1, 8, 5, 2, 5, 0, 5}, 
+//			   {0, 4, 1, 4, 1, 7, 1, 0, 0, 7, 2, 3, 0, 0, 1}, 
+//			   {0, 0, 3, 2, 3, 8, 0, 1, 1, 8, 5, 1, 5, 1, 5},
+//			   {1, 4, 1, 4, 1, 7, 1, 0, 0, 7, 3, 2, 3, 2, 3},
+//			   {2, 3, 2, 3, 2, 8, 0, 0, 1, 8, 5, 1, 5, 1, 5},
+//			   {3, 4, 3, 4, 3, 7, 1, 1, 0, 0, 2, 3, 2, 3, 2},
+//			   {7, 8, 7, 8, 7, 8, 0, 0, 1, 8, 7, 8, 7, 8, 7},
+//			   {2, 3, 2, 3, 2, 0, 1, 0, 0, 7, 2, 4, 2, 4, 2},
+//			   {6, 1, 6, 1, 6, 8, 0, 1, 1, 8, 3, 2, 3, 2, 3},
+//			   {3, 2, 3, 2, 3, 7, 1, 0, 0, 7, 1, 4, 1, 4, 1},
+//			   {6, 0, 6, 1, 6, 8, 0, 0, 1, 8, 2, 3, 2, 3, 0},
+//			   {0, 0, 2, 3, 2, 7, 1, 1, 0, 7, 1, 4, 1, 4, 0},
+//			   {6, 0, 6, 2, 6, 8, 0, 0, 1, 8, 3, 2, 3, 0, 0},
+//		                   };
+	   
+		int[][] MapArray = { //맵
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+		 					};
+		
+		// 1 - 가운데 pop
+		// 2 - 상 중간, 3 - 상 말단, 4 - 하 중간, 5 - 하 말단
+		// 6 - 좌 중간, 7 - 좌 말단, 8 - 우 중간, 8 - 우 말단
+	
+		int[][] WaterArray = { //물줄기
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+		 					};
+		
 	
 	int myx,myy;//플레이어 위치. 화면 좌표계에 *100 된 상태.
 	int myspeed;//플레이어 이동 속도
@@ -123,8 +165,10 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	
 	//플레이어 캐릭터의 상태 
 	//(0부터 순서대로 0 무적,1 등장(무적),2 온플레이,3 데미지(물풍선으로 바꾸면 될듯), 4 사망)
-	//일단 바로 플레이 시작으로 넘어가도 될거같아서 2로 시작
-	int mymode=2;
+	//일단 바로 플레이 시작으로 넘어가도 될거같아서 init에서 2로 시작
+	int mymode;
+	int maxBubble = 200; //최대 버블 갯수 5개
+	int waterLength = 3; //줄기 길이
 	
 	//플레이어 이미지
 	// 0 wait 1-상 2-하 3-좌 4-우
@@ -138,15 +182,17 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	boolean my_inv=false;//키보드 반전 ++아이템중에 먹으면 키보드 반전되는 그런거 있지 않았나? 일단 이것도 나중에
 	
 	
-    //근데 이게 전체 사이즈고 게임 플레이가 이뤄지는건 안쪽이라
-	//플레이어는 안쪽 범위에서만 움직일 수 있게 해야될듯...
     int gScreenWidth = 1045; //게임 화면 너비
     int gScreenHeight = 785; //게임 화면 높이
     
 	Vector bubble=new Vector();//물풍선 관리 - 몇 개 이상 
+	Vector water=new Vector();
+	
+	
 	//Vector enemies=new Vector();//적 캐릭터 관리.
 	Vector effects=new Vector();//이펙트 관리
 	Vector items=new Vector();//아이템 관리 //얘도 봐서 배열로 빼야되나 
+	
 	
 	//네트워크 관련 변수
 	private static final long serialVersionUID = 1L;
@@ -407,6 +453,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 			break;
 		case 2://playing
 			process_MY();
+			process_BUBBLE();
 			//process_ENEMY();
 			 							//process_BUBBLE();
 			//process_EFFECT();
@@ -438,13 +485,16 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     	switch (this.status) {
     		case 0:
     			break;
-    		case 2: //game playing		
+    		case 2: //game playing	
     			if(mymode==2)
     				switch(keybuff) {
     				
     				//mydegree:플레이어 방향
     				
     				//my img :플레이어 이미지
+    				
+    				 
+    				
     				// 0 wait 1-상 2-하 3-좌 4-우
     				
     				case 0:
@@ -452,9 +502,10 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     					myimg=0;
     					break;
     				case BUBBLE_PRESSED:
-    					if(gamecnt%bubbleCnt==0) {
-    						Bubble bubbles = new Bubble(myx, myy, 1);
-        					bubble.add(bubbles);
+    					if(gamecnt%bubbleCnt==0) {  //gamecnt%bubbleCnt==0
+    						//Bubble bubbles = new Bubble(myx, myy, 1);
+    						make_BUBBLE(myx,myy);
+        					//bubble.add(bubbles);
     					}
     					
     					break;
@@ -477,43 +528,35 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 
     					
     				case UP_PRESSED|BUBBLE_PRESSED:
-    					if(gamecnt%bubbleCnt==0) {
-    						Bubble bubbles = new Bubble(myx, myy, 1);
-        					bubble.add(bubbles);
+    					if(gamecnt%bubbleCnt==0) { //gamecnt%bubbleCnt==0
+    						make_BUBBLE(myx,myy);
     					}
     					mydegree=0;
     					myimg=1;
     					break;
     				
     				case LEFT_PRESSED|BUBBLE_PRESSED:
-    					if(gamecnt%bubbleCnt==0) {
-    						Bubble bubbles = new Bubble(myx, myy, 1);
-        					bubble.add(bubbles);
+    					if(gamecnt%bubbleCnt==0) { //gamecnt%bubbleCnt==0
+    						make_BUBBLE(myx,myy);
     					}
     					mydegree=90;
     					myimg=3;
     					break;
     				
     				case RIGHT_PRESSED|BUBBLE_PRESSED:
-    					if(gamecnt%bubbleCnt==0) {
-    						Bubble bubbles = new Bubble(myx, myy, 1);
-        					bubble.add(bubbles);
+    					if(gamecnt%bubbleCnt==0) { //gamecnt%bubbleCnt==0
+    						make_BUBBLE(myx,myy);
     					}
     					mydegree=270;
     					myimg=4;
     					break;
     				case UP_PRESSED|LEFT_PRESSED:
-    					if(gamecnt%bubbleCnt==0) {
-    						Bubble bubbles = new Bubble(myx, myy, 1);
-        					bubble.add(bubbles);
-    					}
     					mydegree=0;
     					myimg=1;
     					break;
     				case UP_PRESSED|LEFT_PRESSED|BUBBLE_PRESSED:
-    					if(gamecnt%bubbleCnt==0) {
-    						Bubble bubbles = new Bubble(myx, myy, 1);
-        					bubble.add(bubbles);
+    					if(gamecnt%bubbleCnt==0) { 
+    						make_BUBBLE(myx,myy);
     					}
     					mydegree=0;
     					myimg=1;
@@ -523,9 +566,8 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     					myimg=1;
     					break;
     				case UP_PRESSED|RIGHT_PRESSED|BUBBLE_PRESSED:
-    					if(gamecnt%bubbleCnt==0) {
-    						Bubble bubbles = new Bubble(myx, myy, 1);
-        					bubble.add(bubbles);
+    					if(gamecnt%bubbleCnt==0) { 
+    						make_BUBBLE(myx,myy);
     					}
     					mydegree=0;
     					myimg=1;
@@ -533,8 +575,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     				
     				case DOWN_PRESSED|BUBBLE_PRESSED:
     					if(gamecnt%bubbleCnt==0) {
-    						Bubble bubbles = new Bubble(myx, myy, 1);
-        					bubble.add(bubbles);
+    						make_BUBBLE(myx,myy);
     					}
     					mydegree=180;
     					myimg=2;
@@ -544,9 +585,8 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     					myimg=2;
     					break;
     				case DOWN_PRESSED|LEFT_PRESSED|BUBBLE_PRESSED:
-    					if(gamecnt%bubbleCnt==0) {
-    						Bubble bubbles = new Bubble(myx, myy, 1);
-        					bubble.add(bubbles);
+    					if(gamecnt%bubbleCnt==0) { 
+    						make_BUBBLE(myx,myy);
     					}
     					mydegree=180;
     					myimg=2;
@@ -557,8 +597,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     					break;
     				case DOWN_PRESSED|RIGHT_PRESSED|BUBBLE_PRESSED:
     					if(gamecnt%bubbleCnt==0) {
-    						Bubble bubbles = new Bubble(myx, myy, 1);
-        					bubble.add(bubbles);
+    						make_BUBBLE(myx,myy);
     					}
     					mydegree=180;
     					myimg=2;
@@ -598,6 +637,38 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		//물풍선
 		for(i=0;i<4;i++) 
 			gamescreen.bubble[i]=makeImage("./waterballoon/bomb"+i+".png"); 
+		
+		
+		//물줄기
+		for(i=0;i<6;i++)
+			gamescreen.waterPop[i]=makeImage("./waterballoon/pop"+i+".png");
+		
+		for(i=0;i<11;i++){
+			if(i<10) {
+				gamescreen.waterUpM[i]=makeImage("./waterballon/up2_"+i+".png");
+				gamescreen.waterUpE[i]=makeImage("./waterballon/up1_"+i+".png");
+				gamescreen.waterDownM[i]=makeImage("./waterballon/down2_"+i+".png");
+				gamescreen.waterDownE[i]=makeImage("./waterballon/down1_"+i+".png");
+				gamescreen.waterLeftM[i]=makeImage("./waterballon/left2_"+i+".png");
+				gamescreen.waterLeftE[i]=makeImage("./waterballon/left1_"+i+".png");
+				gamescreen.waterRightM[i]=makeImage("./waterballon/right2_"+i+".png");
+				gamescreen.waterRightE[i]=makeImage("./waterballon/right1_"+i+".png");
+			}
+				
+			else {
+				gamescreen.waterUpM[i]=makeImage("./waterballon/up2_"+i+".png");
+				gamescreen.waterUpE[i]=makeImage("./waterballon/up1_"+i+".png");
+				gamescreen.waterDownM[i]=makeImage("./waterballon/down2_"+i+".png");
+				gamescreen.waterDownE[i]=makeImage("./waterballon/down1_"+i+".png");
+				gamescreen.waterLeftM[i]=makeImage("./waterballon/left2_"+i+".png");
+				gamescreen.waterLeftE[i]=makeImage("./waterballon/left1_"+i+".png");
+				gamescreen.waterRightM[i]=makeImage("./waterballon/right2_"+i+".png");
+				gamescreen.waterRightE[i]=makeImage("./waterballon/right1_"+i+".png");
+			}
+				
+		}
+		
+		
 		
 		keybuff=0;
 //		bullets.clear();
@@ -651,7 +722,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	//process-------------------------------------------------------------------
 	
 	public void process_MY(){
-		Bubble bubble;
+		//Bubble bubble;
 		
 		//플레이어 캐릭터의 상태 
 		//0 무적,1 등장(무적),2 온플레이,3 데미지(물풍선으로 바꾸면 될듯), 4 사망
@@ -754,10 +825,89 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	            }
 	         }
 	    }
+	}//---------------process_MY 끝---
+	
+	public void process_BUBBLE() {
+
+		
+		for(int i=0;i<bubble.size();i++) {
+			 Bubble buff = (Bubble)bubble.elementAt(i);
+			 int x=buff.dis.x/52-1;
+			 int y=buff.dis.y/52-1;
+			 
+			 
+			 if(buff.cnt>=100) {
+				 
+				 make_WATER(x,y, buff.from); //물줄기 생성
+
+				 
+				 
+				 MapArray[y][x]=0;
+				 bubble.remove(i);
+			 }
+				
+			 buff.cnt++;
+		}
+		
+		//switch
+		
+	}
+	public void process_WATER() {
+		
 	}
 
 	
 	/////
+	public void make_BUBBLE(int x, int y) {
+
+
+		
+		//버블 개수가 최대면 return
+		if(bubble.size()>=maxBubble)
+			return;
+		
+		Bubble bubbles = new Bubble(myx, myy, 1);
+		bubble.add(bubbles);
+		
+		//버블이 있는 곳은 Map을 -1로 해놓음
+		 int a=bubbles.dis.x/52-1;
+		 int b=bubbles.dis.y/52-1;
+		 MapArray[b][a]=-1;
+		
+		
+		
+		//make_BUBBLE(myx,myy);
+		//bubble.add(bubbles);
+		
+		//Bubble bubbles = new Bubble(x, y, 1);
+		
+		
+	}
+	public void make_WATER(int x, int y, int from) {
+		
+		// 1 - 가운데 pop
+		// 2 - 상 중간, 3 - 상 말단, 4 - 하 중간, 5 - 하 말단
+		// 6 - 좌 중간, 7 - 좌 말단, 8 - 우 중간, 8 - 우 말단
+		
+		Water waters = new Water(x,y,waterLength, from);
+		water.add(waters);
+		
+		WaterArray[y][x]=1;
+		for(int i=0;i<waterLength;i++) { //3번
+			try {
+				WaterArray[y-1][x]=2; WaterArray[y-2][x]=2; WaterArray[y-3][x]=3; //상
+	 			WaterArray[y+1][x]=4; WaterArray[y+2][x]=4; WaterArray[y+3][x]=5; //하
+				WaterArray[y][x-1]=6; WaterArray[y][x-2]=6; WaterArray[y][x-3]=7; //좌
+				WaterArray[y][x+1]=8; WaterArray[y][x+2]=8; WaterArray[y][x+3]=9; //우
+			}
+			catch(ArrayIndexOutOfBoundsException e){
+				
+			}
+			
+		}
+		
+	    
+	}
 	
 	/*------------------   맵   ------------------------*/
 	public void MapGenerator(){
