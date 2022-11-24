@@ -82,7 +82,7 @@ public class GameScreen extends Canvas {
 			break;
 		case 2: //playing상태
 			Draw_BG(); //배경화면 그리기
-			Draw_Block();
+			Draw_Block() ;
 			Draw_MY(); //캐릭터 그리기
 			Draw_BUBBLE(); //물풍선 그리기
 			Draw_Hide();
@@ -122,7 +122,6 @@ public class GameScreen extends Canvas {
             for(int j=0;j<15;j++) {
                if(main.MapArray[i][j]==1) { //나무박스
             	   drawImageAnc(block[1], bkx*(j+1), bky*(i+1), 1);
-            	    
                }
                else if(main.MapArray[i][j]==2) {//빨강블럭
             	   drawImageAnc(block[2], bkx*(j+1), bky*(i+1), 1);

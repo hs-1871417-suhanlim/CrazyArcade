@@ -1,44 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="8"/>
+		<item key="selection" value="bubble"/>
 		<item key="wrap" value="false"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
-			<item value="2"/>
-			<item value="일단"/>
-			<item value="1"/>
-			<item value=" 1"/>
-			<item value=" "/>
-			<item value="8"/>
-			<item value="7"/>
-			<item value="6"/>
-			<item value="5"/>
-			<item value="4"/>
-			<item value="3"/>
-			<item value="systeminit"/>
-			<item value="Init_GAME"/>
-			<item value="Init_MY"/>
+			<item value="bubble"/>
+			<item value="cnt"/>
 			<item value="myx"/>
+			<item value="Init"/>
+			<item value="Init_DATA"/>
+			<item value="status"/>
+			<item value="mymode"/>
+			<item value="최소한의 정보만 담는"/>
+			<item value="thread"/>
+			<item value="run"/>
+			<item value="image"/>
+			<item value="draw"/>
+			<item value="JavaGameClientMain"/>
+			<item value="JavaGameClientView"/>
+			<item value="JavaGameServer"/>
 		</list>
 		<list key="replacehistory">
-			<item value="8"/>
-			<item value=" "/>
-			<item value="2"/>
-			<item value=", "/>
-			<item value="1"/>
-			<item value=""/>
 			<item value="ArcadeClientMain"/>
 			<item value="ArcadeClientGameView"/>
 			<item value="ArcadeServer"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="180"/>
-		<item key="DIALOG_Y_ORIGIN" value="104"/>
+		<item key="DIALOG_X_ORIGIN" value="880"/>
+		<item key="DIALOG_Y_ORIGIN" value="0"/>
 		<item key="DIALOG_WIDTH" value="337"/>
 		<item key="DIALOG_HEIGHT" value="391"/>
 		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
