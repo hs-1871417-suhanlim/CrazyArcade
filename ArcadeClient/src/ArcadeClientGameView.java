@@ -121,14 +121,14 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		int[][] MapArray = { //맵
 				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
 				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-				{0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+				{0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0},
+				{0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0},
+				{0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0}, 
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 2, 3, 0, 0}, 
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 2, 4, 0, 0},
+				{0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0},
+				{0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0}, 
+				{0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0}, 
 				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -455,6 +455,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 			process_MY();
 			process_BUBBLE();
 			process_WATER();
+			
 			//process_ENEMY();
 			 							//process_BUBBLE();
 			//process_EFFECT();
@@ -791,7 +792,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		//여기가 사이즈 제한
 		if(myx<4800) myx=4800;
 		if(myx>78000) myx=78000;
-		if(myy<3800) myy=3800;
+		if(myy<5900) myy=5900;  //이거보다 작게 잡으면 물방울이 위로 올라가버림
 		if(myy>69000) myy=69000;
 		
 		boolean isBlock = false;//블록 충돌 검사용
@@ -843,6 +844,8 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	}//---------------process_MY 끝---
 	
 	public void process_BUBBLE() {
+		
+		//System.out.println(bubble.size());
 
 		
 		for(int i=0;i<bubble.size();i++) {
@@ -851,13 +854,12 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 			 int y=buff.dis.y/52-1;
 			 
 			 
-			 if(buff.cnt>=100) {
+			 if(buff.cnt==100) { //터지는 속도
+				 MapArray[y][x]=0; //다시 이동할 수 있게
 				 bubble.remove(i);
 				 make_WATER(x,y, buff.from); //물줄기 생성
-
+				 System.out.println("@@@@@@@@@@");
 				 
-				 
-				 MapArray[y][x]=0; //다시 이동할 수 있게
 				 
 			 }
 				
@@ -879,7 +881,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 //			System.out.println(x);
 //			System.out.println(y);
 			
-			if(buff.cnt>=25) {
+			if(buff.cnt>=25) { //물줄기 제거
 				
 			water.remove(i);
 				
@@ -905,6 +907,10 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 				catch(ArrayIndexOutOfBoundsException e){
 					
 				}
+				
+				
+				
+				
 			}
 				
 			}
@@ -922,19 +928,73 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 
 
 		
+		
 		//버블 개수가 최대면 return
 		if(bubble.size()>=maxBubble)
 			return;
 		
-		Bubble bubbles = new Bubble(myx, myy, 1);
-		bubble.add(bubbles);
+		x/=100;
+		y/=100;
+		//버블 위치 조정
+		x = x - (x%52);
+		y = y - (y%52)+16;
+		if(x<52)
+			x=52;
+		
+		int a=x/52-1;
+		int b=y/52-1;
+		
+		System.out.println(a);
+		System.out.println(b);
+		
+		if(MapArray[b][a]!=0)//장애물이 있거나 하면 풍선못만들게
+			return;
+		else {
+			MapArray[b][a]=-1;
+			Bubble bubbles = new Bubble(x, y, 1);
+			bubble.add(bubbles);
+		}
+		
+//		if(MapArray[b][a]==0) {
+//			
+//		}
+//			MapArray[b][a]=-1;
+//		
+//		
 		
 		//버블이 있는 곳은 Map을 -1로 해놓음
-		 int a=bubbles.dis.x/52-1;
-		 int b=bubbles.dis.y/52-1;
-		 MapArray[b][a]=-1;
-		
-		
+		 
+		 
+ 		 System.out.println(x);
+ 		System.out.println(y);
+		 
+		 System.out.println("++++++++++++++++++++++");
+		 System.out.println(x);
+		 System.out.println(y);
+		 System.out.println("++++++++++++++++++++++");
+		 
+		 //if(MapArray[b][a]!=0) 
+		 //{ 
+			 //bubble.remove(bubble.size()-1);
+//			 System.out.println("++++++++++++++++++++++");
+//			 System.out.println(MapArray[b][a]);
+//			 System.out.println(MapArray[b][a+1]);
+//			 System.out.println(MapArray[b+1][a]);
+//			 System.out.println(MapArray[b+1][a+1]);
+			 //MapArray[b][a]=-1;
+		//}
+			 
+//		 System.out.println("=========================");
+//		 System.out.println(MapArray[b][a]);
+//		 System.out.println(MapArray[b][a+1]);
+//		 System.out.println(MapArray[b+1][a]);
+//		 System.out.println(MapArray[b+1][a+1]);
+//		 System.out.println("=========================");
+//		 System.out.println(MapArray[b][a]);
+//		 System.out.println(bubbles.dis);
+//		 System.out.println(b);
+//		 System.out.println(a);
+//		 System.out.println("=========================끝");
 		
 		//make_BUBBLE(myx,myy);
 		//bubble.add(bubbles);
@@ -945,6 +1005,8 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	}
 	public void make_WATER(int x, int y, int from) {
 		
+		System.out.println("test");
+		
 		// 1 - 가운데 pop
 		// 2 - 상 중간, 3 - 상 말단, 4 - 하 중간, 5 - 하 말단
 		// 6 - 좌 중간, 7 - 좌 말단, 8 - 우 중간, 8 - 우 말단
@@ -952,37 +1014,283 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		Water waters = new Water(x,y,waterLength, from);
 		water.add(waters);
 		
-		WaterArray[y][x]=1;
+		WaterArray[y][x]=1; //물풍선 터진곳
+		
+		int bufX,bufY;
+		boolean collideCheck;
 		
 		
-		
-		for(int i=0;i<waterLength;i++) { //3번
+		//for(int i=0;i<waterLength;i++) { //3번
 			
 			for(int j=0;j<12;j++) {
+				
+				
+				System.out.println(j);
 				try {
 					switch(j) {
-						case 0: WaterArray[y-1][x]=2; break;
-						case 1: WaterArray[y-2][x]=2; break;
-						case 2: WaterArray[y-3][x]=3; break;
-						case 3: WaterArray[y+1][x]=4; break;
-						case 4: WaterArray[y+2][x]=4; break;
-						case 5: WaterArray[y+3][x]=5; break;
-						case 6: WaterArray[y][x-1]=6; break;
-						case 7: WaterArray[y][x-2]=6; break;
-						case 8: WaterArray[y][x-3]=7; break;
-						case 9: WaterArray[y][x+1]=8; break;
-						case 10: WaterArray[y][x+2]=8; break;
-						case 11: WaterArray[y][x+3]=9; break;
+//						case 0: //상1
+//						case 1:
+//						case 2:
+//							bufX=x; bufY=y-1;
+//							if(!collide(bufX, bufY, waters)){ //블럭이나 사람을 만난경우
+//								waters.crash[1]=true;
+//								break;
+//							}
+//							//
+//							if(waters.crash[1]==false) {
+//								System.out.println("////////////////");
+//								bufX=x; bufY=y-2;
+//								if(!collide(bufX, bufY, waters)){ //블럭이나 사람을 만난경우
+//									waters.crash[2]=true;
+//									//j+=1; //다음 줄기 건너뜀
+//								}
+//								break;
+//							}
+//							if(waters.crash[2]==false) {
+//								System.out.println(waters.crash[2]);
+//								bufX=x; bufY=y-3;
+//								if(!collide(bufX, bufY, waters )){ //블럭이나 사람을 만난경우
+//									
+//								}
+//								break;
+//							}
+							//
+//						case 1: //상2
+//							if(waters.crash[1]==false) {
+//								System.out.println("////////////////");
+//								bufX=x; bufY=y-2;
+//								if(!collide(bufX, bufY, waters)){ //블럭이나 사람을 만난경우
+//									waters.crash[2]=true;
+//									//j+=1; //다음 줄기 건너뜀
+//								}
+//								break;
+//							}
+//							
+//						case 2: //상3
+					
+					
+//						case 0: //상1
+//							bufX=x; bufY=y-1;
+//							if(!collide(bufX, bufY, waters)){ //블럭이나 사람을 만난경우
+//								waters.crash[1]=true;
+//								removeBlock(bufX, bufY);
+//								
+//							}
+//							break;
+//						case 1: //상2
+//							bufX=x; bufY=y-2;
+//							if(waters.crash[1]==false) {
+//								if(!collide(bufX, bufY, waters)){ //블럭이나 사람을 만난경우
+//									waters.crash[2]=true;
+//									removeBlock(bufX, bufY);
+//							}
+//								
+//						}
+//						break;
+//						case 2: //상3
+//							bufX=x; bufY=y-3;
+//							if(waters.crash[2]==false) {
+//								if(!collide(bufX, bufY, waters)){ //블럭이나 사람을 만난경우
+//									removeBlock(bufX, bufY);
+//							}
+//								
+//						}
+//						break;
+	//----------------------------------------------------------------------------------------					
+					case 0: //상1
+						bufX=x; bufY=y-1;
+						if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+							waters.crash[1]=true;
+							waters.crash[2]=true;
+							removeBlock(bufX, bufY);
+							
+						}
+						break;
+					case 1: //상2
+						bufX=x; bufY=y-2;
+						if(waters.crash[1]==false) {
+							if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+								waters.crash[2]=true;
+								removeBlock(bufX, bufY);
+						}
+								
+					}
+						break;
+					case 2: //상3
+						bufX=x; bufY=y-3;
+						if(waters.crash[2]==false) {
+							if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+								removeBlock(bufX, bufY);
+						}}
+						
+						break;
+	
+						case 3: //하1
+							bufX=x; bufY=y+1;
+							if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+								waters.crash[4]=true;
+								waters.crash[5]=true;
+								removeBlock(bufX, bufY);
+								
+							}
+							break;
+						case 4: //하2
+							bufX=x; bufY=y+2;
+								if(waters.crash[4]==false) {
+									if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+										waters.crash[5]=true;
+										removeBlock(bufX, bufY);
+								}
+									
+							}
+							break;
+						case 5: //하3
+							bufX=x; bufY=y+3;
+							if(waters.crash[5]==false) {
+								if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+									System.out.println("TTTTTTTTTTTTTTTTTTTt");
+									removeBlock(bufX, bufY);
+							}}
+							
+							break;
+							
+						case 6: //좌1
+							bufX=x-1; bufY=y;
+							if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+								waters.crash[7]=true;
+								waters.crash[8]=true;
+								removeBlock(bufX, bufY);
+								
+							}
+							break;
+						case 7: //좌2
+							bufX=x-2; bufY=y;
+								if(waters.crash[7]==false) {
+									if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+										waters.crash[8]=true;
+										removeBlock(bufX, bufY);
+								}
+									
+							}
+							break;
+						case 8: //좌3
+							bufX=x-3; bufY=y;
+							if(waters.crash[8]==false) {
+								if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+									removeBlock(bufX, bufY);
+							}}
+							
+							break;
+							
+						case 9: //우1
+							bufX=x+1; bufY=y;
+							if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+								waters.crash[10]=true;
+								waters.crash[11]=true;
+								removeBlock(bufX, bufY);
+								
+							}
+							break;
+						case 10: //우2
+							bufX=x+2; bufY=y;
+								if(waters.crash[10]==false) {
+									if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+										waters.crash[11]=true;
+										removeBlock(bufX, bufY);
+								}
+									
+							}
+							break;
+						case 11: //우3
+							bufX=x+3; bufY=y;
+							if(waters.crash[11]==false) {
+								if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+									removeBlock(bufX, bufY);
+							}}
+							
+							break;
+
+//----------------------------------------------------------------------------------------	
+							
+//						case 6: //좌1
+							
+							
+//							bufX=x-1; bufY=y;
+//							if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+//								j+=2; //다음 줄기 건너뜀
+//							}
+//							break;
+//						case 7: //좌2
+//							bufX=x-2; bufY=y;
+//							if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+//								j+=1; //다음 줄기 건너뜀
+//							}
+//							break;
+//						case 8: //좌3
+//							bufX=x-3; bufY=y;
+//							if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+//								
+//							}
+//							break;
+//						case 9: //우1
+//							bufX=x+1; bufY=y;
+//							if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+//								j+=2; //다음 줄기 건너뜀
+//							}
+//							break;
+//						case 10: //우2
+//							bufX=x+2; bufY=y;
+//							if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+//								j+=1; //다음 줄기 건너뜀
+//							}
+//							break;
+//						case 11: //우3
+//							bufX=x+3; bufY=y;
+//							if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+//								
+//							}
+//							break;
 					}
 				}
 				catch(ArrayIndexOutOfBoundsException e){
 					
 				}
 			}
-		}
+		//}
 		
 		System.out.println(WaterArray[2][2]);
 	    
+	}
+	/*------------------  블럭 파괴 ----------------------*/
+	
+	
+	/*------------------  블럭 파괴 ----------------------*/
+	public boolean collide(int bufX, int bufY) {
+		
+		if(MapArray[bufY][bufX]==0) { //빈공간이면
+			WaterArray[bufY][bufX]=2; //물줄기 생성
+			return true;
+		}
+		else {//아니라면
+			
+			
+			// 0 - 빈블럭, 1 - 박스, 2 - 빨강블럭, 3 - 주황블럭, 4 - 주황집
+			// 5 - 노랑집, 6 - 파랑집, 7 - 나무, 8 - 풀
+//			if(!(MapArray[bufY][bufX]==4))
+//				MapArray[bufY][bufX]=0; //블럭 파괴
+			
+			
+			return false;
+		}
+			
+		
+	}
+	public void removeBlock(int bufX, int bufY) {
+
+		if(!(MapArray[bufY][bufX]==4)&&!(MapArray[bufY][bufX]==5)&&
+				!(MapArray[bufY][bufX]==6)&&!(MapArray[bufY][bufX]==7)) {
+			MapArray[bufY][bufX]=0;
+		}
 	}
 	
 	/*------------------   맵   ------------------------*/

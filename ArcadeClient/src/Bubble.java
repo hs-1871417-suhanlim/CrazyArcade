@@ -18,13 +18,7 @@ public class Bubble {
 		pos=new Point(myx,myy);
 		cnt = 0;
 		
-		myx/=100;
-		myy/=100;
-		//버블 위치 조정
-		myx = myx - (myx%52);
-		myy = myy - (myy%52)+16;
-		if(myx<52)
-			myx=52;
+
 		
 		dis=new Point(myx,myy);
 //		System.out.println("bubble");
