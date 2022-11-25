@@ -28,14 +28,24 @@ public class GameScreen extends Canvas {
 	
 	//Image house[]=new Image[5]; //장애물
 	Image bubble[] = new Image[4]; //물풍선
-	Image pop[] = new Image[10]; //터진 물풍선(일단 나중에)
+	//Image pop[] = new Image[10]; //터진 물풍선(일단 나중에)
 	//item도 할 수 있다면..?
 	Image chr;
-	Image chrDown[] = new Image[8];
 	Image chrUp[] = new Image[8];
+	Image chrDown[] = new Image[8];
 	Image chrLeft[] = new Image[6];
 	Image chrRight[] = new Image[6];
 	Image chrTrap[] = new Image [13];
+	
+	Image waterPop[] = new Image[6];
+	Image waterUpM[] = new Image[11];
+	Image waterUpE[] = new Image[11];
+	Image waterDownM[] = new Image[11];
+	Image waterDownE[] = new Image[11];
+	Image waterLeftM[] = new Image[11];
+	Image waterLeftE[] = new Image[11];
+	Image waterRightM[] = new Image[11];
+	Image waterRightE[] = new Image[11];
 	
 	Font font;
 	
@@ -83,8 +93,10 @@ public class GameScreen extends Canvas {
 		case 2: //playing상태
 			Draw_BG(); //배경화면 그리기
 			Draw_Block() ;
-			Draw_MY(); //캐릭터 그리기
+			Draw_WATER();
 			Draw_BUBBLE(); //물풍선 그리기
+			Draw_MY(); //캐릭터 그리기
+			
 			Draw_Hide();
 			
 			
@@ -212,8 +224,46 @@ public class GameScreen extends Canvas {
 		   Bubble buff = (Bubble)this.main.bubble.elementAt(i);
 		   //System.out.println((Bubble)this.main.bubble.elementAt(i));
 		   drawImageAnc(bubble[main.gamecnt/50%4], buff.dis.x, buff.dis.y, 4);
+		   System.out.println(buff.dis);
 		       
 	    }
+	}
+	public void Draw_WATER() {
+		
+		int length = main.waterLength;
+		
+//		for(int i = 0; i < this.main.water.size(); ++i) {
+//			
+//			   Water water = (Water)this.main.water.elementAt(i);
+//			   //System.out.println((Bubble)this.main.bubble.elementAt(i));
+//			   drawImageAnc(bubble[main.gamecnt/50%4], buff.dis.x, buff.dis.y, 4);
+//			       
+//		    }
+		// 1 - 가운데 pop
+		// 2 - 상 중간, 3 - 상 말단, 4 - 하 중간, 5 - 하 말단
+		// 6 - 좌 중간, 7 - 좌 말단, 8 - 우 중간, 8 - 우 말단
+	   
+		for(int i = 0; i < this.main.water.size(); ++i) {
+			
+			
+		
+		   Water water = (Water)this.main.water.elementAt(i);
+		   //System.out.println((Bubble)this.main.bubble.elementAt(i));
+		   
+		   //System.out.println(i);
+//		   drawImageAnc(waterPop[main.gamecnt/50%6], (water.dis.x)*5200, (water.dis.y)*5200, 4);
+		   
+		   
+		   drawImageAnc(waterPop[main.gamecnt/20%6], (water.dis.x+1)*52, (water.dis.y+1)*52+16,4);
+		   
+		   
+		   //drawImageAnc(water[main.gamecnt/50%11], buff.dis.x, buff.dis.y, 4);
+		       
+	    }
+		
+		
+		
+		
 	}
 	
 	public void drawImageAnc(Image img, int x, int y, int anc){
