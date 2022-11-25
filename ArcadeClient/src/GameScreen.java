@@ -47,6 +47,8 @@ public class GameScreen extends Canvas {
 	Image waterRightM[] = new Image[11];
 	Image waterRightE[] = new Image[11];
 	
+	int waterCnt=5;
+	
 	Font font;
 	
 
@@ -224,7 +226,7 @@ public class GameScreen extends Canvas {
 		   Bubble buff = (Bubble)this.main.bubble.elementAt(i);
 		   //System.out.println((Bubble)this.main.bubble.elementAt(i));
 		   drawImageAnc(bubble[main.gamecnt/50%4], buff.dis.x, buff.dis.y, 4);
-		   System.out.println(buff.dis);
+		   //System.out.println(buff.dis);
 		       
 	    }
 	}
@@ -242,11 +244,46 @@ public class GameScreen extends Canvas {
 		// 1 - 가운데 pop
 		// 2 - 상 중간, 3 - 상 말단, 4 - 하 중간, 5 - 하 말단
 		// 6 - 좌 중간, 7 - 좌 말단, 8 - 우 중간, 8 - 우 말단
+		
+		for(int i=0;i<13;i++) {
+            for(int j=0;j<15;j++) {
+               if(main.WaterArray[i][j]==1) {//가운데
+            	   drawImageAnc(waterPop[main.gamecnt/waterCnt%6], (j+1)*52, (i+1)*52+24, 4);
+               }
+               else if(main.WaterArray[i][j]==2) {//상 중간
+            	   //System.out.println("================");
+            	   drawImageAnc(waterUpM[main.gamecnt/waterCnt%9], (j+1)*52, (i+1)*52+24, 4);
+               }
+               else if(main.WaterArray[i][j]==3) {//상 말단
+            	   drawImageAnc(waterUpE[main.gamecnt/waterCnt%9], (j+1)*52, (i+1)*52+24,4);
+               }
+               else if(main.WaterArray[i][j]==4) {//하 중간
+            	   //System.out.println("================");
+            	   drawImageAnc(waterDownM[main.gamecnt/waterCnt%9], (j+1)*52, (i+1)*52+24, 4);
+               }
+               else if(main.WaterArray[i][j]==5) {//하 말단
+            	   drawImageAnc(waterDownE[main.gamecnt/waterCnt%9], (j+1)*52, (i+1)*52+24,4);
+               }
+               else if(main.WaterArray[i][j]==6) {//좌 중간
+            	   //System.out.println("================");
+            	   drawImageAnc(waterLeftM[main.gamecnt/waterCnt%9], (j+1)*52, (i+1)*52+24, 4);
+               }
+               else if(main.WaterArray[i][j]==7) {//좌 말단
+            	   drawImageAnc(waterLeftE[main.gamecnt/waterCnt%9], (j+1)*52, (i+1)*52+24,4);
+               }
+               else if(main.WaterArray[i][j]==8) {//우 중간
+            	   //System.out.println("================");
+            	   drawImageAnc(waterRightM[main.gamecnt/waterCnt%9], (j+1)*52, (i+1)*52+24, 4);
+               }
+               else if(main.WaterArray[i][j]==9) {//우 말단
+            	   drawImageAnc(waterRightE[main.gamecnt/waterCnt%9], (j+1)*52, (i+1)*52+24,4);
+               }
+               
+            }
+         }
 	   
 		for(int i = 0; i < this.main.water.size(); ++i) {
 			
-			
-		
 		   Water water = (Water)this.main.water.elementAt(i);
 		   //System.out.println((Bubble)this.main.bubble.elementAt(i));
 		   
@@ -254,11 +291,8 @@ public class GameScreen extends Canvas {
 //		   drawImageAnc(waterPop[main.gamecnt/50%6], (water.dis.x)*5200, (water.dis.y)*5200, 4);
 		   
 		   
-		   drawImageAnc(waterPop[main.gamecnt/20%6], (water.dis.x+1)*52, (water.dis.y+1)*52+16,4);
+		   //drawImageAnc(waterPop[main.gamecnt/20%6], (water.dis.x+1)*52, (water.dis.y+1)*52+16,4);
 		   
-		   
-		   //drawImageAnc(water[main.gamecnt/50%11], buff.dis.x, buff.dis.y, 4);
-		       
 	    }
 		
 		

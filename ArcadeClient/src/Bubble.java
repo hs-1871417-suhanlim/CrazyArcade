@@ -27,8 +27,8 @@ public class Bubble {
 			myx=52;
 		
 		dis=new Point(myx,myy);
-		System.out.println("bubble");
-		System.out.println(dis);
+//		System.out.println("bubble");
+//		System.out.println(dis);
 	
 //		
 //		

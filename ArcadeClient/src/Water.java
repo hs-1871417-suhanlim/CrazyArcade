@@ -15,8 +15,8 @@ public class Water {
 		
 		//x,y는 물풍선이 터진곳의 왼쪽상단 좌표
 		dis=new Point(x,y);
-		System.out.println("water");
-		System.out.println(dis);
+//		System.out.println("water");
+//		System.out.println(dis);
 	}
 
 }

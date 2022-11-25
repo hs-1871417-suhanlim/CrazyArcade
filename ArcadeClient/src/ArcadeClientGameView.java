@@ -454,6 +454,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		case 2://playing
 			process_MY();
 			process_BUBBLE();
+			process_WATER();
 			//process_ENEMY();
 			 							//process_BUBBLE();
 			//process_EFFECT();
@@ -645,25 +646,39 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		
 		for(i=0;i<11;i++){
 			if(i<10) {
-				gamescreen.waterUpM[i]=makeImage("./waterballon/up2_"+i+".png");
-				gamescreen.waterUpE[i]=makeImage("./waterballon/up1_"+i+".png");
-				gamescreen.waterDownM[i]=makeImage("./waterballon/down2_"+i+".png");
-				gamescreen.waterDownE[i]=makeImage("./waterballon/down1_"+i+".png");
-				gamescreen.waterLeftM[i]=makeImage("./waterballon/left2_"+i+".png");
-				gamescreen.waterLeftE[i]=makeImage("./waterballon/left1_"+i+".png");
-				gamescreen.waterRightM[i]=makeImage("./waterballon/right2_"+i+".png");
-				gamescreen.waterRightE[i]=makeImage("./waterballon/right1_"+i+".png");
+				
+				if(i!=3&&i!=4) {
+					gamescreen.waterUpM[i]=makeImage("./waterballoon/up2_"+i+".png");
+					gamescreen.waterUpE[i]=makeImage("./waterballoon/up1_"+i+".png");
+					gamescreen.waterDownM[i]=makeImage("./waterballoon/down2_"+i+".png");
+					gamescreen.waterDownE[i]=makeImage("./waterballoon/down1_"+i+".png");
+					gamescreen.waterLeftM[i]=makeImage("./waterballoon/left2_"+i+".png");
+					gamescreen.waterLeftE[i]=makeImage("./waterballoon/left1_"+i+".png");
+					gamescreen.waterRightM[i]=makeImage("./waterballoon/right2_"+i+".png");
+					gamescreen.waterRightE[i]=makeImage("./waterballoon/right1_"+i+".png");
+				}
+				else {
+					gamescreen.waterUpM[i]=makeImage("./waterballoon/up2_"+2+".png");
+					gamescreen.waterUpE[i]=makeImage("./waterballoon/up1_"+2+".png");
+					gamescreen.waterDownM[i]=makeImage("./waterballoon/down2_"+2+".png");
+					gamescreen.waterDownE[i]=makeImage("./waterballoon/down1_"+2+".png");
+					gamescreen.waterLeftM[i]=makeImage("./waterballoon/left2_"+2+".png");
+					gamescreen.waterLeftE[i]=makeImage("./waterballoon/left1_"+2+".png");
+					gamescreen.waterRightM[i]=makeImage("./waterballoon/right2_"+2+".png");
+					gamescreen.waterRightE[i]=makeImage("./waterballoon/right1_"+2+".png");
+				}
+				
 			}
 				
 			else {
-				gamescreen.waterUpM[i]=makeImage("./waterballon/up2_"+i+".png");
-				gamescreen.waterUpE[i]=makeImage("./waterballon/up1_"+i+".png");
-				gamescreen.waterDownM[i]=makeImage("./waterballon/down2_"+i+".png");
-				gamescreen.waterDownE[i]=makeImage("./waterballon/down1_"+i+".png");
-				gamescreen.waterLeftM[i]=makeImage("./waterballon/left2_"+i+".png");
-				gamescreen.waterLeftE[i]=makeImage("./waterballon/left1_"+i+".png");
-				gamescreen.waterRightM[i]=makeImage("./waterballon/right2_"+i+".png");
-				gamescreen.waterRightE[i]=makeImage("./waterballon/right1_"+i+".png");
+				gamescreen.waterUpM[i]=makeImage("./waterballoon/up2_"+i+".png");
+				gamescreen.waterUpE[i]=makeImage("./waterballoon/up1_"+i+".png");
+				gamescreen.waterDownM[i]=makeImage("./waterballoon/down2_"+i+".png");
+				gamescreen.waterDownE[i]=makeImage("./waterballoon/down1_"+i+".png");
+				gamescreen.waterLeftM[i]=makeImage("./waterballoon/left2_"+i+".png");
+				gamescreen.waterLeftE[i]=makeImage("./waterballoon/left1_"+i+".png");
+				gamescreen.waterRightM[i]=makeImage("./waterballoon/right2_"+i+".png");
+				gamescreen.waterRightE[i]=makeImage("./waterballoon/right1_"+i+".png");
 			}
 				
 		}
@@ -837,13 +852,13 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 			 
 			 
 			 if(buff.cnt>=100) {
-				 
+				 bubble.remove(i);
 				 make_WATER(x,y, buff.from); //물줄기 생성
 
 				 
 				 
-				 MapArray[y][x]=0;
-				 bubble.remove(i);
+				 MapArray[y][x]=0; //다시 이동할 수 있게
+				 
 			 }
 				
 			 buff.cnt++;
@@ -853,6 +868,51 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		
 	}
 	public void process_WATER() {
+		
+		for(int i=0;i<water.size();i++) { //3번
+			
+			Water buff = (Water)water.elementAt(i);
+			
+			int x = buff.dis.x;
+			int y = buff.dis.y;
+//			System.out.println("+++++++++");
+//			System.out.println(x);
+//			System.out.println(y);
+			
+			if(buff.cnt>=25) {
+				
+			water.remove(i);
+				
+			WaterArray[y][x]=0;
+			
+			for(int j=0;j<12;j++) {
+				try {
+					switch(j) {
+						case 0: WaterArray[y-1][x]=0; break;
+						case 1: WaterArray[y-2][x]=0; break;
+						case 2: WaterArray[y-3][x]=0; break;
+						case 3: WaterArray[y+1][x]=0; break;
+						case 4: WaterArray[y+2][x]=0; break;
+						case 5: WaterArray[y+3][x]=0; break;
+						case 6: WaterArray[y][x-1]=0; break;
+						case 7: WaterArray[y][x-2]=0; break;
+						case 8: WaterArray[y][x-3]=0; break;
+						case 9: WaterArray[y][x+1]=0; break;
+						case 10: WaterArray[y][x+2]=0; break;
+						case 11: WaterArray[y][x+3]=0; break;
+					}
+				}
+				catch(ArrayIndexOutOfBoundsException e){
+					
+				}
+			}
+				
+			}
+			buff.cnt++;
+			
+		}
+		
+		
 		
 	}
 
@@ -893,19 +953,35 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		water.add(waters);
 		
 		WaterArray[y][x]=1;
+		
+		
+		
 		for(int i=0;i<waterLength;i++) { //3번
-			try {
-				WaterArray[y-1][x]=2; WaterArray[y-2][x]=2; WaterArray[y-3][x]=3; //상
-	 			WaterArray[y+1][x]=4; WaterArray[y+2][x]=4; WaterArray[y+3][x]=5; //하
-				WaterArray[y][x-1]=6; WaterArray[y][x-2]=6; WaterArray[y][x-3]=7; //좌
-				WaterArray[y][x+1]=8; WaterArray[y][x+2]=8; WaterArray[y][x+3]=9; //우
-			}
-			catch(ArrayIndexOutOfBoundsException e){
-				
-			}
 			
+			for(int j=0;j<12;j++) {
+				try {
+					switch(j) {
+						case 0: WaterArray[y-1][x]=2; break;
+						case 1: WaterArray[y-2][x]=2; break;
+						case 2: WaterArray[y-3][x]=3; break;
+						case 3: WaterArray[y+1][x]=4; break;
+						case 4: WaterArray[y+2][x]=4; break;
+						case 5: WaterArray[y+3][x]=5; break;
+						case 6: WaterArray[y][x-1]=6; break;
+						case 7: WaterArray[y][x-2]=6; break;
+						case 8: WaterArray[y][x-3]=7; break;
+						case 9: WaterArray[y][x+1]=8; break;
+						case 10: WaterArray[y][x+2]=8; break;
+						case 11: WaterArray[y][x+3]=9; break;
+					}
+				}
+				catch(ArrayIndexOutOfBoundsException e){
+					
+				}
+			}
 		}
 		
+		System.out.println(WaterArray[2][2]);
 	    
 	}
 	
