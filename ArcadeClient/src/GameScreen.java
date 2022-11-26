@@ -213,9 +213,18 @@ public class GameScreen extends Canvas {
 			else if(main.myimg==3) drawImageAnc(chrLeft[cnt/4%6], myx, myy, 4);
 			else if(main.myimg==4) drawImageAnc(chrRight[cnt/4%6], myx, myy, 4);
 			break;
-//		case 3://데미지
-//			if(main.cnt%6<3) drawImageAnc(chr[8], myx, myy, 4);
-//			break;
+		case 3://trap상태
+			
+			if(main.trapCnt>=200) {
+				if(cnt/30%4==3)
+					drawImageAnc(chrTrap[9], myx, myy, 4);
+				else if(cnt/30%4==2) drawImageAnc(chrTrap[10], myx, myy, 4);
+				else if(cnt/30%4==1) drawImageAnc(chrTrap[11], myx, myy, 4);
+				else if(cnt/30%4==0)drawImageAnc(chrTrap[12], myx, myy, 4);
+			}
+			else
+				drawImageAnc(chrTrap[main.trapCnt/20%13], myx, myy, 4);
+			break;
 		}
 	}
 	
@@ -271,35 +280,36 @@ public class GameScreen extends Canvas {
 		
 		for(int i=0;i<13;i++) {
             for(int j=0;j<15;j++) {
-               if(main.WaterArray[i][j]==1) {//가운데
+            	int num = main.WaterArray[i][j];
+               if(num==1) {//가운데
             	   drawImageAnc(waterPop[main.gamecnt/waterCnt%6], (j+1)*52, (i+1)*52+24, 4);
                }
-               else if(main.WaterArray[i][j]==2) {//상 중간
+               else if(num==2) {//상 중간
             	   //System.out.println("================");
             	   drawImageAnc(waterUpM[main.gamecnt/waterCnt%9], (j+1)*52, (i+1)*52+24, 4);
                }
-               else if(main.WaterArray[i][j]==3) {//상 말단
+               else if(num==3) {//상 말단
             	   drawImageAnc(waterUpE[main.gamecnt/waterCnt%9], (j+1)*52, (i+1)*52+24,4);
                }
-               else if(main.WaterArray[i][j]==4) {//하 중간
+               else if(num==4) {//하 중간
             	   //System.out.println("================");
             	   drawImageAnc(waterDownM[main.gamecnt/waterCnt%9], (j+1)*52, (i+1)*52+24, 4);
                }
-               else if(main.WaterArray[i][j]==5) {//하 말단
+               else if(num==5) {//하 말단
             	   drawImageAnc(waterDownE[main.gamecnt/waterCnt%9], (j+1)*52, (i+1)*52+24,4);
                }
-               else if(main.WaterArray[i][j]==6) {//좌 중간
+               else if(num==6) {//좌 중간
             	   //System.out.println("================");
             	   drawImageAnc(waterLeftM[main.gamecnt/waterCnt%9], (j+1)*52, (i+1)*52+24, 4);
                }
-               else if(main.WaterArray[i][j]==7) {//좌 말단
+               else if(num==7) {//좌 말단
             	   drawImageAnc(waterLeftE[main.gamecnt/waterCnt%9], (j+1)*52, (i+1)*52+24,4);
                }
-               else if(main.WaterArray[i][j]==8) {//우 중간
+               else if(num==8) {//우 중간
             	   //System.out.println("================");
             	   drawImageAnc(waterRightM[main.gamecnt/waterCnt%9], (j+1)*52, (i+1)*52+24, 4);
                }
-               else if(main.WaterArray[i][j]==9) {//우 말단
+               else if(num==9) {//우 말단
             	   drawImageAnc(waterRightE[main.gamecnt/waterCnt%9], (j+1)*52, (i+1)*52+24,4);
                }
                

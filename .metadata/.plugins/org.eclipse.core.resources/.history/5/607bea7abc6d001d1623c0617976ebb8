@@ -1,0 +1,180 @@
+import java.awt.Point;
+import java.util.Arrays;
+
+public class Water {
+	
+	int cnt;
+	int from; //누구한테서 왔는지 - 나 : 1 / 상대방: -1?
+	
+	Point dis;
+	
+	boolean crash[] = new boolean[20];
+	
+	
+	int waterLength; //물줄기 길이
+
+	
+	public Water(int x, int y, int waterLength, int from) {
+		cnt=0;
+		this.from=from;
+		
+		//x,y는 물풍선이 터진곳의 왼쪽상단 좌표
+		dis=new Point(x,y);
+		this.waterLength = waterLength;
+		
+		/*      
+		 * 
+		 *        		 16
+		 *         		 12
+		 *    	   		 8 
+		 *         		 4
+		 *        	     0
+		 * 18 14 10 6 2 (X) 3 7 11 15 19   
+		 *               1   
+		 *               5   
+		 *               9   
+		 *        		 13
+		 *         		 17
+		 *         
+		 *         
+		 * */
+		Arrays.fill(crash, false);
+		
+//		System.out.println("water");
+//		System.out.println(dis);
+	}
+
+}
+
+int length = waters.waterLength;
+
+for(int j=0;j<4*waterLength;j++) {
+	
+	
+	System.out.println(j);
+	try {
+		switch(j) {			
+		case 0: //상1
+			bufX=x; bufY=y-1;
+			if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+				waters.crash[1]=true;
+				waters.crash[2]=true;
+				removeBlock(bufX, bufY);
+				
+			}
+			break;
+		case 1: //상2
+			bufX=x; bufY=y-2;
+			if(waters.crash[1]==false) {
+				if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+					waters.crash[2]=true;
+					removeBlock(bufX, bufY);
+			}
+					
+		}
+			break;
+		case 2: //상3
+			bufX=x; bufY=y-3;
+			if(waters.crash[2]==false) {
+				if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+					removeBlock(bufX, bufY);
+			}}
+			
+			break;
+
+			case 3: //하1
+				bufX=x; bufY=y+1;
+				if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+					waters.crash[4]=true;
+					waters.crash[5]=true;
+					removeBlock(bufX, bufY);
+					
+				}
+				break;
+			case 4: //하2
+				bufX=x; bufY=y+2;
+					if(waters.crash[4]==false) {
+						if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+							waters.crash[5]=true;
+							removeBlock(bufX, bufY);
+					}
+						
+				}
+				break;
+			case 5: //하3
+				bufX=x; bufY=y+3;
+				if(waters.crash[5]==false) {
+					if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+//						System.out.println("TTTTTTTTTTTTTTTTTTT");
+						removeBlock(bufX, bufY);
+				}}
+				
+				break;
+				
+			case 6: //좌1
+				bufX=x-1; bufY=y;
+				if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+					waters.crash[7]=true;
+					waters.crash[8]=true;
+					removeBlock(bufX, bufY);
+					
+				}
+				break;
+			case 7: //좌2
+				bufX=x-2; bufY=y;
+					if(waters.crash[7]==false) {
+						if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+							waters.crash[8]=true;
+							removeBlock(bufX, bufY);
+					}
+						
+				}
+				break;
+			case 8: //좌3
+				bufX=x-3; bufY=y;
+				if(waters.crash[8]==false) {
+					if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+						removeBlock(bufX, bufY);
+				}}
+				
+				break;
+				
+			case 9: //우1
+				bufX=x+1; bufY=y;
+				if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+					waters.crash[10]=true;
+					waters.crash[11]=true;
+					removeBlock(bufX, bufY);
+					
+				}
+				break;
+			case 10: //우2
+				bufX=x+2; bufY=y;
+					if(waters.crash[10]==false) {
+						if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+							waters.crash[11]=true;
+							removeBlock(bufX, bufY);
+					}
+						
+				}
+				break;
+			case 11: //우3
+				bufX=x+3; bufY=y;
+				if(waters.crash[11]==false) {
+					if(!collide(bufX, bufY)){ //블럭이나 사람을 만난경우
+						removeBlock(bufX, bufY);
+				}}
+				
+				break;
+
+		}
+	}
+	catch(ArrayIndexOutOfBoundsException e){
+		
+	}
+}
+
+
+
+
+
