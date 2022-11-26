@@ -225,9 +225,6 @@ public class GameScreen extends Canvas {
 			else
 				drawImageAnc(chrTrap[main.trapCnt/20%13], myx, myy, 4);
 			break;
-		case 4: //사망모션
-			//사망모션 넣을 예정
-			break;
 		}
 	}
 	
