@@ -19,4 +19,8 @@
     <fullyQualifiedTypeName name="java.awt.MediaTracker"/>
     <fullyQualifiedTypeName name="java.awt.Point"/>
     <fullyQualifiedTypeName name="java.lang.System"/>
+    <fullyQualifiedTypeName name="javax.sound.sampled.AudioInputStream"/>
+    <fullyQualifiedTypeName name="javax.sound.sampled.Clip"/>
+    <fullyQualifiedTypeName name="java.io.File"/>
+    <fullyQualifiedTypeName name="javax.sound.sampled.FloatControl"/>
 </qualifiedTypeNameHistroy>
