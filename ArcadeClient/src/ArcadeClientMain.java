@@ -18,7 +18,15 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import java.awt.event.ActionEvent;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+
+
 
 public class ArcadeClientMain extends JFrame{
 	
@@ -33,6 +41,7 @@ public class ArcadeClientMain extends JFrame{
 	private JTextField txtIpAddress;
 	private JTextField txtPortNumber;
 	public ImageIcon bg = null;
+	
 	JScrollPane scrollPane;
 	
 
@@ -41,6 +50,7 @@ public class ArcadeClientMain extends JFrame{
 			public void run() {
 				try {
 					ArcadeClientMain frame = new ArcadeClientMain();
+					
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -51,7 +61,7 @@ public class ArcadeClientMain extends JFrame{
 	
 
 	public ArcadeClientMain() {  // 생성자 ------------------------
-		
+		//new Music();
 		ImageIcon bg = new ImageIcon("./connectIMG/login.jpg");//배경화면
 		
 		ImageIcon img = new ImageIcon("./connectIMG/start.png");//스타트 버튼
@@ -141,9 +151,7 @@ public class ArcadeClientMain extends JFrame{
 		}
 	}
 	
-	
-	
-	
+
 }
 
 

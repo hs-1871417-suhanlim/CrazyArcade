@@ -1,0 +1,40 @@
+import java.io.IOException;
+import java.io.InputStream;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+
+public class Music {
+   
+    // 음악 실행에 필요한 변수 설정
+    private static InputStream IN;
+    private static AudioStream BGM;
+    private static AudioPlayer MGP = AudioPlayer.player;
+   
+    // 음악을 설정함
+    public Music(String bgm) {
+        IN = Music.class.getResourceAsStream("/bgm/" + bgm);
+    }
+   
+    // 음악을 실행함
+    public static void Play() {
+        try
+        {
+            BGM = new AudioStream(IN);
+            MGP.start(BGM);
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }       
+    }
+   
+    // 음악을 변경함
+    public static void Change(String bgm) {
+        IN = Music.class.getResourceAsStream("/bgm/" + bgm);
+    }
+   
+    // 음악을 정지함
+    public static void Stop() {
+        MGP.stop(BGM);
+    }
+}

@@ -1,4 +1,5 @@
 import java.awt.Point;
+import java.util.Arrays;
 
 public class Water {
 	
@@ -6,6 +7,8 @@ public class Water {
 	int from; //누구한테서 왔는지 - 나 : 1 / 상대방: -1?
 	
 	Point dis;
+	
+	boolean crash[] = new boolean[13];
 	
 
 	
@@ -15,8 +18,20 @@ public class Water {
 		
 		//x,y는 물풍선이 터진곳의 왼쪽상단 좌표
 		dis=new Point(x,y);
-		System.out.println("water");
-		System.out.println(dis);
+		
+		
+		/*         3 
+		 *         2
+		 *         1
+		 *  9 8 7 (0) 10 11 12    
+		 *         4   
+		 *         5   
+		 *         6   
+		 * */
+		Arrays.fill(crash, false);
+		
+//		System.out.println("water");
+//		System.out.println(dis);
 	}
 
 }
