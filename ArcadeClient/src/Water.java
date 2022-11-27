@@ -8,25 +8,34 @@ public class Water {
 	
 	Point dis;
 	
-	boolean crash[] = new boolean[13];
+	boolean crash[] = new boolean[20];
 	
+	
+	int waterLength; //물줄기 길이
 
 	
-	public Water(int x, int y, int waterLength, int from) {
+	public Water(int x, int y, int waterLength) {
 		cnt=0;
-		this.from=from;
 		
 		//x,y는 물풍선이 터진곳의 왼쪽상단 좌표
 		dis=new Point(x,y);
+		this.waterLength = waterLength;
 		
-		
-		/*         3 
-		 *         2
-		 *         1
-		 *  9 8 7 (0) 10 11 12    
-		 *         4   
-		 *         5   
-		 *         6   
+		/*      
+		 * 
+		 *        		 16
+		 *         		 12
+		 *    	   		 8 
+		 *         		 4
+		 *        	     0
+		 * 18 14 10 6 2 (X) 3 7 11 15 19   
+		 *               1   
+		 *               5   
+		 *               9   
+		 *        		 13
+		 *         		 17
+		 *         
+		 *         
 		 * */
 		Arrays.fill(crash, false);
 		
@@ -35,3 +44,10 @@ public class Water {
 	}
 
 }
+
+
+
+
+
+
+
