@@ -109,6 +109,7 @@ public class GameScreen extends Canvas {
 			Draw_WATER();
 			Draw_BUBBLE(); //물풍선 그리기
 			Draw_MY(); //캐릭터 그리기
+			Draw_MY2();
 			
 			Draw_Hide();
 			
@@ -224,6 +225,48 @@ public class GameScreen extends Canvas {
 			}
 			else
 				drawImageAnc(chrTrap[main.trapCnt/20%13], myx, myy, 4);
+			break;
+		case 4: //사망모션
+			//사망모션 넣을 예정
+			break;
+		}
+	}
+	
+	public void Draw_MY2(){ //플레이어 그리기
+		
+		//mymode : 플레이어 상태 
+		// 2 : playing <<로 시작
+		
+		//myImg : 플레이어 이미지
+		//0 wait 1-상 2-하 3-좌 4-우
+		
+		int myx2,myy2;
+		myx2=main.myx2/100;
+		myy2=main.myy2/100;
+		switch(main.mymode2){
+		case 0://무적
+		case 1://무적이면서 등장
+			//if(main.cnt%20<10) drawImageAnc(chr[2+(main.cnt/5)%2], myx, myy, 4);
+			break;
+		case 2://온플레이
+			if(main.myimg2==0) drawImageAnc(chr, myx2, myy2, 4);
+			else if(main.myimg2==1) drawImageAnc(chrUp[cnt/4%8], myx2, myy2, 4);
+			else if(main.myimg2==2) drawImageAnc(chrDown[cnt/4%8], myx2, myy2, 4);
+			else if(main.myimg2==3) drawImageAnc(chrLeft[cnt/4%6], myx2, myy2, 4);
+			else if(main.myimg2==4) drawImageAnc(chrRight[cnt/4%6], myx2, myy2, 4);
+			break;
+		case 3://trap상태
+			
+			if(main.trapCnt2>=200) {
+				if(cnt/30%4==3)
+					drawImageAnc(chrTrap[9], myx2, myy2, 4);
+				else if(cnt/30%4==2) drawImageAnc(chrTrap[10], myx2, myy2, 4);
+				else if(cnt/30%4==1) drawImageAnc(chrTrap[11], myx2, myy2, 4);
+				else if(cnt/30%4==0)drawImageAnc(chrTrap[12], myx2, myy2, 4);
+			}
+			else
+				drawImageAnc(chrTrap[main.trapCnt2/20%13], myx2, myy2, 4);
+				//
 			break;
 		case 4: //사망모션
 			//사망모션 넣을 예정
