@@ -273,6 +273,9 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	
 	
 	//네트워크 관련 변수
+	
+	/*
+	
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private String UserName;
@@ -285,6 +288,8 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
+	
+	*/
 	
 
 	//그래픽 관련 변수
@@ -337,6 +342,8 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		status = 2;
 		mymode = 2;
 		
+		/* 
+		
         UserName = username;
 		
 		try {
@@ -355,6 +362,8 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 			e.printStackTrace();
 			
 		}
+		
+		*/
 
 	} // 생성자 끝 -----------------------------------------------------------
    
@@ -408,47 +417,49 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	
  	//=================================================================================
     
-	class ListenNetwork extends Thread { //네트워크 관련 스레드 -------------------
-		public void run() {
-			while (true) {
-				try {
-
-					Object obcm = null;
-					String msg = null;
-					ChatMsg cm;
-					try {
-						obcm = ois.readObject();
-					} catch (ClassNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						break;
-					}
-					if (obcm == null)
-						break;
-					if (obcm instanceof ChatMsg) {
-						cm = (ChatMsg) obcm;
-						msg = String.format("[%s]\n%s", cm.UserName, cm.data);
-					} else
-						continue;
-					
-				} catch (IOException e) {
-					//AppendText("ois.readObject() error");
-					try {
-//						dos.close();
-//						dis.close();
-						ois.close();
-						oos.close();
-						socket.close();
-
-						break;
-					} catch (Exception ee) {
-						break;
-					} // catch문 끝
-				} // 바깥 catch문끝
-
-			}
-		}
-	}//-----------------------------------------------------------------------------
+//	class ListenNetwork extends Thread { //네트워크 관련 스레드 -------------------
+//		public void run() {
+//			while (true) {
+//				try {
+//
+//					Object obcm = null;
+//					String msg = null;
+//					ChatMsg cm;
+//					try {
+//						obcm = ois.readObject();
+//					} catch (ClassNotFoundException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//						break;
+//					}
+//					if (obcm == null)
+//						break;
+//					if (obcm instanceof ChatMsg) {
+//						cm = (ChatMsg) obcm;
+//						msg = String.format("[%s]\n%s", cm.UserName, cm.data);
+//					} else
+//						continue;
+//					
+//				} catch (IOException e) {
+//					//AppendText("ois.readObject() error");
+//					try {
+////						dos.close();
+////						dis.close();
+//						ois.close();
+//						oos.close();
+//						socket.close();
+//
+//						break;
+//					} catch (Exception ee) {
+//						break;
+//					} // catch문 끝
+//				} // 바깥 catch문끝
+//
+//			}
+//		}
+//	}
+	
+	//-----------------------------------------------------------------------------
 	
 	public void showFrame() { //프레임 그리기------------------------------------------
 		setTitle("게임방"); //프레임 타이틀 지정

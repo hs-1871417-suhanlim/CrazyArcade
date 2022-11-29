@@ -146,7 +146,9 @@ public class ArcadeClientMain extends JFrame{
 			String username = txtUserName.getText().trim();
 			String ip_addr = txtIpAddress.getText().trim();
 			String port_no = txtPortNumber.getText().trim();
-			ArcadeClientGameView view = new ArcadeClientGameView(username, ip_addr, port_no);
+			ArcadeClientView view = new ArcadeClientView(username, ip_addr, port_no);
+			
+			//ArcadeClientGameView view = new ArcadeClientGameView(username, ip_addr, port_no);
 			setVisible(false);
 		}
 	}

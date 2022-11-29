@@ -44,6 +44,9 @@ public class ArcadeServer extends JFrame {
 	/**
 	 * Launch the application.
 	 */
+	private RoomManager roomManager;
+	
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -60,7 +63,10 @@ public class ArcadeServer extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ArcadeServer() {
+	public ArcadeServer() { //생성자
+		
+		roomManager = new RoomManager(); //한 번만 호출되어야 함
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 338, 440);
 		contentPane = new JPanel();
@@ -88,6 +94,9 @@ public class ArcadeServer extends JFrame {
 		txtPortNumber.setColumns(10);
 
 		JButton btnServerStart = new JButton("Server Start");
+		
+		//---------------------------------------------------------
+		
 		btnServerStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -146,7 +155,7 @@ public class ArcadeServer extends JFrame {
 
 	// User 당 생성되는 Thread
 	// Read One 에서 대기 -> Write All
-	class UserService extends Thread {
+	class UserService extends Thread {//UserService--------------------------------
 		private InputStream is;
 		private OutputStream os;
 		private DataInputStream dis;
@@ -160,31 +169,17 @@ public class ArcadeServer extends JFrame {
 		public String UserName = "";
 		public String UserStatus;
 
-		public UserService(Socket client_socket) {
+		public UserService(Socket client_socket) { //생성자
 			// TODO Auto-generated constructor stub
 			// 매개변수로 넘어온 자료 저장
 			this.client_socket = client_socket;
 			this.user_vc = UserVec;
 			try {
-//				is = client_socket.getInputStream();
-//				dis = new DataInputStream(is);
-//				os = client_socket.getOutputStream();
-//				dos = new DataOutputStream(os);
 
 				oos = new ObjectOutputStream(client_socket.getOutputStream());
 				oos.flush();
 				ois = new ObjectInputStream(client_socket.getInputStream());
 
-				// line1 = dis.readUTF();
-				// /login user1 ==> msg[0] msg[1]
-//				byte[] b = new byte[BUF_LEN];
-//				dis.read(b);		
-//				String line1 = new String(b);
-//
-//				//String[] msg = line1.split(" ");
-//				//UserName = msg[1].trim();
-//				UserStatus = "O"; // Online 상태
-//				Login();
 			} catch (Exception e) {
 				AppendText("userService error");
 			}
@@ -250,19 +245,13 @@ public class ArcadeServer extends JFrame {
 		}
 
 		// UserService Thread가 담당하는 Client 에게 1:1 전송
-		public void WriteOne(String msg) {
+		public void WriteOne(String msg) { //, int protocol
 			try {
-				// dos.writeUTF(msg);
-//				byte[] bb;
-//				bb = MakePacket(msg);
-//				dos.write(bb, 0, bb.length);
 				ChatMsg obcm = new ChatMsg("SERVER", "200", msg);
 				oos.writeObject(obcm);
 			} catch (IOException e) {
 				AppendText("dos.writeObject() error");
 				try {
-//					dos.close();
-//					dis.close();
 					ois.close();
 					oos.close();
 					client_socket.close();
@@ -278,25 +267,25 @@ public class ArcadeServer extends JFrame {
 		}
 
 		// 귓속말 전송
-		public void WritePrivate(String msg) {
-			try {
-				ChatMsg obcm = new ChatMsg("귓속말", "200", msg);
-				oos.writeObject(obcm);
-			} catch (IOException e) {
-				AppendText("dos.writeObject() error");
-				try {
-					oos.close();
-					client_socket.close();
-					client_socket = null;
-					ois = null;
-					oos = null;
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				Logout(); // 에러가난 현재 객체를 벡터에서 지운다
-			}
-		}
+//		public void WritePrivate(String msg) {
+//			try {
+//				ChatMsg obcm = new ChatMsg("귓속말", "200", msg);
+//				oos.writeObject(obcm);
+//			} catch (IOException e) {
+//				AppendText("dos.writeObject() error");
+//				try {
+//					oos.close();
+//					client_socket.close();
+//					client_socket = null;
+//					ois = null;
+//					oos = null;
+//				} catch (IOException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
+//				Logout(); // 에러가난 현재 객체를 벡터에서 지운다
+//			}
+//		}
 		public void WriteOneObject(Object ob) {
 			try {
 			    oos.writeObject(ob);
@@ -321,24 +310,7 @@ public class ArcadeServer extends JFrame {
 		public void run() {
 			while (true) { // 사용자 접속을 계속해서 받기 위해 while문
 				try {
-					// String msg = dis.readUTF();
-//					byte[] b = new byte[BUF_LEN];
-//					int ret;
-//					ret = dis.read(b);
-//					if (ret < 0) {
-//						AppendText("dis.read() < 0 error");
-//						try {
-//							dos.close();
-//							dis.close();
-//							client_socket.close();
-//							Logout();
-//							break;
-//						} catch (Exception ee) {
-//							break;
-//						} // catch문 끝
-//					}
-//					String msg = new String(b, "euc-kr");
-//					msg = msg.trim(); // 앞뒤 blank NULL, \n 모두 제거
+					
 					Object obcm = null;
 					String msg = null;
 					ChatMsg cm = null;
@@ -358,53 +330,71 @@ public class ArcadeServer extends JFrame {
 						AppendObject(cm);
 					} else
 						continue;
-					if (cm.code.matches("100")) {
+					
+//client로부터 들어온 프로토콜에 따라 처리하는 구간 ---------------------------------------------
+					
+					if (cm.code.matches("100")) { //로그인
 						UserName = cm.UserName;
 						UserStatus = "O"; // Online 상태
 						Login();
-					} else if (cm.code.matches("200")) {
+						
+						
+						if(roomManager.rooms.size()>0) { //방이 있다면
+							for(int i=0;i<roomManager.rooms.size();i++) {
+								
+								String data = (roomManager.rooms.get(i).RoomTitle + "+     +"+
+										roomManager.rooms.get(i).roomId); //+공백다섯개+ 로 구분
+								cm = new ChatMsg("Server", "300", data);
+								WriteAllObject(cm);
+							}
+							
+						}
+						
+						
+					} else if (cm.code.matches("200")) { //방생성시
 						msg = String.format("[%s] %s", cm.UserName, cm.data);
 						AppendText(msg); // server 화면에 출력
-						String[] args = msg.split(" "); // 단어들을 분리한다.
-						if (args.length == 1) { // Enter key 만 들어온 경우 Wakeup 처리만 한다.
-							UserStatus = "O";
-						} else if (args[1].matches("/exit")) {
-							Logout();
-							break;
-						} else if (args[1].matches("/list")) {
-							WriteOne("User list\n");
-							WriteOne("Name\tStatus\n");
-							WriteOne("-----------------------------\n");
-							for (int i = 0; i < user_vc.size(); i++) {
-								UserService user = (UserService) user_vc.elementAt(i);
-								WriteOne(user.UserName + "\t" + user.UserStatus + "\n");
+						
+						if(roomManager.makeRoom(cm.UserName, cm.data)) { //방 만들기 성공
+							for(int i=0;i<roomManager.rooms.size();i++) {
+								String data = (roomManager.rooms.get(i).RoomTitle + "+     +"+
+										roomManager.rooms.get(i).roomId); //+공백다섯개+ 로 구분
+								cm = new ChatMsg("Server", "300", data);
+								WriteAllObject(cm);			
 							}
-							WriteOne("-----------------------------\n");
-						} else if (args[1].matches("/sleep")) {
-							UserStatus = "S";
-						} else if (args[1].matches("/wakeup")) {
-							UserStatus = "O";
-						} else if (args[1].matches("/to")) { // 귓속말
-							for (int i = 0; i < user_vc.size(); i++) {
-								UserService user = (UserService) user_vc.elementAt(i);
-								if (user.UserName.matches(args[2]) && user.UserStatus.matches("O")) {
-									String msg2 = "";
-									for (int j = 3; j < args.length; j++) {// 실제 message 부분
-										msg2 += args[j];
-										if (j < args.length - 1)
-											msg2 += " ";
-									}
-									// /to 빼고.. [귓속말] [user1] Hello user2..
-									user.WritePrivate(args[0] + " " + msg2 + "\n");
-									//user.WriteOne("[귓속말] " + args[0] + " " + msg2 + "\n");
-									break;
-								}
+							int roomId = roomManager.rooms.size()-1; //방금 만들어준 방이니
+							String protocol = Integer.toString(500+roomId);
+							
+							
+							//방금 만든 방이라 룸 유저 수는 무조건 1이겠지만 혹시 인원제한 늘릴수도 있으니..
+							for(int i=0;i<roomManager.rooms.get(roomId).roomUsers.size();i++) {
+								msg = roomManager.rooms.get(roomId).roomUsers.get(i).userName;
+								msg+=" "; 
 							}
-						} else { // 일반 채팅 메시지
-							UserStatus = "O";
-							//WriteAll(msg + "\n"); // Write All
-							WriteAllObject(cm);
+							
+							
+							
+							//for()
+							
+							
+							
+							
+							cm = new ChatMsg("Server", protocol, msg);
+							WriteOneObject(cm);
+							
 						}
+						else { //방만들기 실패
+							//404 프로토콜을 보내줘서 더이상 못만든다고 알려줄까 싶음
+							
+						}
+							
+							
+						
+						
+	
+						
+						
+						
 					} else if (cm.code.matches("400")) { // logout message 처리
 						Logout();
 						break;
@@ -427,6 +417,9 @@ public class ArcadeServer extends JFrame {
 				} // 바깥 catch문끝
 			} // while
 		} // run
-	}
+		
+		
+	}//UserService--------------------------------
+	
 
 }
