@@ -78,8 +78,8 @@ public class MakeRoomView extends JFrame {
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String RoomTitle = txtRoomName.getText().trim();
-			System.out.println(RoomTitle);
+			String RoomTitle = txtRoomName.getText().trim(); //Label에게서 값 알아내기
+			
 			
 			ChatMsg msg = new ChatMsg(UserName, "200", RoomTitle); //방 생성
 			clientView.SendObject(msg);

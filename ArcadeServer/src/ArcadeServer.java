@@ -45,6 +45,7 @@ public class ArcadeServer extends JFrame {
 	 * Launch the application.
 	 */
 	private RoomManager roomManager;
+
 	
 	
 	public static void main(String[] args) {
@@ -65,7 +66,8 @@ public class ArcadeServer extends JFrame {
 	 */
 	public ArcadeServer() { //생성자
 		
-		roomManager = new RoomManager(); //한 번만 호출되어야 함
+		ArcadeServer server = this;
+		roomManager = new RoomManager(server); //한 번만 호출되어야 함
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 338, 440);
@@ -126,8 +128,10 @@ public class ArcadeServer extends JFrame {
 					AppendText("Waiting new clients ...");
 					client_socket = socket.accept(); // accept가 일어나기 전까지는 무한 대기중
 					AppendText("새로운 참가자 from " + client_socket);
+					
 					// User 당 하나씩 Thread 생성
 					UserService new_user = new UserService(client_socket);
+					
 					UserVec.add(new_user); // 새로운 참가자 배열에 추가
 					new_user.start(); // 만든 객체의 스레드 실행
 					AppendText("현재 참가자 수 " + UserVec.size());
@@ -340,7 +344,7 @@ public class ArcadeServer extends JFrame {
 						
 						
 						if(roomManager.rooms.size()>0) { //방이 있다면
-							for(int i=0;i<roomManager.rooms.size();i++) {
+							for(int i=0;i<roomManager.rooms.size();i++) { //방정보 보내줌
 								
 								String data = (roomManager.rooms.get(i).RoomTitle + "+     +"+
 										roomManager.rooms.get(i).roomId); //+공백다섯개+ 로 구분
@@ -355,31 +359,36 @@ public class ArcadeServer extends JFrame {
 						msg = String.format("[%s] %s", cm.UserName, cm.data);
 						AppendText(msg); // server 화면에 출력
 						
-						if(roomManager.makeRoom(cm.UserName, cm.data)) { //방 만들기 성공
-							for(int i=0;i<roomManager.rooms.size();i++) {
+						if(roomManager.makeRoom(cm.UserName, cm.data, client_socket)) { //방 만들기 성공
+							for(int i=0;i<roomManager.rooms.size();i++) { // 새로운 방 업데이트
 								String data = (roomManager.rooms.get(i).RoomTitle + "+     +"+
 										roomManager.rooms.get(i).roomId); //+공백다섯개+ 로 구분
 								cm = new ChatMsg("Server", "300", data);
 								WriteAllObject(cm);			
 							}
-							int roomId = roomManager.rooms.size()-1; //방금 만들어준 방이니
-							String protocol = Integer.toString(500+roomId);
+							int roomId = roomManager.rooms.size()-1; //방금 만들어준 방이니 이렇게 하면 roomId나옴 
+																	 //기존 방 개수로 id를 부여하기 때문에
 							
 							
-							//방금 만든 방이라 룸 유저 수는 무조건 1이겠지만 혹시 인원제한 늘릴수도 있으니..
+							//방을 만든 유저에겐 바로 입장 허가 프로토콜을 보냄 ---------------------------
+							
+							String protocol = Integer.toString(500+roomId); //500, 501, 502, 503
+							
+							String buff="";
+							
+							//방금 만든 방이라 룸 유저 수는 무조건 1이겠지만 그래도
 							for(int i=0;i<roomManager.rooms.get(roomId).roomUsers.size();i++) {
-								msg = roomManager.rooms.get(roomId).roomUsers.get(i).userName;
-								msg+=" "; 
+								buff+= roomManager.rooms.get(roomId).roomUsers.get(i).userName;
+								buff+="++"; 
 							}
 							
+							buff+=roomManager.rooms.get(roomId).RoomTitle; //마지막에 방제목 붙여줌
 							
+							System.out.println("===================");
+							System.out.println(buff);
+							System.out.println("===================");
 							
-							//for()
-							
-							
-							
-							
-							cm = new ChatMsg("Server", protocol, msg);
+							cm = new ChatMsg("Server", protocol, buff);
 							WriteOneObject(cm);
 							
 						}
