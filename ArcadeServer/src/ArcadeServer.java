@@ -353,8 +353,6 @@ public class ArcadeServer extends JFrame {
 							}
 							
 						}
-						
-						
 					} else if (cm.code.matches("200")) { //방생성시
 						msg = String.format("[%s] %s", cm.UserName, cm.data);
 						AppendText(msg); // server 화면에 출력
@@ -396,15 +394,22 @@ public class ArcadeServer extends JFrame {
 							//404 프로토콜을 보내줘서 더이상 못만든다고 알려줄까 싶음
 							
 						}
-							
-							
+					} else if(cm.code.matches("6(.*)")) { //정규표현식 6nn - 레디 관련 
+						
+						// 621  <- player2가 1번방에서 레디버튼을 누름
+						
+						String buff[] = cm.code.split("");
+						int roomId = Integer.parseInt(buff[2]);
+						int userId = Integer.parseInt(buff[1])-1;
+						
+						//레디상태 전환
+						roomManager.rooms.get(roomId).roomUsers.get(userId).ready
+						=!roomManager.rooms.get(roomId).roomUsers.get(userId).ready;
 						
 						
-	
-						
-						
-						
-					} else if (cm.code.matches("400")) { // logout message 처리
+						}
+					
+					else if (cm.code.matches("400")) { // logout message 처리
 						Logout();
 						break;
 					} else { // 300, 500, ... 기타 object는 모두 방송한다.
