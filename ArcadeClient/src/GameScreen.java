@@ -45,6 +45,7 @@ public class GameScreen extends Canvas {
 	Image chrLeft[] = new Image[6];
 	Image chrRight[] = new Image[6];
 	Image chrTrap[] = new Image [13];
+	Image chrDeath[] = new Image[10];
 	
 	Image waterPop[] = new Image[6];
 	Image waterUpM[] = new Image[11];
@@ -227,7 +228,10 @@ public class GameScreen extends Canvas {
 				drawImageAnc(chrTrap[main.trapCnt/20%13], myx, myy, 4);
 			break;
 		case 4: //사망모션
-			//사망모션 넣을 예정
+			if(main.dCnt<50)
+				drawImageAnc(chrDeath[main.dCnt/6%10], myx, myy, 4);
+			else
+				drawImageAnc(chrDeath[9], myx, myy, 4);
 			break;
 		}
 	}
@@ -269,8 +273,11 @@ public class GameScreen extends Canvas {
 				//
 			break;
 		case 4: //사망모션
-			//사망모션 넣을 예정
-			break;
+				if(main.dCnt2<50)
+					drawImageAnc(chrDeath[main.dCnt2/6%10], myx2, myy2, 4);
+				else
+					drawImageAnc(chrDeath[9], myx2, myy2, 4);
+				break;
 		}
 	}
 	
@@ -281,13 +288,13 @@ public class GameScreen extends Canvas {
 		for(int i=0;i<13;i++) {
             for(int j=0;j<15;j++) {
                if(main.ItemArray[i][j]==1) { //스피드가 있는 부분
-            	   drawImageAnc(speed[1], bkx*(j+1), (bky*(i+1))+5, 1);
+            	   drawImageAnc(speed[main.cnt/10%3+1], bkx*(j+1), (bky*(i+1))+5, 1);
                }
                else if(main.ItemArray[i][j]==2) {//물줄기가 있는 부분
-            	   drawImageAnc(Bpower[1], bkx*(j+1), (bky*(i+1))+5, 1);
+            	   drawImageAnc(Bpower[main.cnt/10%3+1], bkx*(j+1), (bky*(i+1))+5, 1);
                }
                else if(main.ItemArray[i][j]==3) {//물풍선 최대 개수 부분
-            	   drawImageAnc(Bmax[1], bkx*(j+1), (bky*(i+1))+5, 1);
+            	   drawImageAnc(Bmax[main.cnt/10%3+1], bkx*(j+1), (bky*(i+1))+5, 1);
                }
             }
          }
@@ -308,6 +315,14 @@ public class GameScreen extends Canvas {
 		   //System.out.println(buff.dis);
 		       
 	    }
+		for(int i = 0; i < this.main.bubble2.size(); ++i) {
+			
+			   Bubble buff = (Bubble)this.main.bubble2.elementAt(i);
+			   //System.out.println((Bubble)this.main.bubble.elementAt(i));
+			   drawImageAnc(bubble[main.gamecnt/50%4], buff.dis.x, buff.dis.y, 4);
+			   //System.out.println(buff.dis);
+			       
+		    }
 	}
 	public void Draw_WATER() {
 		

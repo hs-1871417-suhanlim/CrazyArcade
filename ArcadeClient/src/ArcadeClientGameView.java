@@ -110,8 +110,6 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	int scrspeed=16;//스크롤 속도
 	//int level;//게임 레벨
 	
-	int userCnt=2; //이게 0되면 게임 종료
-	
 	
 	int bkimg; //block1...8 블록이미지
 	int bkx,bky;//타일블록 위치
@@ -121,37 +119,37 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	// -1 : 생성된지 얼마 안 된 물풍선
 	// 10 : 생성된지 시간이 좀 지난 물풍선
 	
-	   int[][] MapArray = { //맵
-			   {0, 3, 2, 3, 2, 8, 0, 0, 1, 8, 5, 2, 5, 0, 5}, 
-			   {0, 4, 1, 4, 1, 7, 1, 0, 0, 7, 2, 3, 0, 0, 1}, 
-			   {0, 0, 3, 2, 3, 8, 0, 1, 1, 8, 5, 1, 5, 1, 5},
-			   {1, 4, 1, 4, 1, 7, 1, 0, 0, 7, 3, 2, 3, 2, 3},
-			   {2, 3, 2, 3, 2, 8, 0, 0, 1, 8, 5, 1, 5, 1, 5},
-			   {3, 4, 3, 4, 3, 7, 1, 1, 0, 0, 2, 3, 2, 3, 2},
-			   {7, 8, 7, 8, 7, 8, 0, 0, 1, 8, 7, 8, 7, 8, 7},
-			   {2, 3, 2, 3, 2, 0, 1, 0, 0, 7, 2, 4, 2, 4, 2},
-			   {6, 1, 6, 1, 6, 8, 0, 1, 1, 8, 3, 2, 3, 2, 3},
-			   {3, 2, 3, 2, 3, 7, 1, 0, 0, 7, 1, 4, 1, 4, 1},
-			   {6, 0, 6, 1, 6, 8, 0, 0, 1, 8, 2, 3, 2, 3, 0},
-			   {0, 0, 2, 3, 2, 7, 1, 1, 0, 7, 1, 4, 1, 4, 0},
-			   {6, 0, 6, 2, 6, 8, 0, 0, 1, 8, 3, 2, 3, 0, 0},
-		                   };
+//	   int[][] MapArray = { //맵
+//			   {0, 3, 2, 3, 2, 8, 0, 0, 1, 8, 5, 2, 5, 0, 5}, 
+//			   {0, 4, 1, 4, 1, 7, 1, 0, 0, 7, 2, 3, 0, 0, 1}, 
+//			   {0, 0, 3, 2, 3, 8, 0, 1, 1, 8, 5, 1, 5, 1, 5},
+//			   {1, 4, 1, 4, 1, 7, 1, 0, 0, 7, 3, 2, 3, 2, 3},
+//			   {2, 3, 2, 3, 2, 8, 0, 0, 1, 8, 5, 1, 5, 1, 5},
+//			   {3, 4, 3, 4, 3, 7, 1, 1, 0, 0, 2, 3, 2, 3, 2},
+//			   {7, 8, 7, 8, 7, 8, 0, 0, 1, 8, 7, 8, 7, 8, 7},
+//			   {2, 3, 2, 3, 2, 0, 1, 0, 0, 7, 2, 4, 2, 4, 2},
+//			   {6, 1, 6, 1, 6, 8, 0, 1, 1, 8, 3, 2, 3, 2, 3},
+//			   {3, 2, 3, 2, 3, 7, 1, 0, 0, 7, 1, 4, 1, 4, 1},
+//			   {6, 0, 6, 1, 6, 8, 0, 0, 1, 8, 2, 3, 2, 3, 0},
+//			   {0, 0, 2, 3, 2, 7, 1, 1, 0, 7, 1, 4, 1, 4, 0},
+//			   {6, 0, 6, 2, 6, 8, 0, 0, 1, 8, 3, 2, 3, 0, 0},
+//		                   };
 	   
-//		int[][] MapArray = { //테스트맵
-//				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-//				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
-//				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
-//				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0}, 
-//				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0},
-//				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0},
-//				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0}, 
-//				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0},
-//				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
-//				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0}, 
-//				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
-//				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
-//				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-//		 					};
+		int[][] MapArray = { //테스트맵
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0}, 
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0}, 
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0}, 
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+		 					};
 	
 		int[][] ItemArray = { // 아이템 위치
 				//1 : 스피드      2 : 물줄기      3: 풀풍선 최대 개수
@@ -191,7 +189,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		 					};
 		
 		
-	// ----------------- 1P ------------------------	
+	// ----------------- 1P ---------------------------------------------------------------------------	
 	
 	int myx,myy;//플레이어 위치. 화면 좌표계에 *100 된 상태.
 	int myspeed;//플레이어 이동 속도
@@ -213,7 +211,8 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	int myimg;
 	
 	int trapCnt=0;
-	int dCnt=0;
+	int dCnt=0; 
+	
 	
 	int mycnt; 
 	boolean myshoot=false;//풍선 발사가 눌리고 있는가 
@@ -221,11 +220,14 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	
 	boolean my_inv=false;//키보드 반전 ++아이템중에 먹으면 키보드 반전되는 그런거 있지 않았나? 일단 이것도 나중에
 	
+	boolean myDeath;
 	
-	//----------------------------------------------
 	
 	
-	// ----------------- 2P ------------------------	
+	//-----------------------------------------------------------------------------------------------
+	
+	
+	// ----------------- 2P --------------------------------------------------------------------------
 	
 	int myx2,myy2;//플레이어 위치. 화면 좌표계에 *100 된 상태.
 	int myspeed2;//플레이어 이동 속도
@@ -251,6 +253,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	
 	boolean my_inv2=false;//키보드 반전 
 	
+	boolean myDeath2;
 	
 	//-----------------------------------------------------------
 	
@@ -259,6 +262,8 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     int gScreenHeight = 785; //게임 화면 높이
     
 	Vector bubble=new Vector();//물풍선 관리 - 몇 개 이상 
+	Vector bubble2 = new Vector();
+	
 	Vector water=new Vector();
 	
 	
@@ -268,6 +273,9 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	
 	
 	//네트워크 관련 변수
+	
+	/*
+	
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private String UserName;
@@ -280,6 +288,8 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
+	
+	*/
 	
 
 	//그래픽 관련 변수
@@ -332,6 +342,8 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		status = 2;
 		mymode = 2;
 		
+		/* 
+		
         UserName = username;
 		
 		try {
@@ -350,6 +362,8 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 			e.printStackTrace();
 			
 		}
+		
+		*/
 
 	} // 생성자 끝 -----------------------------------------------------------
    
@@ -403,47 +417,49 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	
  	//=================================================================================
     
-	class ListenNetwork extends Thread { //네트워크 관련 스레드 -------------------
-		public void run() {
-			while (true) {
-				try {
-
-					Object obcm = null;
-					String msg = null;
-					ChatMsg cm;
-					try {
-						obcm = ois.readObject();
-					} catch (ClassNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						break;
-					}
-					if (obcm == null)
-						break;
-					if (obcm instanceof ChatMsg) {
-						cm = (ChatMsg) obcm;
-						msg = String.format("[%s]\n%s", cm.UserName, cm.data);
-					} else
-						continue;
-					
-				} catch (IOException e) {
-					//AppendText("ois.readObject() error");
-					try {
-//						dos.close();
-//						dis.close();
-						ois.close();
-						oos.close();
-						socket.close();
-
-						break;
-					} catch (Exception ee) {
-						break;
-					} // catch문 끝
-				} // 바깥 catch문끝
-
-			}
-		}
-	}//-----------------------------------------------------------------------------
+//	class ListenNetwork extends Thread { //네트워크 관련 스레드 -------------------
+//		public void run() {
+//			while (true) {
+//				try {
+//
+//					Object obcm = null;
+//					String msg = null;
+//					ChatMsg cm;
+//					try {
+//						obcm = ois.readObject();
+//					} catch (ClassNotFoundException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//						break;
+//					}
+//					if (obcm == null)
+//						break;
+//					if (obcm instanceof ChatMsg) {
+//						cm = (ChatMsg) obcm;
+//						msg = String.format("[%s]\n%s", cm.UserName, cm.data);
+//					} else
+//						continue;
+//					
+//				} catch (IOException e) {
+//					//AppendText("ois.readObject() error");
+//					try {
+////						dos.close();
+////						dis.close();
+//						ois.close();
+//						oos.close();
+//						socket.close();
+//
+//						break;
+//					} catch (Exception ee) {
+//						break;
+//					} // catch문 끝
+//				} // 바깥 catch문끝
+//
+//			}
+//		}
+//	}
+	
+	//-----------------------------------------------------------------------------
 	
 	public void showFrame() { //프레임 그리기------------------------------------------
 		setTitle("게임방"); //프레임 타이틀 지정
@@ -633,7 +649,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     				case BUBBLE_PRESSED:
     					if(gamecnt%bubbleCnt==0) {  //gamecnt%bubbleCnt==0
     						//Bubble bubbles = new Bubble(myx, myy, 1);
-    						make_BUBBLE(myx,myy, waterLength);
+    						make_BUBBLE(myx,myy, waterLength, 1);
         					//bubble.add(bubbles);
     					}
     					
@@ -658,7 +674,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     					
     				case UP_PRESSED|BUBBLE_PRESSED:
     					if(gamecnt%bubbleCnt==0) { //gamecnt%bubbleCnt==0
-    						make_BUBBLE(myx,myy, waterLength);
+    						make_BUBBLE(myx,myy, waterLength, 1);
     					}
     					mydegree=0;
     					myimg=1;
@@ -666,7 +682,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     				
     				case LEFT_PRESSED|BUBBLE_PRESSED:
     					if(gamecnt%bubbleCnt==0) { //gamecnt%bubbleCnt==0
-    						make_BUBBLE(myx,myy, waterLength);
+    						make_BUBBLE(myx,myy, waterLength, 1);
     					}
     					mydegree=90;
     					myimg=3;
@@ -674,7 +690,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     				
     				case RIGHT_PRESSED|BUBBLE_PRESSED:
     					if(gamecnt%bubbleCnt==0) { //gamecnt%bubbleCnt==0
-    						make_BUBBLE(myx,myy, waterLength);
+    						make_BUBBLE(myx,myy, waterLength, 1);
     					}
     					mydegree=270;
     					myimg=4;
@@ -685,7 +701,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     					break;
     				case UP_PRESSED|LEFT_PRESSED|BUBBLE_PRESSED:
     					if(gamecnt%bubbleCnt==0) { 
-    						make_BUBBLE(myx,myy, waterLength);
+    						make_BUBBLE(myx,myy, waterLength, 1);
     					}
     					mydegree=0;
     					myimg=1;
@@ -696,7 +712,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     					break;
     				case UP_PRESSED|RIGHT_PRESSED|BUBBLE_PRESSED:
     					if(gamecnt%bubbleCnt==0) { 
-    						make_BUBBLE(myx,myy, waterLength);
+    						make_BUBBLE(myx,myy, waterLength, 1);
     					}
     					mydegree=0;
     					myimg=1;
@@ -704,7 +720,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     				
     				case DOWN_PRESSED|BUBBLE_PRESSED:
     					if(gamecnt%bubbleCnt==0) {
-    						make_BUBBLE(myx,myy, waterLength);
+    						make_BUBBLE(myx,myy, waterLength, 1);
     					}
     					mydegree=180;
     					myimg=2;
@@ -715,7 +731,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     					break;
     				case DOWN_PRESSED|LEFT_PRESSED|BUBBLE_PRESSED:
     					if(gamecnt%bubbleCnt==0) { 
-    						make_BUBBLE(myx,myy, waterLength);
+    						make_BUBBLE(myx,myy, waterLength, 1);
     					}
     					mydegree=180;
     					myimg=2;
@@ -726,7 +742,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     					break;
     				case DOWN_PRESSED|RIGHT_PRESSED|BUBBLE_PRESSED:
     					if(gamecnt%bubbleCnt==0) {
-    						make_BUBBLE(myx,myy, waterLength);
+    						make_BUBBLE(myx,myy, waterLength, 1);
     					}
     					mydegree=180;
     					myimg=2;
@@ -806,6 +822,13 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     					break;
     				}
     			}
+//    			else if(mymode==4) { //사망모션
+//    				
+//    			}
+    		case 3:
+    		{
+    			//게임 오버
+    		}
     	
     	}
     }
@@ -837,7 +860,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     				case BUBBLE_PRESSED2:
     					if(gamecnt%bubbleCnt==0) {  //gamecnt%bubbleCnt==0
     						//Bubble bubbles = new Bubble(myx, myy, 1);
-    						make_BUBBLE(myx2,myy2, waterLength);
+    						make_BUBBLE(myx2,myy2, waterLength, 2);
         					//bubble.add(bubbles);
     					}
     					
@@ -862,7 +885,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     					
     				case UP_PRESSED|BUBBLE_PRESSED:
     					if(gamecnt%bubbleCnt==0) { //gamecnt%bubbleCnt==0
-    						make_BUBBLE(myx2,myy2, waterLength);
+    						make_BUBBLE(myx2,myy2, waterLength2, 2);
     					}
     					mydegree2=0;
     					myimg2=1;
@@ -870,7 +893,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     				
     				case LEFT_PRESSED|BUBBLE_PRESSED:
     					if(gamecnt%bubbleCnt==0) { //gamecnt%bubbleCnt==0
-    						make_BUBBLE(myx2,myy2, waterLength);
+    						make_BUBBLE(myx2,myy2, waterLength2, 2);
     					}
     					mydegree2=90;
     					myimg2=3;
@@ -878,7 +901,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     				
     				case RIGHT_PRESSED|BUBBLE_PRESSED:
     					if(gamecnt%bubbleCnt==0) { //gamecnt%bubbleCnt==0
-    						make_BUBBLE(myx2,myy2, waterLength);
+    						make_BUBBLE(myx2,myy2, waterLength2, 2);
     					}
     					mydegree2=270;
     					myimg2=4;
@@ -889,7 +912,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     					break;
     				case UP_PRESSED|LEFT_PRESSED|BUBBLE_PRESSED:
     					if(gamecnt%bubbleCnt==0) { 
-    						make_BUBBLE(myx2,myy2, waterLength);
+    						make_BUBBLE(myx2,myy2, waterLength2, 2);
     					}
     					mydegree2=0;
     					myimg2=1;
@@ -900,7 +923,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     					break;
     				case UP_PRESSED|RIGHT_PRESSED|BUBBLE_PRESSED:
     					if(gamecnt%bubbleCnt==0) { 
-    						make_BUBBLE(myx2,myy2, waterLength);
+    						make_BUBBLE(myx2,myy2, waterLength2, 2);
     					}
     					mydegree2=0;
     					myimg2=1;
@@ -908,7 +931,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     				
     				case DOWN_PRESSED|BUBBLE_PRESSED:
     					if(gamecnt%bubbleCnt==0) {
-    						make_BUBBLE(myx2,myy2, waterLength);
+    						make_BUBBLE(myx2,myy2, waterLength2, 2);
     					}
     					mydegree2=180;
     					myimg2=2;
@@ -919,7 +942,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     					break;
     				case DOWN_PRESSED|LEFT_PRESSED|BUBBLE_PRESSED:
     					if(gamecnt%bubbleCnt==0) { 
-    						make_BUBBLE(myx2,myy2, waterLength);
+    						make_BUBBLE(myx2,myy2, waterLength2, 2);
     					}
     					mydegree2=180;
     					myimg2=2;
@@ -930,7 +953,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     					break;
     				case DOWN_PRESSED|RIGHT_PRESSED|BUBBLE_PRESSED:
     					if(gamecnt%bubbleCnt==0) {
-    						make_BUBBLE(myx2,myy2, waterLength);
+    						make_BUBBLE(myx2,myy2, waterLength2, 2);
     					}
     					mydegree2=180;
     					myimg2=2;
@@ -1096,6 +1119,8 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 				
 		}
 		
+			
+		
 		
 		
 		keybuff=0;
@@ -1130,6 +1155,10 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 			else
 				gamescreen.chrTrap[i]=makeImage("./player/trap"+i+".png"); //trap10 11 12 
 		}
+		
+		for(int i=0;i<10;i++) //사망모션
+			gamescreen.chrDeath[i]=makeImage("./player/death"+i+".png");
+		
 		Init_MYDATA();
 	}
 	public void Init_MYDATA(){
@@ -1142,7 +1171,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		myspeed=4; //속도
 		mydegree=-1; //방향
 		//mywidth, myheight;//플레이어 캐릭터의 너비 높이
-		mymode=2; //온플레이
+		mymode=1; //게임시작
 		myimg=2;
 		mycnt=0;
 		keybuff=0;
@@ -1171,6 +1200,8 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 			else
 				gamescreen.chrTrap[i]=makeImage("./player/trap"+i+".png"); //trap10 11 12 
 		}
+		for(int i=0;i<10;i++) //사망모션
+			gamescreen.chrDeath[i]=makeImage("./player/death"+i+".png");
 		Init_MYDATA2();
 	}
 	public void Init_MYDATA2(){
@@ -1183,7 +1214,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		myspeed2=4; //속도
 		mydegree2=-1; //방향
 		//mywidth, myheight;//플레이어 캐릭터의 너비 높이
-		mymode2=2; //온플레이
+		mymode2=1; //게임시작
 		myimg2=2;
 		mycnt2=0;
 		keybuff2=0;
@@ -1200,9 +1231,14 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		switch(mymode){
 		case 1:
 			//원래는 등장해서 앞쪽으로 쭉 나오는거 구현된 부분
-			myx+=200;
-			if(myx>20000) mymode=2;
-			break;
+//			myx+=200;
+//			if(myx>20000) mymode=2;
+//			break;
+			
+			//여기서 플레이어 등장 위치를 조절할 수도 있을거같아서
+			//mymode 1로 시작하고, mymode를 2로 변경하는 방식으로 진행
+			mymode=2; //playing
+			
 		case 0:
 			//무적 상태.... 안쓸듯
 			if(mycnt--==0) {
@@ -1229,8 +1265,8 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 			}
 			
 			
-			if(trapCnt>=500) {
-				System.out.println("캐릭터 사망--------");
+			if(trapCnt>=300) {
+				System.out.println("사망모션 진입--------");
 				mymode=4;
 			}
 			
@@ -1239,10 +1275,12 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 			break;
 			
 			
-		case 4: //죽은 경우
+		case 4: //사망모션
 			if(dCnt>=500) {
-				System.out.println("사망 모션----");
-				status=3;
+				System.out.println("사망 -------");
+				myDeath=true;
+				status=3; // 게임 종료
+				
 			}
 			
 			dCnt++;
@@ -1366,19 +1404,19 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	    			if((myx>=bkx*(j)*100)&&(myy>=(bky)*(i)*100)&&
 		    				(myx<=bkx*(j+2)*100)&&(myy<=(bky)*(i+2)*100)) {//물줄기에 닿는지 검사
 	    				//물줄기는 아이템보다는 덜 깊게 들어가도 판정됨
-	    				if((1000<(myx)-(bkx*100*j) && 9000>(myx)-(bkx*100*j))&& 
-	    						((1000<(myy)-(bky*100*i))&&(9000>(myy)-(bky*100*i)))){
+	    				if((2500<(myx)-(bkx*100*j) && 8000>(myx)-(bkx*100*j))&& 
+	    						((2500<(myy)-(bky*100*i))&&(8000>(myy)-(bky*100*i)))){
 	    				//System.out.println("trap-----------------------------------------------------");
-	    				mymode=3;
+	    				mymode=3; //물풍선에 갇힘
 	    				}
 	                }
 	            }
 	         }
 	    }
 	    
-	}//---------------process_MY 끝---
+	}//---------------process_MY 끝---------------------------------------------------------------------
 	
-	//---------------2P---------------
+	//---------------2P--------------------------------------------------------------------------------
 	public void process_MY2(){
 		//Bubble bubble;
 		
@@ -1387,10 +1425,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		//사실 무적모드를 해놔야되나 싶기도 해서 바로 mymode 2에서 시작
 		switch(mymode2){
 		case 1:
-			//원래는 등장해서 앞쪽으로 쭉 나오는거 구현된 부분
-			myx2+=200;
-			if(myx2>20000) mymode2=2;
-			break;
+			mymode2=2; //playing
 		case 0:
 			//무적 상태.... 안쓸듯
 			if(mycnt2--==0) {
@@ -1417,7 +1452,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 			}
 			
 			
-			if(trapCnt2>=500) {
+			if(trapCnt2>=300) {
 				System.out.println("캐릭터 사망--------");
 				mymode2=4;
 			}
@@ -1430,6 +1465,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		case 4: //죽은 경우
 			if(dCnt2>=500) {
 				System.out.println("사망 모션----");
+				myDeath2=true;
 				status=3;
 			}
 			
@@ -1523,8 +1559,8 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		    						((3000<(myy2)-(bky*100*i))&&(7000>(myy2)-(bky*100*i)))){
 	    						//System.out.println("2");
 	    						ItemArray[i][j]=0;// 아이템 삭제
-	    						if(!(waterLength>=5))
-		    						waterLength++;
+	    						if(!(waterLength2>=5))
+		    						waterLength2++;
 	    						new effectSound("./music/eatItem.wav");//아이템 획득 사운드
 	    					}
 	    				}
@@ -1535,10 +1571,10 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	    						//System.out.println("3");
 	    						ItemArray[i][j]=0;// 아이템 삭제
 	    						new effectSound("./music/eatItem.wav");//아이템 획득 사운드
-	    						maxBubble ++; //물풍선의 최대 개수가 1씩 증가한다.
+	    						maxBubble2 ++; //물풍선의 최대 개수가 1씩 증가한다.
 	    					}
-	    					if(maxBubble > 10) {
-    							maxBubble = 10; //물풍선 최대 개수는 10이다.
+	    					if(maxBubble2 > 10) {
+    							maxBubble2 = 10; //물풍선 최대 개수는 10이다.
     						}
     						System.out.printf("2P 최대풍선개수 : %d \n",maxBubble2);
 	    				}
@@ -1554,8 +1590,8 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	    			if((myx2>=bkx*(j)*100)&&(myy2>=(bky)*(i)*100)&&
 		    				(myx2<=bkx*(j+2)*100)&&(myy2<=(bky)*(i+2)*100)) {//물줄기에 닿는지 검사
 	    				//물줄기는 깊게 들어가야 획득됨 -> 봐서 더 얕게
-	    				if((1000<(myx2)-(bkx*100*j) && 9000>(myx2)-(bkx*100*j))&& 
-	    						((1000<(myy2)-(bky*100*i))&&(9000>(myy2)-(bky*100*i)))){
+	    				if((2500<(myx2)-(bkx*100*j) && 8000>(myx2)-(bkx*100*j))&& 
+	    						((2500<(myy2)-(bky*100*i))&&(8000>(myy2)-(bky*100*i)))){
 	    				//System.out.println("trap-----------------------------------------------------");
 	    				mymode2=3;
 	    				}
@@ -1574,7 +1610,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		
 		
 		
-		for(int i=0;i<bubble.size();i++) {
+		for(int i=0;i<bubble.size();i++) { //플레이어1
 			 Bubble buff = (Bubble)bubble.elementAt(i);
 			 int x=buff.dis.x/52-1;
 			 int y=buff.dis.y/52-1;
@@ -1593,6 +1629,27 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 			 }
 			 buff.cnt++;
 		}
+		
+		for(int i=0;i<bubble2.size();i++) { //플레이어2
+			 Bubble buff = (Bubble)bubble2.elementAt(i);
+			 int x=buff.dis.x/52-1;
+			 int y=buff.dis.y/52-1;
+			 
+			 if(buff.cnt>=2){ //생성뒤 일정시간 지나면
+				 MapArray[y][x]=10;
+			 }
+			 
+			 
+			 if(buff.cnt==200) { //터지는 속도
+				 MapArray[y][x]=0; //다시 이동할 수 있게
+				 bubble2.remove(i);
+				 make_WATER(x,y,buff.waterLength); //물줄기 생성
+				 new effectSound("./music/bubbleBoom.wav");//물풍선 터지는 사운드
+				 System.out.println("@@@@@@@@@@");
+			 }
+			 buff.cnt++;
+		}
+		
 		
 		//switch
 		
@@ -1665,12 +1722,22 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 
 	
 	/////
-	public void make_BUBBLE(int x, int y, int waterLength) {
+	public void make_BUBBLE(int x, int y, int waterLength, int from) {
+		
+		
+		if(from == 1) { //사용자 1
+			if(bubble.size()>=maxBubble) {
+				return;
+			}
+		}
+		else if(from == 2) { //사용자 2
+			if(bubble2.size()>=maxBubble2) {
+				return;
+			}
+		}
 		
 		//버블 개수가 최대면 return
-		if(bubble.size()>=maxBubble) {
-			return;
-		}
+		
 
 		x+=1600;
 		x/=100;
@@ -1694,8 +1761,20 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 			return;
 		else {
 			MapArray[b][a]=-1;
-			Bubble bubbles = new Bubble(x, y,waterLength);
-			bubble.add(bubbles);
+			
+			if(from==1) {
+				Bubble bubbles = new Bubble(x, y,waterLength);
+				bubble.add(bubbles);
+			}
+				
+			else if(from==2) {
+				Bubble bubbles = new Bubble(x, y,waterLength);
+				bubble2.add(bubbles);
+			}
+				
+			
+			
+			
 			new effectSound("./music/bubbleSet.wav");//물풍선 터지는 사운드
 		}
 
