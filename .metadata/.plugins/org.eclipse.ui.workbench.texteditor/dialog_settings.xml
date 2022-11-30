@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="System.out.println"/>
+		<item key="selection" value=""/>
 		<item key="wrap" value="false"/>
 		<item key="casesensitive" value="true"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="button"/>
+			<item value="RoomBox"/>
+			<item value="bg"/>
 			<item value="System.out.println"/>
 			<item value="lets play game+0"/>
 			<item value="obcm"/>
@@ -20,9 +23,6 @@
 			<item value="status"/>
 			<item value="500"/>
 			<item value="300"/>
-			<item value="mymode"/>
-			<item value="water"/>
-			<item value="waterLength"/>
 		</list>
 		<list key="replacehistory">
 			<item value="ArcadeClientMain"/>
@@ -31,8 +31,8 @@
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="-92"/>
-		<item key="DIALOG_Y_ORIGIN" value="488"/>
+		<item key="DIALOG_X_ORIGIN" value="8"/>
+		<item key="DIALOG_Y_ORIGIN" value="483"/>
 		<item key="DIALOG_WIDTH" value="286"/>
 		<item key="DIALOG_HEIGHT" value="377"/>
 		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>

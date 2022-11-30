@@ -1,5 +1,9 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.DataInputStream;
@@ -11,10 +15,14 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 
 
@@ -42,23 +50,59 @@ public class ArcadeClientView extends JFrame {
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
 	
+	private JPanel contentPane;
+	JScrollPane scrollPane;
+	
 	
 	public ArcadeClientView(String username, String ip_addr, String port_no) { //생성자
+		ImageIcon bg = new ImageIcon("./roomIMG/roomBG.png");//배경화면
+		ImageIcon createRoomBTN = new ImageIcon("./roomIMG/createRoomBTN.png");
+		ImageIcon createRoomBTN2 = new ImageIcon("./roomIMG/createRoomBTN2.png");
+		ImageIcon RoomBG = new ImageIcon("./roomIMG/roomIMG.png");//방 패널 이미지
 		
 		this.UserName = username;
-		System.out.println("ArcadeClientView");
+		//System.out.println("ArcadeClientView");
 		
 		//JFrame-------------------------------
 		setTitle("대기실"); //프레임 타이틀 지정
-		//setSize(910,700);//프레임 크기
-		setResizable(false); //창크기 변경불가
+		//setSize(450,700);//프레임 크기
+		setResizable(true); //창크기 변경불가
 		setLocationRelativeTo(null);//창 가운데 뜨게
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
+		
+		contentPane = new JPanel() {//배경화면 설정
+			 public void paintComponent(Graphics g) {
+	                g.drawImage(bg.getImage(), 0, 0, null);
+	            }
+		};
+		scrollPane = new JScrollPane(contentPane);
+		setContentPane(scrollPane);
+		
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		
+		//방 만들기 버튼------------------------
+		JButton makeRoomButton = new JButton(createRoomBTN);
+		makeRoomButton.setRolloverIcon(createRoomBTN2);//버튼에 마우스 올라가면 이미지 변경
+		makeRoomButton.setBorderPainted(false);// 버튼 테두리 설정해제
+		makeRoomButton.setBounds(145, 380, 130, 45);
+		contentPane.add(makeRoomButton);
+		
+		
+		
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(600, 300, 700, 500);
+		setBounds(500, 100, 435, 500);//창크기, 위치 조절
+		
 		//JPanel---------------------------------
+		
+		
+		Myaction action = new Myaction();
+		makeRoomButton.addActionListener(action);
+		
 		
 		for(int i=0;i<maxRoomCnt;i++) {
 
@@ -67,16 +111,17 @@ public class ArcadeClientView extends JFrame {
 			switch(i) {
 			case 0:
 				roombox[i].panel.setLocation(30,30);break;
+				
+				
 			case 1:
-				roombox[i].panel.setLocation(350,30);break;
+				roombox[i].panel.setLocation(220,30);break;
 			case 2:
 				roombox[i].panel.setLocation(30,200);break;
 			case 3:
-				roombox[i].panel.setLocation(350,200);break;
+				roombox[i].panel.setLocation(220,200);break;
 			}
 			
 		}
-		
 		
 		UserName = username;
 		
@@ -101,6 +146,10 @@ public class ArcadeClientView extends JFrame {
 			e.printStackTrace();
 			
 		}
+				
+		
+		
+		
 	} //생성자 끝---------------------------------------------------
 	
 	
@@ -190,40 +239,53 @@ public class ArcadeClientView extends JFrame {
 			//setVisible(false);
 		}
 	}
+
+	
 	
 	class RoomBox{ //사용자에게 보여지는 방 목록
+		ImageIcon roomBG = new ImageIcon("./roomIMG/roomIMG.png"); 
+		ImageIcon connectRoomBTN = new ImageIcon("./roomIMG/connectRoomBTN.png");
+		ImageIcon connectRoomBTN2 = new ImageIcon("./roomIMG/connectRoomBTN2.png");
 		
-		JPanel panel = new JPanel();
+		public JPanel panel = new JPanel();
+		JLabel imgLabel = new JLabel();
 		JLabel roomTitle = new JLabel(); //방제목
 		
-		public RoomBox() {
-			
-			panel.setSize(300,150);
-			
-			panel.setBackground(Color.GREEN);
-			
-			JButton enter = new JButton();
-			panel.add(enter);
-			
-			//방제목을 보여줌
-			
-			roomTitle.setSize(100,50); 
-			roomTitle.setText("빈 방");
-			panel.add(roomTitle);
-			
-			getContentPane().add(panel);
-			//roomBox[i].setVisible(true);
-			
-			JButton makeRoomButton = new JButton();
-			makeRoomButton.setSize(100,50);
-			makeRoomButton.setLocation(550,380);
-			Myaction action = new Myaction();
-			makeRoomButton.addActionListener(action);
-			getContentPane().add(makeRoomButton);
-		}
+		Font font = new Font("맑은 고딕", Font.BOLD, 19);//폰트만들기
+		
+	    public RoomBox() {
+	    	
+	        panel.setSize(170,150);//방 패널 사이즈 (이미지 사이즈와 동일)
+	        panel.setLayout(null);
+	        
+	        //방제목을 보여줌
+	        roomTitle.setSize(130,45); 
+	        roomTitle.setText("빈 방");//기본 빈방
+	        roomTitle.setFont(font);//폰트적용
+	        roomTitle.setForeground(Color.WHITE);//폰트색상
+	        roomTitle.setLocation(20, 20); //제목 위치
+	        roomTitle.setHorizontalAlignment(JLabel.CENTER);//가운데 정렬
+	        panel.add(roomTitle);
+	        
+	        
+	        
+	        JButton enter = new JButton(connectRoomBTN);//입장버튼
+	        enter.setRolloverIcon(connectRoomBTN2);//버튼에 마우스 올라가면 이미지 변경
+	        enter.setBorderPainted(false);// 버튼 테두리 설정해제
+	        enter.setSize(130,45);//버튼사이즈 조절
+	        enter.setLocation(21,75);//버튼 위치 조절
+	        panel.add(enter);
+	        
+	        
+	        
+	        imgLabel.setIcon(roomBG);//이미지
+	        imgLabel.setSize(170,150);//방 배경 이미지 사이즈
+	        imgLabel.setLocation(0,0);
+	        panel.add(imgLabel);
+	         
+	        getContentPane().add(panel);
+	        //roomBox[i].setVisible(true);
+	     }
 	}
 	
-	
-	
-
 }

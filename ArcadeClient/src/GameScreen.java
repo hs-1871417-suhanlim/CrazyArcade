@@ -288,13 +288,13 @@ public class GameScreen extends Canvas {
 		for(int i=0;i<13;i++) {
             for(int j=0;j<15;j++) {
                if(main.ItemArray[i][j]==1) { //스피드가 있는 부분
-            	   drawImageAnc(speed[main.cnt/70%3+1], bkx*(j+1), (bky*(i+1))+5, 1);
+            	   drawImageAnc(speed[main.cnt/10%3+1], bkx*(j+1), (bky*(i+1))+5, 1);
                }
                else if(main.ItemArray[i][j]==2) {//물줄기가 있는 부분
-            	   drawImageAnc(Bpower[main.cnt/70%3+1], bkx*(j+1), (bky*(i+1))+5, 1);
+            	   drawImageAnc(Bpower[main.cnt/10%3+1], bkx*(j+1), (bky*(i+1))+5, 1);
                }
                else if(main.ItemArray[i][j]==3) {//물풍선 최대 개수 부분
-            	   drawImageAnc(Bmax[main.cnt/70%3+1], bkx*(j+1), (bky*(i+1))+5, 1);
+            	   drawImageAnc(Bmax[main.cnt/10%3+1], bkx*(j+1), (bky*(i+1))+5, 1);
                }
             }
          }

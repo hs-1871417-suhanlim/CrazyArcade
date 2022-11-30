@@ -63,7 +63,6 @@ public class ArcadeClientMain extends JFrame{
 	public ArcadeClientMain() {  // 생성자 ------------------------
 		//new Music();
 		ImageIcon bg = new ImageIcon("./connectIMG/login.jpg");//배경화면
-		
 		ImageIcon img = new ImageIcon("./connectIMG/start.png");//스타트 버튼
 		ImageIcon img2 = new ImageIcon("./connectIMG/start2.png");//스타트 버튼 마우스 올렸을때
 		
