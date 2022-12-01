@@ -18,4 +18,10 @@ class ChatMsg implements Serializable {
 		this.UserName = UserName;
 		this.data = msg;
 	}
+
+//	public ChatMsg(String userName, String code, int keyCode) {
+//		this.code = code;
+//		this.UserName = UserName;
+//		this.data = msg;
+//	}
 }

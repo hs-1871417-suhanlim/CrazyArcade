@@ -27,7 +27,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 
 public class ArcadeServer extends JFrame {
-
+ 
 	/**
 	 * 
 	 */
@@ -270,26 +270,7 @@ public class ArcadeServer extends JFrame {
 			}
 		}
 
-		// 귓속말 전송
-//		public void WritePrivate(String msg) {
-//			try {
-//				ChatMsg obcm = new ChatMsg("귓속말", "200", msg);
-//				oos.writeObject(obcm);
-//			} catch (IOException e) {
-//				AppendText("dos.writeObject() error");
-//				try {
-//					oos.close();
-//					client_socket.close();
-//					client_socket = null;
-//					ois = null;
-//					oos = null;
-//				} catch (IOException e1) {
-//					// TODO Auto-generated catch block
-//					e1.printStackTrace();
-//				}
-//				Logout(); // 에러가난 현재 객체를 벡터에서 지운다
-//			}
-//		}
+
 		public void WriteOneObject(Object ob) {
 			try {
 			    oos.writeObject(ob);
@@ -337,6 +318,27 @@ public class ArcadeServer extends JFrame {
 					
 //client로부터 들어온 프로토콜에 따라 처리하는 구간 ---------------------------------------------
 					
+					if(cm.code.matches("999")) { //테스트 프로토콜
+						AppendText(cm.data);
+					}
+					
+					if(cm.code.matches("900")) { // key pressed protocol
+						AppendText(cm.data);
+						AppendText(cm.code);
+						AppendText(cm.UserName);
+						
+						ChatMsg newMsg = new ChatMsg(cm.UserName, "900", cm.data);
+						WriteAllObject(newMsg);
+					}
+					if(cm.code.matches("1000")) { // key Released protocol
+						AppendText(cm.data);
+						AppendText(cm.code);
+						AppendText(cm.UserName);
+						
+						ChatMsg newMsg = new ChatMsg(cm.UserName, "1000", cm.data);
+						WriteAllObject(newMsg);
+					}
+					
 					if (cm.code.matches("100")) { //로그인
 						UserName = cm.UserName;
 						UserStatus = "O"; // Online 상태
@@ -359,6 +361,7 @@ public class ArcadeServer extends JFrame {
 						
 						if(roomManager.makeRoom(cm.UserName, cm.data, client_socket)) { //방 만들기 성공
 							for(int i=0;i<roomManager.rooms.size();i++) { // 새로운 방 업데이트
+								
 								String data = (roomManager.rooms.get(i).RoomTitle + "+     +"+
 										roomManager.rooms.get(i).roomId); //+공백다섯개+ 로 구분
 								cm = new ChatMsg("Server", "300", data);
@@ -408,6 +411,21 @@ public class ArcadeServer extends JFrame {
 						
 						
 						}
+					else if(cm.code.matches("8(.*)")) { //정규표현식 8nn - 나가기 관련 
+						
+						// 821  <- player2가 1번방에서 레디버튼을 누름
+						// 유저는 벡터를 통해 순서대로 관리되고 있음 - 유저소켓에서도 제거해줘야함
+						
+						String buff[] = cm.code.split("");
+						int roomId = Integer.parseInt(buff[2]);
+						int userId = Integer.parseInt(buff[1])-1;
+						
+						roomManager.rooms.get(roomId).userExit(userId); //유저 제거
+						
+						roomManager.rooms.get(roomId).roomUpdate(this); //업데이트된 방정보 뿌림
+						
+						
+					}
 					
 					else if (cm.code.matches("400")) { // logout message 처리
 						Logout();

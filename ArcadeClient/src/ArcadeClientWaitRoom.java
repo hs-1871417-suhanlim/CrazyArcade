@@ -7,15 +7,19 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 
+
+
 public class ArcadeClientWaitRoom extends JFrame {
 	
 	ArcadeClientView clientView;
+	ArcadeClientGameView gameView;
 	String roomId;
 	String roomTitle;
 	String[] roomUserList;
 	int userCnt; // 총 유저 수
 	boolean p1; // player1 or player2
 	boolean ready;
+	
 
 	public ArcadeClientWaitRoom(String roomId, String roomTitle, String[] UserList, ArcadeClientView clientView) { //생성자
 		//생성자
@@ -117,15 +121,23 @@ public class ArcadeClientWaitRoom extends JFrame {
 			gameStartButton.setText("게임 시작");
 			getContentPane().add(gameStartButton);
 			
+			//나가기 버튼
+			JButton gameExitButton = new JButton();
+			gameExitButton.setLocation(100,400);
+			gameExitButton.setSize(100,50);
+			gameExitButton.setText("나가기");
+			getContentPane().add(gameExitButton);
+			
 			
 			//이벤트 처리
 			ActionReady1 actionReady1 = new ActionReady1();
 			ActionReady2 actionReady2 = new ActionReady2();
 			GameStart gameStart = new GameStart();
+			GameExit gameExit = new GameExit();
 			ready1.addActionListener(actionReady1);
 			ready2.addActionListener(actionReady2);
 			gameStartButton.addActionListener(gameStart);
-			
+			gameExitButton.addActionListener(gameExit);
 			
 			
 			
@@ -137,7 +149,7 @@ public class ArcadeClientWaitRoom extends JFrame {
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(p1) { 
+			if(p1) { //1번플레이어인경우
 				String protocol = "61" + roomId;
 				String data = ("player1이" + roomId +" 번 방에서 레디버튼을 눌렀습니다.");
 				ChatMsg msg = new ChatMsg(clientView.UserName, protocol ,data); 
@@ -149,7 +161,7 @@ public class ArcadeClientWaitRoom extends JFrame {
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(!p1) {
+			if(!p1) { //2번플레이어인경우
 				String protocol = "62" + roomId;
 				String data = ("player2가" + roomId +" 번 방에서 레디버튼을 눌렀습니다.");
 				ChatMsg msg = new ChatMsg(clientView.UserName, protocol ,data); 
@@ -162,23 +174,49 @@ public class ArcadeClientWaitRoom extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
+			//테스트
+			//gameView = new ArcadeClientGameView(clientView, roomId, p1);
+			gameView = new ArcadeClientGameView(clientView, roomId, true);  
+			//gameView = new ArcadeClientGameView(clientView, roomId, false);  
+			
+			//String protocol = "62" + roomId;
+			
+			
+		}
+	}
+	class GameExit implements ActionListener 
+	{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(p1) { //1번플레이어인경우
+				String protocol = "81" + roomId;
+				String data = ("player1이" + roomId +" 번 방에서 나갔습니다.");
+				ChatMsg msg = new ChatMsg(clientView.UserName, protocol ,data); 
+				clientView.SendObject(msg);
+			}
+			else if(!p1) { //2번플레이어인경우
+				String protocol = "82" + roomId;
+				String data = ("player2가" + roomId +" 번 방에서 나갔습니다.");
+				ChatMsg msg = new ChatMsg(clientView.UserName, protocol ,data); 
+				clientView.SendObject(msg);
+			}
 		}
 	}
 
 	
-	public void updatePlayer2() { //쓰려나
-		//user1 이름
-		JLabel playerName2 = new JLabel();
-		playerName2.setLocation(300,200);
-		playerName2.setSize(100, 50);
-		playerName2.setText(roomUserList[1]);
-		getContentPane().add(playerName2);
-	}
-	
-	
-	public void update() {
-		
-	}
+//	public void updatePlayer2() { //쓰려나
+//		//user1 이름
+//		JLabel playerName2 = new JLabel();
+//		playerName2.setLocation(300,200);
+//		playerName2.setSize(100, 50);
+//		playerName2.setText(roomUserList[1]);
+//		getContentPane().add(playerName2);
+//	}
+//	
+//	
+//	public void update() {
+//		
+//	}
 	
 
 }

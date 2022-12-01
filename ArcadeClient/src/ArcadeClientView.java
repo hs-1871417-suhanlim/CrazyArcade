@@ -42,6 +42,8 @@ public class ArcadeClientView extends JFrame {
 	//private JPanel contentPane;
 	String UserName;
 	
+	ArcadeClientWaitRoom waitRoom;
+	
 	//네트워크 관련 변수
 	private static final long serialVersionUID = 1L;
 	private static final int BUF_LEN = 128; // Windows 처럼 BUF_LEN 을 정의
@@ -56,6 +58,8 @@ public class ArcadeClientView extends JFrame {
 	
 	private JPanel contentPane;
 	JScrollPane scrollPane;
+
+	public ListenNetwork listen; // 클래스들끼리 서로 참조
 	
 	
 	public ArcadeClientView(String username, String ip_addr, String port_no) { //생성자
@@ -115,8 +119,6 @@ public class ArcadeClientView extends JFrame {
 			switch(i) {
 			case 0:
 				roombox[i].panel.setLocation(30,30);break;
-				
-				
 			case 1:
 				roombox[i].panel.setLocation(220,30);break;
 			case 2:
@@ -167,10 +169,14 @@ public class ArcadeClientView extends JFrame {
 	}
 	
 	// Server Message를 수신
-	class ListenNetwork extends Thread {
+	public class ListenNetwork extends Thread {
+		
+		//ListenNetwork listen;
+		
 		ArcadeClientView clientView;
 		ListenNetwork(ArcadeClientView clientView){ //생성자
 			this.clientView=clientView;
+			clientView.listen = this;
 		}
 		
 		public void run() {
@@ -230,7 +236,14 @@ public class ArcadeClientView extends JFrame {
 							else
 								roomUserList[i]=buff[i];
 						}
-						ArcadeClientWaitRoom waitRoom = new ArcadeClientWaitRoom(roomId, roomTitle, roomUserList, clientView);
+						waitRoom = new ArcadeClientWaitRoom(roomId, roomTitle, roomUserList, clientView);
+						
+						break;
+					case "900": //키보드 누를때
+						waitRoom.gameView.keyPressedEvent(cm);
+						break;
+					case "1000": //키보드 뗄 때
+						waitRoom.gameView.keyReleasedEvent(cm);
 						
 						break;
 					
@@ -260,14 +273,6 @@ public class ArcadeClientView extends JFrame {
 			
 			MakeRoomView view = new MakeRoomView(clientView, UserName);
 
-			
-//			String username = txtUserName.getText().trim();
-//			String ip_addr = txtIpAddress.getText().trim();
-//			String port_no = txtPortNumber.getText().trim();
-//			ArcadeClientView view = new ArcadeClientView(username, ip_addr, port_no);
-			
-			//ArcadeClientGameView view = new ArcadeClientGameView(username, ip_addr, port_no);
-			//setVisible(false);
 		}
 	}
 
