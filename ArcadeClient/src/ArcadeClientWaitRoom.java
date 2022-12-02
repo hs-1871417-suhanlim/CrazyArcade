@@ -267,8 +267,8 @@ public class ArcadeClientWaitRoom extends JFrame {
 			//테스트
 			//gameView = new ArcadeClientGameView(clientView, roomId, p1);
 			
-			//gameView = new ArcadeClientGameView(clientView, roomId, true);  
-			gameView = new ArcadeClientGameView(clientView, roomId, false);  
+			//gameView = new ArcadeClientGameView(clientView, roomId, true);  //1P
+			gameView = new ArcadeClientGameView(clientView, roomId, false);  //2P
 			
 			//String protocol = "62" + roomId;
 			

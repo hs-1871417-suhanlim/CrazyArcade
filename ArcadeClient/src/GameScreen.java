@@ -24,6 +24,9 @@ public class GameScreen extends Canvas {
 	
 	Image bg; //배경화면
 	
+	Image win; //승리이미지
+	Image lose; //패배이미지
+	
 	Image block[]=new Image[12];
 	
 	
@@ -113,20 +116,24 @@ public class GameScreen extends Canvas {
 			Draw_MY2();
 			
 			Draw_Hide();
-			
-			
-//			Draw_BG();
-//			Draw_MY();
-//			Draw_BG2();
-//			drawImageAnc(_start, 0,270, 3);
 			break;
 		case 4://게임오버
 			
 			break;
 		case 3:
-			
+			Draw_RESULT();
+			break;
 		default:
 			break;
+		}
+	}
+	
+	public void Draw_RESULT(){ //결과화면 그리기
+		if(!main.myDeath) {
+			gc.drawImage(win, 217, 315, this);
+		}
+		else if(main.myDeath) {
+			gc.drawImage(lose, 159, 292, this);
 		}
 	}
 	

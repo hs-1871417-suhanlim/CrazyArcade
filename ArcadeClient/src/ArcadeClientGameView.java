@@ -638,6 +638,8 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 			
 			break;
 		case 3://게임오버
+//			process_RESULT();//결과이미지
+			
 //			process_ENEMY();
 //			process_BULLET();
 //			process_GAMEFLOW();
@@ -1085,6 +1087,10 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 
 		//각종 이미지 설정
 		gamescreen.bg=makeImage("./play_bg.png");//bg.png
+		
+		gamescreen.win=makeImage("./connectIMG/win.png");//승리
+		
+		gamescreen.lose=makeImage("./connectIMG/lose.png");//패배
 
 		//일단 블록 여러 종류로
 		//for(i=0;i<8;i++) gamescreen.block[i]=makeImage("./title/block" + i + ".png"); 
@@ -1274,6 +1280,20 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 	}
 	
 	//process-------------------------------------------------------------------
+//	public void process_RESULT(){
+//		if(myDeath) {
+//			System.out.println("1P 패배");
+//		}
+//		else if (!myDeath) {
+//			System.out.println("1P 승리");
+//		}
+//		if(myDeath2) {
+//			System.out.println("2P 패배");
+//		}
+//		else if(!myDeath2) {
+//			System.out.println("2P 승리");
+//		}
+//	}
 	
 	public void process_MY(){
 		//Bubble bubble;
@@ -1318,18 +1338,17 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 			}
 			
 			
-			if(trapCnt>=300) {
+			if(trapCnt>=300) {//사망모션
 				System.out.println("사망모션 진입--------");
 				mymode=4;
 			}
 			
 			trapCnt++;
-			
 			break;
 			
 			
-		case 4: //사망모션
-			if(dCnt>=500) {
+		case 4: 
+			if(dCnt>=150) {
 				System.out.println("사망 -------");
 				myDeath=true;
 				status=3; // 게임 종료
