@@ -6,6 +6,8 @@ import java.awt.EventQueue;
 import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -59,7 +61,9 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-public class ArcadeClientGameView extends JFrame implements KeyListener, Runnable{
+public class ArcadeClientGameView extends JFrame implements FocusListener, KeyListener, Runnable{
+	
+	ArcadeClientGameView gameView = this;
 	
 	//기본 윈도우를 형성하는 프레임을 만든다
 	//KeyListener : 키보드 입력 이벤트를 받는다
@@ -99,8 +103,14 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	int cnt;//루프 제어용 컨트롤 변수
 	int delay;//루프 딜레이. 1/1000초 단위.
 	long pretime;//루프 간격을 조절하기 위한 시간 체크값
+	
+	int key=0;
+	int keyR=0;
+	int key2=0;
 	int keybuff;//1p키 버퍼값
 	int keybuff2;//2p키 버퍼값
+	
+
     
 	
 	//게임용 변수
@@ -272,24 +282,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	//Vector items=new Vector();//아이템 관리 //얘도 봐서 배열로 빼야되나 
 	
 	
-	//네트워크 관련 변수
-	
-	/*
-	
-	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private String UserName;
-	private static final int BUF_LEN = 128; // Windows 처럼 BUF_LEN 을 정의
-	private Socket socket; // 연결소켓
-	private InputStream is;
-	private OutputStream os;
-	private DataInputStream dis;
-	private DataOutputStream dos;
 
-	private ObjectInputStream ois;
-	private ObjectOutputStream oos;
-	
-	*/
 	
 
 	//그래픽 관련 변수
@@ -302,10 +295,21 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	private Image panelImage = null; 
 	private Graphics gc2 = null;
 	
-	//private ImageIcon backGround = new ImageIcon("play_bg.png"); //이미지 로딩
-	//private Image bG = backGround.getImage(); //이미지 객체 생성
+
 
 	private Image background=new ImageIcon("play_bg.png").getImage();//배경이미지
+	
+	ArcadeClientView clientView;
+	boolean p1;
+	
+	
+	
+	public void focusGained(FocusEvent e) {
+		//this.setFocusable(true);
+	}
+	public void focusLost(FocusEvent e) {
+		this.requestFocus();
+	}
 
 	
 	/**
@@ -314,13 +318,19 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	 */
 	
 	//생성자 --------------------------------------------------
-	public ArcadeClientGameView(String username, String ip_addr, String port_no)  {
+	public ArcadeClientGameView(ArcadeClientView clientView, String roomId, boolean p1)  {
 		
 		
+		this.clientView = clientView;
+		this.p1=p1;
+		
+		ChatMsg msg = new ChatMsg(clientView.UserName, "999" , "게임시작 테스트"); //테스트
+		clientView.SendObject(msg);
 		
 		//기본적인 윈도우 정보 세팅. 게임과 직접적인 상관은 없이 게임 실행을 위한 창을 준비하는 과정.
 		showFrame(); //창 설정
 		
+		addFocusListener(this);
 		addKeyListener(this);//키 입력 이벤트 리스너 활성화
 		//addWindowListener(new MyWindowAdapter());//윈도우의 닫기 버튼 활성화
 		
@@ -342,28 +352,6 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		status = 2;
 		mymode = 2;
 		
-		/* 
-		
-        UserName = username;
-		
-		try {
-			socket = new Socket(ip_addr, Integer.parseInt(port_no));
-//			is = socket.getInputStream();
-//			dis = new DataInputStream(is);
-//			os = socket.getOutputStream();
-//			dos = new DataOutputStream(os);
-
-			oos = new ObjectOutputStream(socket.getOutputStream());
-			oos.flush();
-			ois = new ObjectInputStream(socket.getInputStream());
-
-		} catch (NumberFormatException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			
-		}
-		
-		*/
 
 	} // 생성자 끝 -----------------------------------------------------------
    
@@ -389,6 +377,10 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
          while(true) {
              try {
                  if (this.roof) {
+                	 
+                	 
+                	 //System.out.println(key);
+                	 
                      this.pretime = System.currentTimeMillis();
                      this.gamescreen.repaint();//화면 리페인트
                      this.process();//각종 처리
@@ -403,6 +395,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 
                      if (this.status != 4) { //게임 오버상태가 아니라면 흘러가게함
                          ++this.cnt;
+                         
                      }
                      continue;
                  }
@@ -415,51 +408,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
  		
  	}
 	
- 	//=================================================================================
-    
-//	class ListenNetwork extends Thread { //네트워크 관련 스레드 -------------------
-//		public void run() {
-//			while (true) {
-//				try {
-//
-//					Object obcm = null;
-//					String msg = null;
-//					ChatMsg cm;
-//					try {
-//						obcm = ois.readObject();
-//					} catch (ClassNotFoundException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//						break;
-//					}
-//					if (obcm == null)
-//						break;
-//					if (obcm instanceof ChatMsg) {
-//						cm = (ChatMsg) obcm;
-//						msg = String.format("[%s]\n%s", cm.UserName, cm.data);
-//					} else
-//						continue;
-//					
-//				} catch (IOException e) {
-//					//AppendText("ois.readObject() error");
-//					try {
-////						dos.close();
-////						dis.close();
-//						ois.close();
-//						oos.close();
-//						socket.close();
-//
-//						break;
-//					} catch (Exception ee) {
-//						break;
-//					} // catch문 끝
-//				} // 바깥 catch문끝
-//
-//			}
-//		}
-//	}
-	
-	//-----------------------------------------------------------------------------
+ 	
 	
 	public void showFrame() { //프레임 그리기------------------------------------------
 		setTitle("게임방"); //프레임 타이틀 지정
@@ -478,104 +427,232 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	//-------------------------------------------------------------------
 
 	
-	// 키 이벤트 리스너 처리
-	@Override
-	public void keyPressed(KeyEvent e) { //키보드를 눌렀을 때 호출, 모든 키보드에 반응
+	public void keyPressedEvent(ChatMsg cm) {
+		
+//		System.out.println("===============");
+//		System.out.println(cm.UserName);
+//		System.out.println(cm.code);
+//		System.out.println(cm.data);
+//		System.out.println("---------------");
+		
+		key = 0;
+		
+//		System.out.println(cm.code.substring(3));
+//		System.out.println(cm.code.substring(3)=="1");
+//		
+//		if(cm.code.substring(3).equals("1")){
+//			if(cm.UserName.equals(clientView.UserName)) { //내 움직임
+//				movePlayer1Pressed(Integer.parseInt(cm.data));
+//			}
+//			else { //상대 움직임
+//				movePlayer2Pressed(Integer.parseInt(cm.data));
+//			}
+//			
+//		}
+//		else if(cm.code.substring(3).equals("2")){
+//			if(cm.UserName.equals(clientView.UserName)) { //내 움직임
+//				movePlayer1Released(Integer.parseInt(cm.data));
+//			}
+//			else { //상대 움직임
+//				movePlayer2Released(Integer.parseInt(cm.data));
+//			}
+//		}
+		
+		if(cm.UserName.equals(clientView.UserName)) { //내 움직임
+			movePlayer1Pressed(Integer.parseInt(cm.data));
+		}
+		else { //상대 움직임
+			movePlayer2Pressed(Integer.parseInt(cm.data));
+		}
+	
+		System.out.println(key);
+		
+		
+		 this.keybuff = key;
+		
+		
+		
+		//this.keybuff = key;
+		
+		//System.out.println(key);
+		
+
+		
+	}
+	
+	
+	public void keyReleasedEvent(ChatMsg cm) {
+		
+//		System.out.println(cm.UserName);
+//		System.out.println(cm.data);
+	
+		
+		keyR = 0;
+		
+		if(cm.UserName.equals(clientView.UserName)) { //내 움직임
+			movePlayer1Released(Integer.parseInt(cm.data));
+		}
+		else { //상대 움직임
+			movePlayer2Released(Integer.parseInt(cm.data));
+		}
+		
+		System.out.println(this.keybuff);
+		System.out.println(keyR);
+		
+		//원래 이 코드를 통해 keybuff값을 누르기 이전으로 돌리는건데
+		//왜인지 누르자마자 여기가 호출돼서 아예 안움직이는 상태가 이러남
+		this.keybuff = keyR;
+		
+	}
+	
+	public void movePlayer1Pressed(int keyCode) {
+		
+//		System.out.println("test");
+//		System.out.println(keyCode);
+//		System.out.println(KeyEvent.VK_SPACE);
+//		System.out.println(KeyEvent.VK_SPACE==keyCode);
+		
+//		System.out.println("move player1 pressed");
+//		System.out.println(keyCode);
+		
 		if(status==2){ //게임이 playing상태 일때
-			switch(e.getKeyCode()){
+			switch(keyCode){
 			// 1P
 			case KeyEvent.VK_SPACE:
-				keybuff|=BUBBLE_PRESSED;
+				key|=BUBBLE_PRESSED;
 				break;
 			case KeyEvent.VK_LEFT:
-				keybuff|=LEFT_PRESSED; //멀티키의 누르기 처리
+				key|=LEFT_PRESSED; //멀티키의 누르기 처리
 				break;
 			case KeyEvent.VK_UP:
-				keybuff|=UP_PRESSED;
+				key|=UP_PRESSED;
 				break;
 			case KeyEvent.VK_RIGHT:
-				keybuff|=RIGHT_PRESSED;
+				key|=RIGHT_PRESSED;
 				break;
 			case KeyEvent.VK_DOWN:
-				keybuff|=DOWN_PRESSED;
-				break;
-			// 2P
-			case KeyEvent.VK_F: 
-				keybuff2|=BUBBLE_PRESSED2;
-				break;
-			case KeyEvent.VK_A:
-				keybuff2|=LEFT_PRESSED2;//멀티키의 누르기 처리
-				break;
-			case KeyEvent.VK_W:
-				keybuff2|=UP_PRESSED2;
-				break;
-			case KeyEvent.VK_D:
-				keybuff2|=RIGHT_PRESSED2;
-				break;
-			case KeyEvent.VK_S:
-				keybuff2|=DOWN_PRESSED2;
+				key|=DOWN_PRESSED;
 				break;
 			default:
 				break;
+			
 			}
+			
+//			System.out.println(key);
+			
 		} else if(status!=2) {
-			keybuff=e.getKeyCode();
-			keybuff2=e.getKeyCode();
+//			keybuff=keyCode.getKeyCode();
+//			keybuff2=e.getKeyCode();
 		}
+	}
+	
+	public void movePlayer2Pressed(int keyCode) {
+		
+		
+		
+		switch(keyCode){
+		case KeyEvent.VK_SPACE:
+			key2|=BUBBLE_PRESSED2;
+			break;
+		case KeyEvent.VK_LEFT:
+			key2|=LEFT_PRESSED2;//멀티키의 누르기 처리
+			break;
+		case KeyEvent.VK_UP:
+			key2|=UP_PRESSED2;
+			break;
+		case KeyEvent.VK_RIGHT:
+			key2|=RIGHT_PRESSED2;
+			break;
+		case KeyEvent.VK_DOWN:
+			key2|=DOWN_PRESSED2;
+			break;
+		default:
+			break;
+		}
+		
+	}
+	
+	public void movePlayer1Released(int keyCode) {
+		
+		System.out.println("starttttttttttttttttt");
+		System.out.println(this.keybuff);
+	
+		
+		keyR = this.keybuff;
+		
+		System.out.println(keyR);
+		
+		switch(keyCode) {
+			case KeyEvent.VK_SPACE:
+				keyR&=~BUBBLE_PRESSED;
+				break;
+			case KeyEvent.VK_LEFT:
+				keyR&=~LEFT_PRESSED;//멀티키의 떼기 처리
+				break;
+			case KeyEvent.VK_UP:
+				keyR&=~UP_PRESSED;
+				break;
+			case KeyEvent.VK_RIGHT:
+				keyR&=~RIGHT_PRESSED;
+				break;
+			case KeyEvent.VK_DOWN:
+				keyR&=~DOWN_PRESSED;
+				break;
+			default:
+				break;
+		}
+		
+		System.out.println(keyR);
+		
+		System.out.println("finishhhhhhhhhhhhh");
+	}
+	
+	public void movePlayer2Released(int keyCode) {
+		switch(keyCode) {
+			// 2P
+		case KeyEvent.VK_SPACE:
+			key2&=~BUBBLE_PRESSED2; 
+			break;
+		case KeyEvent.VK_LEFT:
+			key2&=~LEFT_PRESSED2;//멀티키의 떼기 처리
+			break;
+		case KeyEvent.VK_UP:
+			key2&=~UP_PRESSED2;
+			break;
+		case KeyEvent.VK_RIGHT:
+			key2&=~RIGHT_PRESSED2;
+			break;
+		case KeyEvent.VK_DOWN:
+			key2&=~DOWN_PRESSED2;
+			break;
+		default:
+			break;
+		}
+	}
+	
+	
+	// 키 이벤트 리스너 처리
+	@Override
+	public void keyPressed(KeyEvent e) { //키보드를 눌렀을 때 호출, 모든 키보드에 반응
+		
+		ChatMsg msg = new ChatMsg(clientView.UserName, "900" , Integer.toString(e.getKeyCode())); 
+		clientView.SendObject(msg);
 		
 	}
 
 
 	@Override
 	public void keyReleased(KeyEvent e) { //키보드를 떼었을 때, 모든 키보드에 반응
-		switch(e.getKeyCode()){
-			// 1P
-		case KeyEvent.VK_SPACE:
-			//키보드 뗄때는 물풍선 안 만들어줘도 되지 않나
-			keybuff&=~BUBBLE_PRESSED;
-			myshoot=true;
-			break;
-		case KeyEvent.VK_LEFT:
-			keybuff&=~LEFT_PRESSED;//멀티키의 떼기 처리
-			break;
-		case KeyEvent.VK_UP:
-			keybuff&=~UP_PRESSED;
-			break;
-		case KeyEvent.VK_RIGHT:
-			keybuff&=~RIGHT_PRESSED;
-			break;
-		case KeyEvent.VK_DOWN:
-			keybuff&=~DOWN_PRESSED;
-			break;
-			
-			
-			// 2P
-		case KeyEvent.VK_F:
-			keybuff2&=~BUBBLE_PRESSED2; 
-			myshoot2=true;
-			break;
-		case KeyEvent.VK_A:
-			keybuff2&=~LEFT_PRESSED2;//멀티키의 떼기 처리
-			break;
-		case KeyEvent.VK_W:
-			keybuff2&=~UP_PRESSED2;
-			break;
-		case KeyEvent.VK_D:
-			keybuff2&=~RIGHT_PRESSED2;
-			break;
-		case KeyEvent.VK_S:
-			keybuff2&=~DOWN_PRESSED2;
-			break;
-		}
 		
-			//PC 환경에서는 기본적으로 키보드의 반복입력을 지원하지만,
-			//그렇지 않은 플랫폼에서는 키 버퍼값에 떼고 눌렀을 때마다 값을 변경해 리피트 여부를 제어한다.
+		ChatMsg msg = new ChatMsg(clientView.UserName, "1000", Integer.toString(e.getKeyCode())); //테스트
+		clientView.SendObject(msg);
+		
+
 	}
 	@Override
 		public void keyTyped(KeyEvent e) { //문자를 눌렀을 때 호출, 문자키에만 반응
 			
 		   
-			
 		}
 	
 	//==============================================================================
@@ -588,6 +665,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		case 1://스타트
 			process_MY();
 			if(mymode==2) status=2;
+			
 			process_MY2();
 			if(mymode2==2) status=2;
 			break;
@@ -597,11 +675,6 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 			process_BUBBLE();
 			process_WATER();
 			
-			//process_ENEMY();
-			 							//process_BUBBLE();
-			//process_EFFECT();
-			//process_GAMEFLOW();
-			//process_ITEM();
 			break;
 		case 3://게임오버
 //			process_ENEMY();
@@ -627,6 +700,9 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	
 	//----------------1P------------------
     private void keyprocess() {
+    	
+
+    	
     	switch (this.status) {
     		case 0:
     			break;
@@ -637,9 +713,6 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     				//mydegree:플레이어 방향
     				
     				//my img :플레이어 이미지
-    				
-    				 
-    				
     				// 0 wait 1-상 2-하 3-좌 4-우
     				
     				case 0:
@@ -748,7 +821,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     					myimg=2;
     					break;
     				default:
-    					System.out.println(""+keybuff);
+    					//System.out.println(""+keybuff);
     					keybuff=0;
     					mydegree=-1;
     					//myimg=0;
@@ -816,7 +889,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     					mydegree=180;
     					break;
     				default:
-    					System.out.println(""+keybuff);
+    					//System.out.println(""+keybuff);
     					keybuff=0;
     					mydegree=-1;
     					break;
@@ -836,8 +909,11 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     
     
     
-    //----------------2P------------------
+    //----------------2P------------------============================================================
     private void keyprocess2() {
+    	
+    	keybuff2 = key2;
+    	
     	switch (this.status) {
     		case 0:
     			break;
@@ -959,7 +1035,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     					myimg2=2;
     					break;
     				default:
-    					System.out.println(""+keybuff2);
+    					//System.out.println(""+keybuff2);
     					keybuff2=0;
     					mydegree2=-1;
     					//myimg=0;
@@ -1027,7 +1103,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
     					mydegree2=180;
     					break;
     				default:
-    					System.out.println(""+keybuff2);
+    					//System.out.println(""+keybuff2);
     					keybuff2=0;
     					mydegree2=-1;
     					break;
@@ -1165,8 +1241,16 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		
 		//플레이어의 x,y는 *100된 상태
 		//리스폰 장소
-		myx=5000;
-		myy=17000; 
+		
+		if(p1) { //본인이 player1 이라면 자기 위치를 왼쪽으로
+			myx=5000;
+			myy=17000;
+		}
+		else { 	//player2라면 오른쪽으로
+			myx=68000;
+			myy=10000;
+		}
+		 
 		
 		myspeed=4; //속도
 		mydegree=-1; //방향
@@ -1208,8 +1292,16 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 		
 		//플레이어의 x,y는 *100된 상태
 		//리스폰 장소
-		myx2=68000;
-		myy2=10000; 
+		
+		if(p1) { //자기가 player1이라면 상대측 나오는 장소를 오른쪽으로
+			myx2=68000;
+			myy2=10000;
+		}
+		else{	//player2라면 상대측 나오는 장소를 왼쪽으로
+			myx2=5000;
+			myy2=17000;
+		}
+		 
 		
 		myspeed2=4; //속도
 		mydegree2=-1; //방향
@@ -1351,8 +1443,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	    		if(ItemArray[i][j]!=0) {
 	    			if((myx>=bkx*(j)*100)&&(myy>=(bky)*(i)*100)&&
 		    				(myx<=bkx*(j+2)*100)&&(myy<=(bky)*(i+2)*100)) {//아이템에 닿는지 검사
-	    				System.out.printf("I [ %d, %d ]\n", ((myx)-(bkx*100*j)), 
-	    						((myy)-(bky*100*i)));
+	    				//System.out.printf("I [ %d, %d ]\n", ((myx)-(bkx*100*j)),((myy)-(bky*100*i)));
 	    				
 	    				if(ItemArray[i][j]==1) {//충돌한 아이템이 1(스피드) 이면,
 	    					if((3000<(myx)-(bkx*100*j) && 7000>(myx)-(bkx*100*j))&& //아이템은 깊게 들어가야 획득됨
@@ -1365,7 +1456,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	    					if(myspeed > 7) {
 	    						myspeed = 7; //속도의 최고속도는 7이다.
 	    					}
-	    					System.out.printf("현재속도 : %d \n",myspeed);
+	    					//System.out.printf("현재속도 : %d \n",myspeed);
 	    				}
 	    				
 	    				else if(ItemArray[i][j]==2) {//충돌한 아이템이 2(물줄기) 이면,
@@ -1390,7 +1481,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	    					if(maxBubble > 10) {
     							maxBubble = 10; //물풍선 최대 개수는 10이다.
     						}
-    						System.out.printf("최대풍선개수 : %d \n",maxBubble);
+    						//System.out.printf("최대풍선개수 : %d \n",maxBubble);
 	    				}
 	                }
 	            }
@@ -1537,8 +1628,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	    		if(ItemArray[i][j]!=0) {
 	    			if((myx2>=bkx*(j)*100)&&(myy2>=(bky)*(i)*100)&&
 		    				(myx2<=bkx*(j+2)*100)&&(myy2<=(bky)*(i+2)*100)) {//아이템에 닿는지 검사
-	    				System.out.printf("I2 [ %d, %d ]\n", ((myx2)-(bkx*100*j)), 
-	    						((myy2)-(bky*100*i)));
+	    				//System.out.printf("I2 [ %d, %d ]\n", ((myx2)-(bkx*100*j)), ((myy2)-(bky*100*i)));
 	    				
 	    				if(ItemArray[i][j]==1) {//충돌한 아이템이 1(스피드) 이면,
 	    					if((3000<(myx2)-(bkx*100*j) && 7000>(myx2)-(bkx*100*j))&& //아이템은 깊게 들어가야 획득됨
@@ -1551,7 +1641,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	    					if(myspeed2 > 7) {
 	    						myspeed2 = 7; //속도의 최고속도는 7이다.
 	    					}
-	    					System.out.printf("2 현재속도 : %d \n",myspeed);
+	    					//System.out.printf("2 현재속도 : %d \n",myspeed);
 	    				}
 	    				
 	    				else if(ItemArray[i][j]==2) {//충돌한 아이템이 2(물줄기) 이면,
@@ -1576,7 +1666,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	    					if(maxBubble2 > 10) {
     							maxBubble2 = 10; //물풍선 최대 개수는 10이다.
     						}
-    						System.out.printf("2P 최대풍선개수 : %d \n",maxBubble2);
+    						//System.out.printf("2P 최대풍선개수 : %d \n",maxBubble2);
 	    				}
 	                }
 	            }
@@ -1625,7 +1715,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 				 bubble.remove(i);
 				 make_WATER(x,y,buff.waterLength); //물줄기 생성
 				 new effectSound("./music/bubbleBoom.wav");//물풍선 터지는 사운드
-				 System.out.println("@@@@@@@@@@");
+				 //System.out.println("@@@@@@@@@@");
 			 }
 			 buff.cnt++;
 		}
@@ -1645,7 +1735,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 				 bubble2.remove(i);
 				 make_WATER(x,y,buff.waterLength); //물줄기 생성
 				 new effectSound("./music/bubbleBoom.wav");//물풍선 터지는 사운드
-				 System.out.println("@@@@@@@@@@");
+				// System.out.println("@@@@@@@@@@");
 			 }
 			 buff.cnt++;
 		}
@@ -1782,7 +1872,7 @@ public class ArcadeClientGameView extends JFrame implements KeyListener, Runnabl
 	}
 	public void make_WATER(int x, int y, int waterLength) {
 		
-		System.out.println("test");
+		//System.out.println("test");
 		
 		// 1 - 가운데 pop
 		// 2 - 상 중간, 3 - 상 말단, 4 - 하 중간, 5 - 하 말단

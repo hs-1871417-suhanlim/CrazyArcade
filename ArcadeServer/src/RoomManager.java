@@ -1,25 +1,38 @@
+import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class RoomManager { 
 	
+	private ArcadeServer server; 
+	
 	//int roomNum; //방 갯수
 	ArrayList<Room> rooms = new ArrayList();
+	boolean roomExist[] = new boolean[4];
+	int roomId=0;
 	int roomMax;
 	
 	
-	
-	public RoomManager() { //생성자
+	public RoomManager(ArcadeServer server) { //생성자
 		//this.roomNum=0;
+		this.server=server;
 		this.roomMax = 4;
 	}
 	
-	public boolean makeRoom(String userName, String RoomTitle) {
+	public boolean makeRoom(String userName, String RoomTitle, Socket client_socket) {
 		if(rooms.size()>=roomMax) //방은 네개까지 
 			return false;
 		
-		//방 생성시마다 ArrayList에 들어가있는 방 개수를 통해 
-		//roomId지정해줌 - 0번, 1번, 2번, 3번방
-		Room room = new Room(userName, RoomTitle, rooms.size());
+		for(int i=0;i<roomMax;i++) { //방번호 부여
+			if(roomExist[i]==false) {
+				roomId=i;
+				roomExist[i]=true;
+				break;
+			}
+				
+		}
+		Room room = new Room(userName, RoomTitle, roomId , client_socket);
+		
 		rooms.add(room); // room ArrayList에 생성한 방 추가
 		
 		return true;
@@ -34,15 +47,45 @@ public class RoomManager {
 		int maxUser=2;
 		
 		ArrayList<RoomUser> roomUsers = new ArrayList();
+		Vector socketUser = new Vector(); // 연결된 사용자를 저장할 벡터
 		
-		
-		public Room(String userName, String RoomTitle, int RoomId) { //방 생성
+		public Room(String userName, String RoomTitle, int RoomId, Socket client_socket) { //방 생성
 			this.RoomTitle = RoomTitle;
 			this.roomId = RoomId;
+			Socket newUser = client_socket;
+			socketUser.add(newUser);
+			
 			RoomUser roomUser = new RoomUser(userName, roomId);
 			roomUsers.add(roomUser);
 		}
 		
+		public void userExit(int userId) { //유저가 나감
+			roomUsers.remove(userId);
+			socketUser.remove(userId);
+		}
+
+		public void roomUpdate(ArcadeServer.UserService userService) { //룸정보를 업데이트
+			// 버튼을 통해 입장하거나 누군가가 나갈때 이용
+			String protocol = Integer.toString(300+roomId); //300, 301, 302, 303
+			
+			String buff="";
+			
+			////유저1++(유저2)++방이름 이렇게 날아감
+			
+			for(int i=0;i<roomUsers.size();i++) {
+				buff+= roomUsers.get(i).userName;
+				buff+="++"; 
+			}
+			
+			buff+=RoomTitle; //마지막에 방제목 붙여줌
+			
+			ChatMsg cm = new ChatMsg("Server", protocol, buff);
+			userService.WriteOneObject(cm);
+			
+		}
+		
 	}
+
+
 
 }

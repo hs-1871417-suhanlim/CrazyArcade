@@ -33,10 +33,16 @@ public class ArcadeClientView extends JFrame {
 	int maxRoomCnt=4;
 	RoomBox roombox[] = new RoomBox[maxRoomCnt];
 	
+	String roomId; //client가 입장하는 방 번호
+	String roomUserList[]; //해당 client가 입장한 방 유저 리스트 
+	String roomTitle; //client가 입장하는 방 제목
+	
 	
 	
 	//private JPanel contentPane;
-	private String UserName;
+	String UserName;
+	
+	ArcadeClientWaitRoom waitRoom;
 	
 	//네트워크 관련 변수
 	private static final long serialVersionUID = 1L;
@@ -52,6 +58,8 @@ public class ArcadeClientView extends JFrame {
 	
 	private JPanel contentPane;
 	JScrollPane scrollPane;
+
+	public ListenNetwork listen; // 클래스들끼리 서로 참조
 	
 	
 	public ArcadeClientView(String username, String ip_addr, String port_no) { //생성자
@@ -111,8 +119,6 @@ public class ArcadeClientView extends JFrame {
 			switch(i) {
 			case 0:
 				roombox[i].panel.setLocation(30,30);break;
-				
-				
 			case 1:
 				roombox[i].panel.setLocation(220,30);break;
 			case 2:
@@ -137,7 +143,7 @@ public class ArcadeClientView extends JFrame {
 			ChatMsg obcm = new ChatMsg(UserName, "100", "Hello");
 			SendObject(obcm); //전송
 			
-			ListenNetwork net = new ListenNetwork();
+			ListenNetwork net = new ListenNetwork(this);
 			net.start();
 
 
@@ -163,7 +169,16 @@ public class ArcadeClientView extends JFrame {
 	}
 	
 	// Server Message를 수신
-	class ListenNetwork extends Thread {
+	public class ListenNetwork extends Thread {
+		
+		//ListenNetwork listen;
+		
+		ArcadeClientView clientView;
+		ListenNetwork(ArcadeClientView clientView){ //생성자
+			this.clientView=clientView;
+			clientView.listen = this;
+		}
+		
 		public void run() {
 			while (true) {
 				try {
@@ -194,12 +209,41 @@ public class ArcadeClientView extends JFrame {
 
 						//공백을 기준으로 나눔 - "방제목" "RoomId" 형태
 						String[] roomInfo = cm.data.split("\\+     \\+");
-						int roomId = Integer.parseInt(roomInfo[1]);
+						int roomIds = Integer.parseInt(roomInfo[1]);
+						roombox[roomIds].roomTitle.setText(roomInfo[0]);
 						
-						roombox[roomId].roomTitle.setText(roomInfo[0]);
 						break;
 					case "500", "501", "502", "503": //방 입장 허가 프로토콜
+						roomId = cm.code.substring(2); //방번호 떼옴
+					
+						//들어오는 msg-data는 "유저1++유저2++방제목" 이런 형태
+					
+						String[] buff= cm.data.split("\\++");
+
+						System.out.println("========");
+						System.out.println(UserName);
 						
+						int userCnt = buff.length-1; //유저 수
+						
+						roomUserList=new String[userCnt];
+						
+						
+						//roomUserList = cm.data.split(" ");
+						for(int i=0;i<buff.length;i++) { //test
+							
+							if(i==buff.length-1) //마지막은 방제목
+								roomTitle = buff[i];
+							else
+								roomUserList[i]=buff[i];
+						}
+						waitRoom = new ArcadeClientWaitRoom(roomId, roomTitle, roomUserList, clientView);
+						
+						break;
+					case "900": //키보드 누를때
+						waitRoom.gameView.keyPressedEvent(cm);
+						break;
+					case "1000": //키보드 뗄 때
+						waitRoom.gameView.keyReleasedEvent(cm);
 						
 						break;
 					
@@ -229,14 +273,6 @@ public class ArcadeClientView extends JFrame {
 			
 			MakeRoomView view = new MakeRoomView(clientView, UserName);
 
-			
-//			String username = txtUserName.getText().trim();
-//			String ip_addr = txtIpAddress.getText().trim();
-//			String port_no = txtPortNumber.getText().trim();
-//			ArcadeClientView view = new ArcadeClientView(username, ip_addr, port_no);
-			
-			//ArcadeClientGameView view = new ArcadeClientGameView(username, ip_addr, port_no);
-			//setVisible(false);
 		}
 	}
 

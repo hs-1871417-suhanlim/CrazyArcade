@@ -32,6 +32,7 @@ public class MakeRoomView extends JFrame {
 			setResizable(false); //창크기 변경불가
 			setLocationRelativeTo(null);//창 가운데 뜨게
 			getContentPane().setLayout(null);
+			setDefaultCloseOperation(DO_NOTHING_ON_CLOSE); //창닫기 못하게 막음
 			
 			contentPane = new JPanel() {//배경화면 설정
 				 public void paintComponent(Graphics g) {
@@ -69,7 +70,6 @@ public class MakeRoomView extends JFrame {
 			Myaction action = new Myaction();
 			makeRoomButton.addActionListener(action);
 			getContentPane().add(makeRoomButton);
-			
 			//-------------------------------
 			
 	}
@@ -78,8 +78,8 @@ public class MakeRoomView extends JFrame {
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String RoomTitle = txtRoomName.getText().trim();
-			System.out.println(RoomTitle);
+			String RoomTitle = txtRoomName.getText().trim(); //Label에게서 값 알아내기
+			
 			
 			ChatMsg msg = new ChatMsg(UserName, "200", RoomTitle); //방 생성
 			clientView.SendObject(msg);
