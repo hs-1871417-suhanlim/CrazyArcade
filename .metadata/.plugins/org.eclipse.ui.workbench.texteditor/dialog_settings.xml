@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="font"/>
+		<item key="selection" value="status"/>
 		<item key="wrap" value="false"/>
 		<item key="casesensitive" value="true"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="status"/>
+			<item value="bg"/>
 			<item value="font"/>
 			<item value="process"/>
 			<item value="keybuff"/>
@@ -21,8 +23,6 @@
 			<item value="System.out"/>
 			<item value="["/>
 			<item value="I2"/>
-			<item value="현재속도"/>
-			<item value="System"/>
 		</list>
 		<list key="replacehistory">
 			<item value="ArcadeClientMain"/>

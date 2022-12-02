@@ -57,6 +57,10 @@ public class GameScreen extends Canvas {
 	Image waterRightM[] = new Image[11];
 	Image waterRightE[] = new Image[11];
 	
+	Image win; //승리이미지
+	//Image resize_img = win.getScaledInstance(396, 100, Image.SCALE_SMOOTH);
+	Image lose; //패배이미지
+	
 	int waterCnt=5;
 	
 	Font font;
@@ -114,20 +118,25 @@ public class GameScreen extends Canvas {
 			
 			Draw_Hide();
 			
-			
 //			Draw_BG();
 //			Draw_MY();
 //			Draw_BG2();
 //			drawImageAnc(_start, 0,270, 3);
 			break;
-		case 4://게임오버
+		case 4://게임종료
 			
 			break;
-		case 3:
-			
+		case 3://게임오버
+			Draw_RESULT();
+			break;
 		default:
 			break;
 		}
+	}
+	
+	public void Draw_RESULT(){ //결과화면 그리기
+		if(!main.myDeath) gc.drawImage(win, 217, 315, this);
+		else if(main.myDeath) gc.drawImage(lose, 159, 292, this);
 	}
 	
 	public void Draw_BG(){ //배경화면 그리기
@@ -389,10 +398,6 @@ public class GameScreen extends Canvas {
 		   //drawImageAnc(waterPop[main.gamecnt/20%6], (water.dis.x+1)*52, (water.dis.y+1)*52+16,4);
 		   
 	    }
-		
-		
-		
-		
 	}
 	
 	public void drawImageAnc(Image img, int x, int y, int anc){
