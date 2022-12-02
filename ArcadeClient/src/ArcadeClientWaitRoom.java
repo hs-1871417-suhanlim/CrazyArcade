@@ -31,6 +31,9 @@ public class ArcadeClientWaitRoom extends JFrame {
 	
 
 	public ArcadeClientWaitRoom(String roomId, String roomTitle, String[] UserList, ArcadeClientView clientView) { //생성자
+		
+		ready=false;
+		
 		ImageIcon bg = new ImageIcon("./roomIMG/waitRoom/waitRoomBG.png");//배경화면
 		ImageIcon player1 = new ImageIcon("./roomIMG/waitRoom/player1.png");
 		ImageIcon player2 = new ImageIcon("./roomIMG/waitRoom/player2.png");
@@ -204,33 +207,55 @@ public class ArcadeClientWaitRoom extends JFrame {
 	
 	class ActionReady1 implements ActionListener  //player1의 레디버튼
 	{
-		ImageIcon readied = new ImageIcon("./roomIMG/waitRoom/readied.png");
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(p1) { //1번플레이어인경우
-				JButton btn = (JButton) e.getSource();
-				btn.setIcon(readied);
 				
 				String protocol = "61" + roomId;
 				String data = ("player1이" + roomId +" 번 방에서 레디버튼을 눌렀습니다.");
 				ChatMsg msg = new ChatMsg(clientView.UserName, protocol ,data); 
 				clientView.SendObject(msg);
+				
+				ready=!ready;
+				
+				if(ready) {
+					ImageIcon readied = new ImageIcon("./roomIMG/waitRoom/readied.png");
+					JButton btn = (JButton) e.getSource();
+					btn.setIcon(readied);
+				}
+				else {
+					ImageIcon readied = new ImageIcon("./roomIMG/waitRoom/ready.png");
+					JButton btn = (JButton) e.getSource();
+					btn.setIcon(readied);
+				}
 			}
+			
 		}
 	}
 	class ActionReady2 implements ActionListener  //player1의 레디버튼
 	{
-		ImageIcon readied = new ImageIcon("./roomIMG/waitRoom/readied.png");
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(!p1) { //2번플레이어인경우
-				JButton btn = (JButton) e.getSource();
-				btn.setIcon(readied);
 				
 				String protocol = "62" + roomId;
 				String data = ("player2가" + roomId +" 번 방에서 레디버튼을 눌렀습니다.");
 				ChatMsg msg = new ChatMsg(clientView.UserName, protocol ,data); 
 				clientView.SendObject(msg);
+				
+				ready=!ready;
+				
+				if(ready) {
+					ImageIcon readied = new ImageIcon("./roomIMG/waitRoom/readied.png");
+					JButton btn = (JButton) e.getSource();
+					btn.setIcon(readied);
+				}
+				else {
+					ImageIcon readied = new ImageIcon("./roomIMG/waitRoom/ready.png");
+					JButton btn = (JButton) e.getSource();
+					btn.setIcon(readied);
+				}
 			}
 		}
 	}
@@ -241,8 +266,9 @@ public class ArcadeClientWaitRoom extends JFrame {
 			
 			//테스트
 			//gameView = new ArcadeClientGameView(clientView, roomId, p1);
-			gameView = new ArcadeClientGameView(clientView, roomId, true);  
-			//gameView = new ArcadeClientGameView(clientView, roomId, false);  
+			
+			//gameView = new ArcadeClientGameView(clientView, roomId, true);  
+			gameView = new ArcadeClientGameView(clientView, roomId, false);  
 			
 			//String protocol = "62" + roomId;
 			
@@ -270,20 +296,5 @@ public class ArcadeClientWaitRoom extends JFrame {
 		}
 	}
 
-	
-//	public void updatePlayer2() { //쓰려나
-//		//user1 이름
-//		JLabel playerName2 = new JLabel();
-//		playerName2.setLocation(300,200);
-//		playerName2.setSize(100, 50);
-//		playerName2.setText(roomUserList[1]);
-//		getContentPane().add(playerName2);
-//	}
-//	
-//	
-//	public void update() {
-//		
-//	}
-	
 
 }

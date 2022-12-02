@@ -107,6 +107,7 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 	int key=0;
 	int keyR=0;
 	int key2=0;
+	int keyR2=0;
 	int keybuff;//1p키 버퍼값
 	int keybuff2;//2p키 버퍼값
 	
@@ -429,34 +430,12 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 	
 	public void keyPressedEvent(ChatMsg cm) {
 		
-//		System.out.println("===============");
-//		System.out.println(cm.UserName);
-//		System.out.println(cm.code);
-//		System.out.println(cm.data);
-//		System.out.println("---------------");
+
 		
 		key = 0;
+		key2 = 0;
 		
-//		System.out.println(cm.code.substring(3));
-//		System.out.println(cm.code.substring(3)=="1");
-//		
-//		if(cm.code.substring(3).equals("1")){
-//			if(cm.UserName.equals(clientView.UserName)) { //내 움직임
-//				movePlayer1Pressed(Integer.parseInt(cm.data));
-//			}
-//			else { //상대 움직임
-//				movePlayer2Pressed(Integer.parseInt(cm.data));
-//			}
-//			
-//		}
-//		else if(cm.code.substring(3).equals("2")){
-//			if(cm.UserName.equals(clientView.UserName)) { //내 움직임
-//				movePlayer1Released(Integer.parseInt(cm.data));
-//			}
-//			else { //상대 움직임
-//				movePlayer2Released(Integer.parseInt(cm.data));
-//			}
-//		}
+
 		
 		if(cm.UserName.equals(clientView.UserName)) { //내 움직임
 			movePlayer1Pressed(Integer.parseInt(cm.data));
@@ -469,25 +448,16 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 		
 		
 		 this.keybuff = key;
-		
-		
-		
-		//this.keybuff = key;
-		
-		//System.out.println(key);
-		
-
+		 this.keybuff2 = key2;
 		
 	}
 	
 	
 	public void keyReleasedEvent(ChatMsg cm) {
 		
-//		System.out.println(cm.UserName);
-//		System.out.println(cm.data);
-	
 		
 		keyR = 0;
+		keyR2 =0;
 		
 		if(cm.UserName.equals(clientView.UserName)) { //내 움직임
 			movePlayer1Released(Integer.parseInt(cm.data));
@@ -496,24 +466,14 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 			movePlayer2Released(Integer.parseInt(cm.data));
 		}
 		
-		System.out.println(this.keybuff);
-		System.out.println(keyR);
-		
-		//원래 이 코드를 통해 keybuff값을 누르기 이전으로 돌리는건데
-		//왜인지 누르자마자 여기가 호출돼서 아예 안움직이는 상태가 이러남
+
+
 		this.keybuff = keyR;
-		
+		this.keybuff2 = keyR2;
 	}
 	
 	public void movePlayer1Pressed(int keyCode) {
 		
-//		System.out.println("test");
-//		System.out.println(keyCode);
-//		System.out.println(KeyEvent.VK_SPACE);
-//		System.out.println(KeyEvent.VK_SPACE==keyCode);
-		
-//		System.out.println("move player1 pressed");
-//		System.out.println(keyCode);
 		
 		if(status==2){ //게임이 playing상태 일때
 			switch(keyCode){
@@ -538,7 +498,7 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 			
 			}
 			
-//			System.out.println(key);
+
 			
 		} else if(status!=2) {
 //			keybuff=keyCode.getKeyCode();
@@ -602,28 +562,29 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 				break;
 		}
 		
-		System.out.println(keyR);
 		
-		System.out.println("finishhhhhhhhhhhhh");
 	}
 	
 	public void movePlayer2Released(int keyCode) {
+		
+		keyR2 = this.keybuff2;
+		
 		switch(keyCode) {
 			// 2P
 		case KeyEvent.VK_SPACE:
-			key2&=~BUBBLE_PRESSED2; 
+			keyR2&=~BUBBLE_PRESSED2; 
 			break;
 		case KeyEvent.VK_LEFT:
-			key2&=~LEFT_PRESSED2;//멀티키의 떼기 처리
+			keyR2&=~LEFT_PRESSED2;//멀티키의 떼기 처리
 			break;
 		case KeyEvent.VK_UP:
-			key2&=~UP_PRESSED2;
+			keyR2&=~UP_PRESSED2;
 			break;
 		case KeyEvent.VK_RIGHT:
-			key2&=~RIGHT_PRESSED2;
+			keyR2&=~RIGHT_PRESSED2;
 			break;
 		case KeyEvent.VK_DOWN:
-			key2&=~DOWN_PRESSED2;
+			keyR2&=~DOWN_PRESSED2;
 			break;
 		default:
 			break;
@@ -912,7 +873,7 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
     //----------------2P------------------============================================================
     private void keyprocess2() {
     	
-    	keybuff2 = key2;
+  
     	
     	switch (this.status) {
     		case 0:
@@ -1694,12 +1655,6 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 	//---------------process_MY2 끝---
 	
 	public void process_BUBBLE() {
-		
-		//System.out.println(bubble.size());
-
-		
-		
-		
 		for(int i=0;i<bubble.size();i++) { //플레이어1
 			 Bubble buff = (Bubble)bubble.elementAt(i);
 			 int x=buff.dis.x/52-1;
@@ -1752,9 +1707,6 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 			
 			int x = buff.dis.x;
 			int y = buff.dis.y;
-//			System.out.println("+++++++++");
-//			System.out.println(x);
-//			System.out.println(y);
 			
 			if(buff.cnt>=25) { //물줄기 제거
 				
@@ -1858,7 +1810,7 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 			}
 				
 			else if(from==2) {
-				Bubble bubbles = new Bubble(x, y,waterLength);
+				Bubble bubbles = new Bubble(x, y,waterLength2);
 				bubble2.add(bubbles);
 			}
 				
