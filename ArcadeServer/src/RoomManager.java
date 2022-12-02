@@ -9,7 +9,7 @@ public class RoomManager {
 	//int roomNum; //방 갯수
 	ArrayList<Room> rooms = new ArrayList();
 	boolean roomExist[] = new boolean[4];
-	int roomId=0;
+	int roomId=0; 
 	int roomMax;
 	
 	
@@ -38,6 +38,8 @@ public class RoomManager {
 		return true;
 	}
 	
+
+	
 	
 	
 	public class Room{ // 방 클래스
@@ -52,17 +54,22 @@ public class RoomManager {
 		public Room(String userName, String RoomTitle, int RoomId, Socket client_socket) { //방 생성
 			this.RoomTitle = RoomTitle;
 			this.roomId = RoomId;
-			Socket newUser = client_socket;
-			socketUser.add(newUser);
+			//Socket newUser = client_socket;
+			socketUser.add(client_socket);
 			
 			RoomUser roomUser = new RoomUser(userName, roomId);
 			roomUsers.add(roomUser);
 		}
 		
+
+		
 		public void userExit(int userId) { //유저가 나감
-			roomUsers.remove(userId);
-			socketUser.remove(userId);
+			//player1이면 1이, player2면 2가 들어옴
+			//arrayList와 벡터에 순서대로 들어가있으므로 -1해줌
+			roomUsers.remove(userId-1);
+			socketUser.remove(userId-1);
 		}
+		
 
 		public void roomUpdate(ArcadeServer.UserService userService) { //룸정보를 업데이트
 			// 버튼을 통해 입장하거나 누군가가 나갈때 이용
@@ -83,6 +90,21 @@ public class RoomManager {
 			userService.WriteOneObject(cm);
 			
 		}
+
+		public void addUser(String userName, Socket client_socket) { //user가 버튼으로 들어옴
+			socketUser.add(client_socket);
+			
+			RoomUser roomUser = new RoomUser(userName, roomId);
+			roomUsers.add(roomUser);
+		}
+
+
+
+//		public void addUser(String userName, Socket client_socket) {
+//			// TODO Auto-generated method stub
+//			
+//		}
+
 		
 	}
 

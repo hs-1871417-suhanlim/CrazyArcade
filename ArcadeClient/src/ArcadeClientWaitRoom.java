@@ -19,18 +19,22 @@ public class ArcadeClientWaitRoom extends JFrame {
 	
 	ArcadeClientView clientView;
 	ArcadeClientGameView gameView;
-	String roomId;
+	int roomId;
 	String roomTitle;
 	String[] roomUserList;
 	int userCnt; // 총 유저 수
 	boolean p1; // player1 or player2
 	boolean ready;
+	String name;
 	
 	private JPanel contentPane;
 	JScrollPane scrollPane;
 	
+	JLabel playerName1;
+	JLabel playerName2;
+	
 
-	public ArcadeClientWaitRoom(String roomId, String roomTitle, String[] UserList, ArcadeClientView clientView) { //생성자
+	public ArcadeClientWaitRoom(int roomId, String roomTitle, String[] UserList, ArcadeClientView clientView) { //생성자
 		
 		ready=false;
 		
@@ -113,7 +117,7 @@ public class ArcadeClientWaitRoom extends JFrame {
 			
 			
 			//user1 이름
-			JLabel playerName1 = new JLabel();
+			this.playerName1 = new JLabel();
 			playerName1.setHorizontalAlignment(JLabel.CENTER);//피봇을 중앙으로
 			playerName1.setFont(font2);//폰트적용
 			playerName1.setForeground(Color.WHITE);//폰트색상
@@ -123,7 +127,7 @@ public class ArcadeClientWaitRoom extends JFrame {
 			getContentPane().add(playerName1);
 			
 			//user2이름
-			JLabel playerName2 = new JLabel();
+			this.playerName2 = new JLabel();
 			playerName2.setHorizontalAlignment(JLabel.CENTER);//피봇을 중앙으로
 			playerName2.setFont(font2);//폰트적용
 			playerName2.setForeground(Color.WHITE);//폰트색상
@@ -204,6 +208,13 @@ public class ArcadeClientWaitRoom extends JFrame {
 			
 			
 	}
+	public void update(int roomId, String roomTitle, String[] roomUserList, ArcadeClientView clientView) {
+		// TODO Auto-generated method stub
+		this.roomUserList = roomUserList;
+		playerName1.setText(roomUserList[0]);
+		playerName1.setText(roomUserList[1]);
+		this.repaint();
+	}
 	
 	class ActionReady1 implements ActionListener  //player1의 레디버튼
 	{
@@ -261,20 +272,46 @@ public class ArcadeClientWaitRoom extends JFrame {
 	}
 	class GameStart implements ActionListener 
 	{
-		@Override
-		public void actionPerformed(ActionEvent e) {
+		@Override 
+		public void actionPerformed(ActionEvent e) { //시작버튼을 누름
+			
+			
+			String protocol = "70" + Integer.toString(roomId); //700, 701, 702, 703
+			
+			
+			
+			if(p1) {
+				name = roomUserList[0];
+			}else {
+				name = roomUserList[1];
+			}
+				
+				
+			
+			String data = (clientView.UserName + "이가" + roomId +" 번 방에서 게임시작을 하려고 합니다.");
+			
+			
+			ChatMsg msg2 = new ChatMsg(clientView.UserName, protocol ,data); 
+			clientView.SendObject(msg2);
 			
 			//테스트
 			//gameView = new ArcadeClientGameView(clientView, roomId, p1);
 			
 			//gameView = new ArcadeClientGameView(clientView, roomId, true);  //1P
-			gameView = new ArcadeClientGameView(clientView, roomId, false);  //2P
+			//gameView = new ArcadeClientGameView(clientView, roomId, false);  //2P
 			
 			//String protocol = "62" + roomId;
 			
 			
 		}
 	}
+
+	public void gameStart() {
+		// TODO Auto-generated method stub
+		ArcadeClientGameView gameView = new ArcadeClientGameView(clientView, roomId, p1);
+	}
+	
+	
 	class GameExit implements ActionListener 
 	{
 		@Override
@@ -295,6 +332,8 @@ public class ArcadeClientWaitRoom extends JFrame {
 			}
 		}
 	}
+
+
 
 
 }

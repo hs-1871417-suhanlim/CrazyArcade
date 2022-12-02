@@ -319,7 +319,7 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 	 */
 	
 	//생성자 --------------------------------------------------
-	public ArcadeClientGameView(ArcadeClientView clientView, String roomId, boolean p1)  {
+	public ArcadeClientGameView(ArcadeClientView clientView, int roomId, boolean p1)  {
 		
 		
 		this.clientView = clientView;
@@ -1534,7 +1534,7 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 			
 			
 		case 4: //죽은 경우
-			if(dCnt2>=500) {
+			if(dCnt2>=150) {
 				System.out.println("사망 모션----");
 				myDeath2=true;
 				status=3;
