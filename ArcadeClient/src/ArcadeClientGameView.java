@@ -107,6 +107,7 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 	int key=0;
 	int keyR=0;
 	int key2=0;
+	int keyR2=0;
 	int keybuff;//1p키 버퍼값
 	int keybuff2;//2p키 버퍼값
 	
@@ -153,7 +154,7 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 0, 0},
 				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0},
 				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0}, 
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
 				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
 				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0}, 
 				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
@@ -161,20 +162,36 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 		 					};
 	
+//		int[][] ItemArray = { // 아이템 위치
+//				//1 : 스피드      2 : 물줄기      3: 풀풍선 최대 개수
+//				{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
+//				{0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+//				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0},
+//				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0},
+//				{0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0},
+//				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+//				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0},
+//				{0, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 3, 0, 0, 0},
+//				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0},
+//				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+//				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0},
+//				{0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0},
+//				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+//		 					};
 		int[][] ItemArray = { // 아이템 위치
 				//1 : 스피드      2 : 물줄기      3: 풀풍선 최대 개수
-				{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
-				{0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0},
-				{0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0},
-				{0, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 3, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0},
-				{0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 		 					};
 		
@@ -429,34 +446,12 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 	
 	public void keyPressedEvent(ChatMsg cm) {
 		
-//		System.out.println("===============");
-//		System.out.println(cm.UserName);
-//		System.out.println(cm.code);
-//		System.out.println(cm.data);
-//		System.out.println("---------------");
+
 		
 		key = 0;
+		key2 = 0;
 		
-//		System.out.println(cm.code.substring(3));
-//		System.out.println(cm.code.substring(3)=="1");
-//		
-//		if(cm.code.substring(3).equals("1")){
-//			if(cm.UserName.equals(clientView.UserName)) { //내 움직임
-//				movePlayer1Pressed(Integer.parseInt(cm.data));
-//			}
-//			else { //상대 움직임
-//				movePlayer2Pressed(Integer.parseInt(cm.data));
-//			}
-//			
-//		}
-//		else if(cm.code.substring(3).equals("2")){
-//			if(cm.UserName.equals(clientView.UserName)) { //내 움직임
-//				movePlayer1Released(Integer.parseInt(cm.data));
-//			}
-//			else { //상대 움직임
-//				movePlayer2Released(Integer.parseInt(cm.data));
-//			}
-//		}
+
 		
 		if(cm.UserName.equals(clientView.UserName)) { //내 움직임
 			movePlayer1Pressed(Integer.parseInt(cm.data));
@@ -469,25 +464,16 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 		
 		
 		 this.keybuff = key;
-		
-		
-		
-		//this.keybuff = key;
-		
-		//System.out.println(key);
-		
-
+		 this.keybuff2 = key2;
 		
 	}
 	
 	
 	public void keyReleasedEvent(ChatMsg cm) {
 		
-//		System.out.println(cm.UserName);
-//		System.out.println(cm.data);
-	
 		
 		keyR = 0;
+		keyR2 =0;
 		
 		if(cm.UserName.equals(clientView.UserName)) { //내 움직임
 			movePlayer1Released(Integer.parseInt(cm.data));
@@ -496,24 +482,14 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 			movePlayer2Released(Integer.parseInt(cm.data));
 		}
 		
-		System.out.println(this.keybuff);
-		System.out.println(keyR);
-		
-		//원래 이 코드를 통해 keybuff값을 누르기 이전으로 돌리는건데
-		//왜인지 누르자마자 여기가 호출돼서 아예 안움직이는 상태가 이러남
+
+
 		this.keybuff = keyR;
-		
+		this.keybuff2 = keyR2;
 	}
 	
 	public void movePlayer1Pressed(int keyCode) {
 		
-//		System.out.println("test");
-//		System.out.println(keyCode);
-//		System.out.println(KeyEvent.VK_SPACE);
-//		System.out.println(KeyEvent.VK_SPACE==keyCode);
-		
-//		System.out.println("move player1 pressed");
-//		System.out.println(keyCode);
 		
 		if(status==2){ //게임이 playing상태 일때
 			switch(keyCode){
@@ -538,7 +514,7 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 			
 			}
 			
-//			System.out.println(key);
+
 			
 		} else if(status!=2) {
 //			keybuff=keyCode.getKeyCode();
@@ -602,28 +578,29 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 				break;
 		}
 		
-		System.out.println(keyR);
 		
-		System.out.println("finishhhhhhhhhhhhh");
 	}
 	
 	public void movePlayer2Released(int keyCode) {
+		
+		keyR2 = this.keybuff2;
+		
 		switch(keyCode) {
 			// 2P
 		case KeyEvent.VK_SPACE:
-			key2&=~BUBBLE_PRESSED2; 
+			keyR2&=~BUBBLE_PRESSED2; 
 			break;
 		case KeyEvent.VK_LEFT:
-			key2&=~LEFT_PRESSED2;//멀티키의 떼기 처리
+			keyR2&=~LEFT_PRESSED2;//멀티키의 떼기 처리
 			break;
 		case KeyEvent.VK_UP:
-			key2&=~UP_PRESSED2;
+			keyR2&=~UP_PRESSED2;
 			break;
 		case KeyEvent.VK_RIGHT:
-			key2&=~RIGHT_PRESSED2;
+			keyR2&=~RIGHT_PRESSED2;
 			break;
 		case KeyEvent.VK_DOWN:
-			key2&=~DOWN_PRESSED2;
+			keyR2&=~DOWN_PRESSED2;
 			break;
 		default:
 			break;
@@ -668,7 +645,6 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 			
 			process_MY2();
 			if(mymode2==2) status=2;
-			
 			break;
 		case 2://playing
 			process_MY();
@@ -678,14 +654,13 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 			
 			break;
 		case 3://게임오버
-			process_RESULT();//결과이미지
+//			process_RESULT();//결과이미지
 			
 //			process_ENEMY();
 //			process_BULLET();
 //			process_GAMEFLOW();
 			break;
-		case 4://게임종료
-			
+		case 4:
 			break;
 		default:
 			break;
@@ -916,7 +891,7 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
     //----------------2P------------------============================================================
     private void keyprocess2() {
     	
-    	keybuff2 = key2;
+  
     	
     	switch (this.status) {
     		case 0:
@@ -1127,12 +1102,12 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 		System.gc();*/
 
 		//각종 이미지 설정
-		gamescreen.bg=makeImage("./play_bg.png");//배경화면
+		gamescreen.bg=makeImage("./play_bg.png");//bg.png
 		
-		gamescreen.win=makeImage("./connectIMG/win.png");//승리 이미지
-		gamescreen.lose=makeImage("./connectIMG/lose.png");//패배 이미지
+		gamescreen.win=makeImage("./connectIMG/win.png");//승리
 		
-		
+		gamescreen.lose=makeImage("./connectIMG/lose.png");//패배
+
 		//일단 블록 여러 종류로
 		//for(i=0;i<8;i++) gamescreen.block[i]=makeImage("./title/block" + i + ".png"); 
 		//gamescreen.block[0]=makeImage("./tile/block3.png"); 
@@ -1321,22 +1296,20 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 	}
 	
 	//process-------------------------------------------------------------------
-	public void process_RESULT(){
-		if(myDeath) {
-			System.out.println("1P 패배");
-		}
-		else if (!myDeath) {
-			System.out.println("1P 승리");
-		}
-		if(myDeath2) {
-			System.out.println("2P 패배");
-		}
-		else if(!myDeath2) {
-			System.out.println("2P 승리");
-		}
-	}
-	
-	
+//	public void process_RESULT(){
+//		if(myDeath) {
+//			System.out.println("1P 패배");
+//		}
+//		else if (!myDeath) {
+//			System.out.println("1P 승리");
+//		}
+//		if(myDeath2) {
+//			System.out.println("2P 패배");
+//		}
+//		else if(!myDeath2) {
+//			System.out.println("2P 승리");
+//		}
+//	}
 	
 	public void process_MY(){
 		//Bubble bubble;
@@ -1381,24 +1354,20 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 			}
 			
 			
-			if(trapCnt>=300) {
+			if(trapCnt>=300) {//사망모션
 				System.out.println("사망모션 진입--------");
-				System.out.println("mymode = 4");
 				mymode=4;
-				
 			}
 			
 			trapCnt++;
-			
 			break;
 			
 			
-		case 4: //사망모션
-			if(dCnt>=500) {
+		case 4: 
+			if(dCnt>=150) {
 				System.out.println("사망 -------");
-				System.out.println("status = 3");
 				myDeath=true;
-				status=3; // 사망모션 끝나면 상태 3으로 게임오버
+				status=3; // 게임 종료
 				
 			}
 			
@@ -1415,7 +1384,7 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 		
 		
 		//플레이어가 블록에 충돌되면 처리
-	    for(int i=0;i<13;i++) {
+	    for(int i=0;i<13;i++) { 
 	    	for(int j=0;j<15;j++) {
 	    		if(MapArray[i][j]!=0) {
 	    			
@@ -1424,26 +1393,26 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 	    			
 	    			if((myx>=bkx*(j)*100)&&(myy>=(bky+1)*(i)*100)&&
 	    				(myx<=bkx*(j+2)*100)&&(myy<=(bky)*(i+2)*100)) {//물체에 닿는지 검사	    				
-	    				//System.out.printf("B [ %d, %d ]\n", ((myx)-(bkx*100*j)),((myy)-(bky*100*i)));
+	    				System.out.printf("B [ %d, %d ]\n", ((myx)-(bkx*100*j)),((myy)-(bky*100*i)));
 	    				if((300<(myx)-(bkx*100*j) && 4300>(myx)-(bkx*100*j))&&
-	    					(1400<(myy)-(bky*100*i) && 10000>(myy)-(bky*100*i))){//닿은곳이 왼쪽일때 처리
-//	    					System.out.println("왼쪽이 닿았다.");
+		    				(1400<(myy)-(bky*100*i) && 10000>(myy)-(bky*100*i))){//닿은곳이 왼쪽일때 처리
+	    					System.out.println("왼쪽이 닿았다.");
 	    					myx = myx - 400;
 	    					if(myspeed>4) {//스피드 증가에 따른 맵뚫 방지
 	    						myx = myx - 300;
 	    					}
 	    				}
 	    				else if((9000<(myx)-(bkx*100*j) && 10200>(myx)-(bkx*100*j))&&
-		    					(1200<(myy)-(bky*100*i) && 10000>(myy)-(bky*100*i))){//닿은곳이 오른쪽일때 처리
-//	    					System.out.println("오른쪽이 닿았다.");
+		    					(1400<(myy)-(bky*100*i) && 10000>(myy)-(bky*100*i))){//닿은곳이 오른쪽일때 처리
+	    					System.out.println("오른쪽이 닿았다.");
 	    					myx = myx + 400;
 	    					if(myspeed>4) {
 	    						myx = myx + 300;
 	    					}
 	    				}
-	    				else if((200<(myx)-(bkx*100*j) && 10200>(myx)-(bkx*100*j))&&
+	    				else if((300<(myx)-(bkx*100*j) && 10200>(myx)-(bkx*100*j))&&
 	    						(1400<(myy)-(bky*100*i) && 3800>=(myy)-(bky*100*i))){//닿은곳이 위쪽일때 처리
-//	    					System.out.println("위쪽이 닿았다.");
+	    					System.out.println("위쪽이 닿았다.");
 	    					myy = myy - 400;
 	    					if(myspeed>4) {
 	    						myy = myy - 300;
@@ -1451,7 +1420,7 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 	    				}
 	    				else if((300<(myx)-(bkx*100*j) && 10200>(myx)-(bkx*100*j))&&
 	    						(8000<(myy)-(bky*100*i) && 10000>(myy)-(bky*100*i))){//닿은곳이 아래쪽일때 처리
-//	    					System.out.println("아래쪽이 닿았다.");
+	    					System.out.println("아래쪽이 닿았다.");
 	    					myy = myy + 400;
 	    					if(myspeed>4) {
 	    						myy = myy + 300;
@@ -1581,7 +1550,7 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 			
 			
 		case 4: //죽은 경우
-			if(dCnt2>=500) {
+			if(dCnt2>=150) {
 				System.out.println("사망 모션----");
 				myDeath2=true;
 				status=3;
@@ -1619,14 +1588,14 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 	    					}
 	    				}
 	    				else if((9000<(myx2)-(bkx*100*j) && 10200>(myx2)-(bkx*100*j))&&
-		    					(1200<(myy2)-(bky*100*i) && 10000>(myy2)-(bky*100*i))){//닿은곳이 오른쪽일때 처리
+		    					(1400<(myy2)-(bky*100*i) && 10000>(myy2)-(bky*100*i))){//닿은곳이 오른쪽일때 처리
 //	    					System.out.println("오른쪽이 닿았다.");
 	    					myx2 = myx2 + 400;
 	    					if(myspeed2>4) {
 	    						myx2 = myx2 + 300;
 	    					}
 	    				}
-	    				else if((200<(myx2)-(bkx*100*j) && 10200>(myx2)-(bkx*100*j))&&
+	    				else if((300<(myx2)-(bkx*100*j) && 10200>(myx2)-(bkx*100*j))&&
 	    						(1400<(myy2)-(bky*100*i) && 3800>=(myy2)-(bky*100*i))){//닿은곳이 위쪽일때 처리
 //	    					System.out.println("위쪽이 닿았다.");
 	    					myy2 = myy2 - 400;
@@ -1721,12 +1690,6 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 	//---------------process_MY2 끝---
 	
 	public void process_BUBBLE() {
-		
-		//System.out.println(bubble.size());
-
-		
-		
-		
 		for(int i=0;i<bubble.size();i++) { //플레이어1
 			 Bubble buff = (Bubble)bubble.elementAt(i);
 			 int x=buff.dis.x/52-1;
@@ -1779,9 +1742,6 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 			
 			int x = buff.dis.x;
 			int y = buff.dis.y;
-//			System.out.println("+++++++++");
-//			System.out.println(x);
-//			System.out.println(y);
 			
 			if(buff.cnt>=25) { //물줄기 제거
 				
@@ -1885,7 +1845,7 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 			}
 				
 			else if(from==2) {
-				Bubble bubbles = new Bubble(x, y,waterLength);
+				Bubble bubbles = new Bubble(x, y,waterLength2);
 				bubble2.add(bubbles);
 			}
 				

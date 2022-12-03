@@ -8,6 +8,7 @@
 /ArcadeClientView$Myaction.class
 /ArcadeClientView$RoomBox.class
 /ArcadeClientView.class
+/ArcadeClientWaitRoom$1.class
 /ArcadeClientWaitRoom$ActionReady1.class
 /ArcadeClientWaitRoom$ActionReady2.class
 /ArcadeClientWaitRoom$GameExit.class
@@ -23,4 +24,3 @@
 /Water.class
 /effectSound.class
 /test.class
-/ArcadeClientWaitRoom$1.class
