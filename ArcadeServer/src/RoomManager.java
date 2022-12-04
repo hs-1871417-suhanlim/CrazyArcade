@@ -9,7 +9,7 @@ public class RoomManager {
 	//int roomNum; //방 갯수
 	ArrayList<Room> rooms = new ArrayList();
 	boolean roomExist[] = new boolean[4];
-	int roomId=0; 
+	int roomId; 
 	int roomMax;
 	
 	
@@ -19,9 +19,9 @@ public class RoomManager {
 		this.roomMax = 4;
 	}
 	
-	public boolean makeRoom(String userName, String RoomTitle, Socket client_socket) {
+	public int makeRoom(String userName, String RoomTitle, Socket client_socket) {
 		if(rooms.size()>=roomMax) //방은 네개까지 
-			return false;
+			return -1;
 		
 		for(int i=0;i<roomMax;i++) { //방번호 부여
 			if(roomExist[i]==false) {
@@ -35,7 +35,7 @@ public class RoomManager {
 		
 		rooms.add(room); // room ArrayList에 생성한 방 추가
 		
-		return true;
+		return roomId;
 	}
 	
 

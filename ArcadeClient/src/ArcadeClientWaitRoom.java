@@ -86,6 +86,7 @@ public class ArcadeClientWaitRoom extends JFrame {
 			setResizable(false); //창크기 변경불가
 			setLocationRelativeTo(null);//창 가운데 뜨게
 			getContentPane().setLayout(null);
+			setDefaultCloseOperation(DO_NOTHING_ON_CLOSE); //창닫기 못하게 막음
 			
 			contentPane = new JPanel() {//배경화면 설정
 				 public void paintComponent(Graphics g) {
@@ -213,7 +214,7 @@ public class ArcadeClientWaitRoom extends JFrame {
 		this.roomUserList = roomUserList;
 		playerName1.setText(roomUserList[0]);
 		playerName1.setText(roomUserList[1]);
-		this.repaint();
+		//this.repaint();
 	}
 	
 	class ActionReady1 implements ActionListener  //player1의 레디버튼

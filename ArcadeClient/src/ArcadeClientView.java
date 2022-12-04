@@ -240,55 +240,88 @@ public class ArcadeClientView extends JFrame {
 						//들어오는 msg-data는 "유저1++유저2++방제목" 이런 형태
 					
 						String[] buff= cm.data.split("\\++");
-
-						System.out.println("========");
-						System.out.println(UserName);
 						
-						int userCnt = buff.length-1; //유저 수
-						
-						roomUserList=new String[userCnt];
-						
-						
-						//roomUserList = cm.data.split(" ");
-						for(int i=0;i<buff.length;i++) { //test
+						if(buff[1].equals(UserName)) { //2p 인 경우 - - - - - - - - 
+							int userCnt = buff.length-1; //유저 수
 							
-							if(i==buff.length-1) //마지막은 방제목
-								roomTitle = buff[i];
-							else
-								roomUserList[i]=buff[i];
+							roomUserList=new String[userCnt];
+							
+							
+							//roomUserList = cm.data.split(" ");
+							for(int i=0;i<buff.length;i++) { //test
+								
+								if(i==buff.length-1) //마지막은 방제목
+									roomTitle = buff[i];
+								else
+									roomUserList[i]=buff[i];
+							}
+							waitRoom = new ArcadeClientWaitRoom(roomId, roomTitle, roomUserList, clientView);
+							break;
 						}
-						waitRoom = new ArcadeClientWaitRoom(roomId, roomTitle, roomUserList, clientView);
+						else if(buff[0].equals(UserName)) { // 1p 인경우 - - 업데이트 필요
+							int roomIdBuff = Integer.parseInt(cm.code.substring(2)); //방번호 떼옴
+							
+							//방번호 검사할라고 햇던건데 나가기기능 빼면 사실상 필요 없을듯..
+//							if(roomId != roomIdBuff)
+//								break;
 						
-						break;
+							//들어오는 msg-data는 "유저1++유저2++방제목" 이런 형태
+						
+//							String[] buff1= cm.data.split("\\++");
+//
+//							System.out.println("========");
+//							System.out.println(UserName);
+							
+							int userCnt = buff.length-1; //유저 수
+							
+							roomUserList=new String[userCnt];
+							
+							
+							//roomUserList = cm.data.split(" ");
+							for(int i=0;i<buff.length;i++) { //test
+								
+								if(i==buff.length-1) //마지막은 방제목
+									roomTitle = buff[i];
+								else
+									roomUserList[i]=buff[i];
+							}
+							waitRoom.update(roomIdBuff, roomTitle, roomUserList, clientView);
+						}
+
+//						System.out.println("========");
+//						System.out.println(UserName);
+						
+						
+					
 					case "510", "511", "512", "513": //방 정보 (방하나) 업데이트 프로토콜
 						
 					
-						int roomIdBuff = Integer.parseInt(cm.code.substring(2)); //방번호 떼옴
-					
-						if(roomId != roomIdBuff)
-							break;
-					
-						//들어오는 msg-data는 "유저1++유저2++방제목" 이런 형태
-					
-						String[] buff1= cm.data.split("\\++");
-
-						System.out.println("========");
-						System.out.println(UserName);
-						
-						int userCnt1 = buff1.length-1; //유저 수
-						
-						roomUserList=new String[userCnt1];
-						
-						
-						//roomUserList = cm.data.split(" ");
-						for(int i=0;i<buff1.length;i++) { //test
-							
-							if(i==buff1.length-1) //마지막은 방제목
-								roomTitle = buff1[i];
-							else
-								roomUserList[i]=buff1[i];
-						}
-						waitRoom.update(roomIdBuff, roomTitle, roomUserList, clientView);
+//						int roomIdBuff = Integer.parseInt(cm.code.substring(2)); //방번호 떼옴
+//					
+//						if(roomId != roomIdBuff)
+//							break;
+//					
+//						//들어오는 msg-data는 "유저1++유저2++방제목" 이런 형태
+//					
+//						String[] buff1= cm.data.split("\\++");
+//
+//						System.out.println("========");
+//						System.out.println(UserName);
+//						
+//						int userCnt1 = buff1.length-1; //유저 수
+//						
+//						roomUserList=new String[userCnt1];
+//						
+//						
+//						//roomUserList = cm.data.split(" ");
+//						for(int i=0;i<buff1.length;i++) { //test
+//							
+//							if(i==buff1.length-1) //마지막은 방제목
+//								roomTitle = buff1[i];
+//							else
+//								roomUserList[i]=buff1[i];
+//						}
+//						waitRoom.update(roomIdBuff, roomTitle, roomUserList, clientView);
 						//waitRoom = new ArcadeClientWaitRoom(roomId, roomTitle, roomUserList, clientView);
 						
 						break;
