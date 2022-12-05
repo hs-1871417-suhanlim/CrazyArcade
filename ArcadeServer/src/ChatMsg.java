@@ -12,6 +12,11 @@ class ChatMsg implements Serializable {
 	public ImageIcon img;
 	public MouseEvent mouse_e;
 	public int pen_size; // pen size
+	
+	//게임관련
+	public char keyChar;
+	public int keyCode;
+	public int extendedKeyCode;
 
 	public ChatMsg(String UserName, String code, String msg) {
 		this.code = code;

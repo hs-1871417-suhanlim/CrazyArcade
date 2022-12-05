@@ -49,8 +49,6 @@ public class ArcadeClientWaitRoom extends JFrame {
 		ImageIcon readyBTN = new ImageIcon("./roomIMG/waitRoom/ready.png");
 		ImageIcon readyBTN2 = new ImageIcon("./roomIMG/waitRoom/ready2.png");
 		
-		ImageIcon closeBTN = new ImageIcon("./roomIMG/waitRoom/closeBTN.png");
-		ImageIcon closeBTN2 = new ImageIcon("./roomIMG/waitRoom/closeBTN2.png");
 		
 		ImageIcon startBTN = new ImageIcon("./connectIMG/start.png");
 		ImageIcon startBTN2 = new ImageIcon("./connectIMG/start2.png");
@@ -194,25 +192,14 @@ public class ArcadeClientWaitRoom extends JFrame {
 			//gameStartButton.setText("게임 시작");
 			getContentPane().add(gameStartButton);
 			
-			//나가기 버튼
-			JButton gameExitButton = new JButton(closeBTN);
-			gameExitButton.setRolloverIcon(closeBTN2);//버튼에 마우스 올라가면 이미지 변경
-			gameExitButton.setBorderPainted(false);// 버튼 테두리 설정해제
-			gameExitButton.setLocation(600,10);
-			gameExitButton.setSize(39,34);
-			//gameExitButton.setText("나가기");
-			getContentPane().add(gameExitButton);
-			
-			
+
 			//이벤트 처리
 			ActionReady1 actionReady1 = new ActionReady1();
 			ActionReady2 actionReady2 = new ActionReady2();
 			GameStart gameStart = new GameStart();
-			GameExit gameExit = new GameExit();
 			ready1.addActionListener(actionReady1);
 			ready2.addActionListener(actionReady2);
 			gameStartButton.addActionListener(gameStart);
-			gameExitButton.addActionListener(gameExit);
 			
 			
 	}
@@ -310,26 +297,6 @@ public class ArcadeClientWaitRoom extends JFrame {
 	}
 	
 	
-	class GameExit implements ActionListener 
-	{
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if(p1) { //1번플레이어인경우
-				String protocol = "81" + roomId;
-				String data = ("player1이" + roomId +" 번 방에서 나갔습니다.");
-				ChatMsg msg = new ChatMsg(clientView.UserName, protocol ,data); 
-				clientView.SendObject(msg);
-				setVisible(false);
-			}
-			else if(!p1) { //2번플레이어인경우
-				String protocol = "82" + roomId;
-				String data = ("player2가" + roomId +" 번 방에서 나갔습니다.");
-				ChatMsg msg = new ChatMsg(clientView.UserName, protocol ,data); 
-				clientView.SendObject(msg);
-				setVisible(false);
-			}
-		}
-	}
 
 
 

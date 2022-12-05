@@ -33,7 +33,8 @@ public class ArcadeClientView extends JFrame {
 	int maxRoomCnt=4;
 	RoomBox roombox[] = new RoomBox[maxRoomCnt];
 	
-	int roomId; //client가 입장하는 방 번호
+	int roomId = -1; //client가 입장하는 방 번호
+	int roomIdBuff;
 	String roomUserList[]; //해당 client가 입장한 방 유저 리스트 
 	String roomTitle; //client가 입장하는 방 제목
 	
@@ -275,13 +276,9 @@ public class ArcadeClientView extends JFrame {
 					
 						String[] buff1= cm.data.split("\\++");
 					
-						System.out.println("test");
-						System.out.println(buff1[0]);
-						System.out.println(buff1[1]);
-						System.out.println(buff1[2]);
 						
 						if(buff1[0].equals(UserName)) { // 1p 인경우 - - 업데이트 필요
-							int roomIdBuff = Integer.parseInt(cm.code.substring(2)); //방번호 떼옴
+							roomIdBuff = Integer.parseInt(cm.code.substring(2)); //방번호 떼옴
 							
 							//방번호 검사 - 유저 이름 중복이 없다면 필요 없는 부분이긴 함
 							if(roomId!=roomIdBuff)
@@ -314,7 +311,15 @@ public class ArcadeClientView extends JFrame {
 						 "613", "623": //레디 관련 
 					
 					
-						int roomIdBuff = Integer.parseInt(cm.code.substring(2)); // 방 번호
+							 try {
+								 if(roomUserList.length==1) //사용자가 한 명밖에 없으면 레디 못하게 막음
+										break;
+							 }catch (Exception e) {
+								 break;
+							 }
+						
+							 
+						roomIdBuff = Integer.parseInt(cm.code.substring(2)); // 방 번호
 					
 						if(roomId != roomIdBuff) //본인 방 이야기 아니면 지나감
 							break;
@@ -322,28 +327,72 @@ public class ArcadeClientView extends JFrame {
 					
 						char player = (cm.code.charAt(1)); //어느 플레이어가 눌렀나
 						String howReady = cm.data;
+						
+						
 						waitRoom.updateReady(player, howReady );
 						
 						break;
 						
 						case "700", "701", "702", "703": //게임시작 프로토콜
 							
-							String buff2[] = cm.code.split("");
-							int roomIdBuff2 = Integer.parseInt(buff2[2]); //방번호
 							
-							if(roomId == roomIdBuff2) //자신의 방에서 게임이 시작되면 게임 시작
+							
+							String buff2[] = cm.code.split("");
+							roomIdBuff = Integer.parseInt(buff2[2]); //방번호
+							
+							if(roomId == roomIdBuff) //자신의 방에서 게임이 시작되면 게임 시작
 								gameView = waitRoom.gameStart();
+							
+								waitRoom.setVisible(false);
 							
 							
 							break;
+						case "800", "801", "802", "803": //keypressed
+							
+						roomIdBuff = Integer.parseInt(cm.code.substring(2)); // 방 번호
 						
-					case "900": //키보드 누를때
-						gameView.keyPressedEvent(cm);
-						break;
-					case "1000": //키보드 뗄 때
-						gameView.keyReleasedEvent(cm);
+						if(roomIdBuff == roomId) //본인방이면
+							gameView.netKeyPressed(cm);
+							 
+							 break;
+						case "900", "901", "902", "903": //keypressed
+							
+						roomIdBuff = Integer.parseInt(cm.code.substring(2)); // 방 번호
 						
-						break;
+						if(roomIdBuff == roomId) //본인방이면
+							gameView.netKeyReleased(cm);
+							 
+							 break;
+						case "1000", "1001", "1002", "1003": //keypressed
+							
+							roomIdBuff = Integer.parseInt(cm.code.substring(2)); // 방 번호
+							
+							if(roomIdBuff == roomId) //본인방이면
+								gameView.deathEvent(cm);
+								 
+								 break;	 
+								 
+						case "1200", "1201", "1202", "1203": //게임 종료
+							
+							//유저가 담고있는 방 정보 초기화
+							roomId = -1;
+							roomUserList = null;
+							roomTitle = null;
+							waitRoom = null;
+							
+							
+							
+							gameView = null;
+							
+								 break;	
+						
+//					case "900": //키보드 누를때
+//						gameView.keyPressedEvent(cm);
+//						break;
+//					case "1000": //키보드 뗄 때
+//						gameView.keyReleasedEvent(cm);
+//						
+//						break;
 					
 					
 					}
@@ -364,12 +413,21 @@ public class ArcadeClientView extends JFrame {
 		}
 	}
 	
-	class Myaction implements ActionListener // 내부클래스로 액션 이벤트 처리 클래스
+	class Myaction implements ActionListener //방만들기
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-			MakeRoomView view = new MakeRoomView(clientView, UserName);
+			if(roomId == 0 || roomId == 1 || roomId == 2 || roomId == 2) { 
+				//이미 방에 들어가있다면 방생성X
+				return;
+			}
+			else{
+				MakeRoomView view = new MakeRoomView(clientView, UserName);
+			}
+				
+			
+		
 
 		}
 	}
@@ -434,6 +492,11 @@ public class ArcadeClientView extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			
+			if(roomId == 0 || roomId == 1 || roomId == 2 || roomId == 2) { 
+				//이미 방에 들어가있다면 못들어가게
+				return;
+			}
 
 			JButton roomBox = (JButton) e.getSource();
 			System.out.println(roomBox.getClass());
@@ -450,6 +513,11 @@ public class ArcadeClientView extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			
+			if(roomId == 0 || roomId == 1 || roomId == 2 || roomId == 2) { 
+				//이미 방에 들어가있다면 못들어가게
+				return;
+			}
 
 			JButton roomBox = (JButton) e.getSource();
 			
@@ -465,6 +533,11 @@ public class ArcadeClientView extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			
+			if(roomId == 0 || roomId == 1 || roomId == 2 || roomId == 2) { 
+				//이미 방에 들어가있다면 못들어가게
+				return;
+			}
 
 			JButton roomBox = (JButton) e.getSource();
 			System.out.println(roomBox.getClass());
@@ -481,6 +554,11 @@ public class ArcadeClientView extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			
+			if(roomId == 0 || roomId == 1 || roomId == 2 || roomId == 2) { 
+				//이미 방에 들어가있다면 못들어가게
+				return;
+			}
 
 			JButton roomBox = (JButton) e.getSource();
 			System.out.println(roomBox.getClass());
