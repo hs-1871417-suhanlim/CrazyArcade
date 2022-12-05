@@ -33,6 +33,11 @@ public class ArcadeClientWaitRoom extends JFrame {
 	JLabel playerName1;
 	JLabel playerName2;
 	
+	ImageIcon readyTrue = new ImageIcon("./roomIMG/waitRoom/readied.png");
+	ImageIcon readyFalse = new ImageIcon("./roomIMG/waitRoom/ready.png");
+	
+	JButton ready1;
+	JButton ready2;
 
 	public ArcadeClientWaitRoom(int roomId, String roomTitle, String[] UserList, ArcadeClientView clientView) { //생성자
 		
@@ -141,21 +146,23 @@ public class ArcadeClientWaitRoom extends JFrame {
 				playerName2.setText("유저를 기다리는 중.......");
 			getContentPane().add(playerName2);
 			
-			//player2 버튼
-			JButton ready2 = new JButton(readyBTN);
-			ready2.setBorderPainted(false);// 버튼 테두리 설정해제
-			ready2.setLocation(515,300);
-			ready2.setSize(110,36);
-			//ready2.setText("ready2");
-			getContentPane().add(ready2);
+
 			
 			//player1 버튼
-			JButton ready1 = new JButton(readyBTN);
+			ready1 = new JButton(readyBTN);
 			ready1.setBorderPainted(false);// 버튼 테두리 설정해제
 			ready1.setLocation(60,300);
 			ready1.setSize(110,36);
 			//ready1.setText("ready1");
 			getContentPane().add(ready1);
+			
+			//player2 버튼
+			ready2 = new JButton(readyBTN);
+			ready2.setBorderPainted(false);// 버튼 테두리 설정해제
+			ready2.setLocation(515,300);
+			ready2.setSize(110,36);
+			//ready2.setText("ready2");
+			getContentPane().add(ready2);
 			
 			
 			//user2 이미지
@@ -209,12 +216,31 @@ public class ArcadeClientWaitRoom extends JFrame {
 			
 			
 	}
-	public void update(int roomId, String roomTitle, String[] roomUserList, ArcadeClientView clientView) {
-		// TODO Auto-generated method stub
+	public void updateName(int roomId, String roomTitle, String[] roomUserList, ArcadeClientView clientView) {
+		//System.out.println("update");
 		this.roomUserList = roomUserList;
-		playerName1.setText(roomUserList[0]);
-		playerName1.setText(roomUserList[1]);
-		//this.repaint();
+		//playerName1.setText(roomUserList[0]);
+		playerName2.setText(roomUserList[1]);
+	}
+	public void updateReady(char player, String howReady) {
+		System.out.println("update ready");
+		
+		if(player == '1') { // player1이 누른 경우
+			if(howReady.equals("true")) {
+				ready1.setIcon(readyTrue);
+			}
+			else {
+				ready1.setIcon(readyFalse);
+			}
+		}
+		else {// player2이 누른 경우
+			if(howReady.equals("true")) {
+				ready2.setIcon(readyTrue);
+			}
+			else {
+				ready2.setIcon(readyFalse);
+			}
+		}
 	}
 	
 	class ActionReady1 implements ActionListener  //player1의 레디버튼
@@ -224,23 +250,14 @@ public class ArcadeClientWaitRoom extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if(p1) { //1번플레이어인경우
 				
+				ready=!ready;
+				
 				String protocol = "61" + roomId;
-				String data = ("player1이" + roomId +" 번 방에서 레디버튼을 눌렀습니다.");
+				String data = (String.valueOf(ready)); //ready가 true면 "true"로, false면 "false"로
 				ChatMsg msg = new ChatMsg(clientView.UserName, protocol ,data); 
 				clientView.SendObject(msg);
 				
-				ready=!ready;
-				
-				if(ready) {
-					ImageIcon readied = new ImageIcon("./roomIMG/waitRoom/readied.png");
-					JButton btn = (JButton) e.getSource();
-					btn.setIcon(readied);
-				}
-				else {
-					ImageIcon readied = new ImageIcon("./roomIMG/waitRoom/ready.png");
-					JButton btn = (JButton) e.getSource();
-					btn.setIcon(readied);
-				}
+			
 			}
 			
 		}
@@ -251,23 +268,13 @@ public class ArcadeClientWaitRoom extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if(!p1) { //2번플레이어인경우
 				
-				String protocol = "62" + roomId;
-				String data = ("player2가" + roomId +" 번 방에서 레디버튼을 눌렀습니다.");
-				ChatMsg msg = new ChatMsg(clientView.UserName, protocol ,data); 
-				clientView.SendObject(msg);
-				
 				ready=!ready;
 				
-				if(ready) {
-					ImageIcon readied = new ImageIcon("./roomIMG/waitRoom/readied.png");
-					JButton btn = (JButton) e.getSource();
-					btn.setIcon(readied);
-				}
-				else {
-					ImageIcon readied = new ImageIcon("./roomIMG/waitRoom/ready.png");
-					JButton btn = (JButton) e.getSource();
-					btn.setIcon(readied);
-				}
+				String protocol = "62" + roomId;
+				String data = (String.valueOf(ready)); //ready가 true면 "true"로, false면 "false"로
+				ChatMsg msg = new ChatMsg(clientView.UserName, protocol ,data); 
+				clientView.SendObject(msg);
+
 			}
 		}
 	}
@@ -280,13 +287,11 @@ public class ArcadeClientWaitRoom extends JFrame {
 			String protocol = "70" + Integer.toString(roomId); //700, 701, 702, 703
 			
 			
-			
 			if(p1) {
 				name = roomUserList[0];
 			}else {
 				name = roomUserList[1];
 			}
-				
 				
 			
 			String data = (clientView.UserName + "이가" + roomId +" 번 방에서 게임시작을 하려고 합니다.");
@@ -295,21 +300,13 @@ public class ArcadeClientWaitRoom extends JFrame {
 			ChatMsg msg2 = new ChatMsg(clientView.UserName, protocol ,data); 
 			clientView.SendObject(msg2);
 			
-			//테스트
-			//gameView = new ArcadeClientGameView(clientView, roomId, p1);
-			
-			//gameView = new ArcadeClientGameView(clientView, roomId, true);  //1P
-			//gameView = new ArcadeClientGameView(clientView, roomId, false);  //2P
-			
-			//String protocol = "62" + roomId;
-			
-			
 		}
 	}
 
-	public void gameStart() {
+	public ArcadeClientGameView gameStart() {
 		// TODO Auto-generated method stub
 		ArcadeClientGameView gameView = new ArcadeClientGameView(clientView, roomId, p1);
+		return gameView;
 	}
 	
 	

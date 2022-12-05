@@ -440,10 +440,11 @@ public class ArcadeServer extends JFrame {
 									//----------------------------------------
 									
 									//기존 1p에게 방정보 업데이트
-									
-									
-									
 									//새로운 user가 들어왔으니 기존 user에게 정보 보내줌
+									protocol = Integer.toString(510+roomId); //510, 511, 512, 513
+									cm = new ChatMsg("Server", protocol, buff1);
+									WriteAllObject(cm);
+									
 									
 //									for(int i=0;i<roomManager.rooms.size();i++) {
 //										String data = (roomManager.rooms.get(i).RoomTitle + "+     +"+
@@ -474,8 +475,36 @@ public class ArcadeServer extends JFrame {
 						roomManager.rooms.get(roomId).roomUsers.get(userId).ready
 						=!roomManager.rooms.get(roomId).roomUsers.get(userId).ready;
 						
+						String data = (String.valueOf(roomManager.rooms.get(roomId).roomUsers.get(userId).ready));
+						
+						cm = new ChatMsg("Server", cm.code, data);
+						WriteAllObject(cm);
+						
 						
 						}
+					
+					else if(cm.code.matches("70(.)")) { //시작 관련
+						String buff[] = cm.code.split("");
+						int roomId = Integer.parseInt(buff[2]); // 넘어온 방번호
+						
+						//레디여부를 따짐 - 둘다 레디상태라면 프로토콜 그대로 보내줌
+						if(roomManager.rooms.get(roomId).roomUsers.get(0).ready &&
+								roomManager.rooms.get(roomId).roomUsers.get(1).ready) {
+							String protocol = "70" + Integer.toString(roomId);
+							cm = new ChatMsg("Server", protocol, "게임시작");
+							WriteAllObject(cm);
+//							try {
+//								for(int i=0;i<roomManager.rooms.get(roomId).socketUser.size();i++) {
+//									WriteOneObject(cm);
+//								}
+//							}
+//							catch(Exception e) {
+//								
+//							}
+							
+						}
+					}
+					
 					else if(cm.code.matches("8(.*)")) { //정규표현식 8nn - 나가기 관련 
 						
 						// 821  <- player2가 1번방에서 레디버튼을 누름
@@ -494,31 +523,7 @@ public class ArcadeServer extends JFrame {
 						
 					}
 					
-					else if(cm.code.matches("70(.)")) {
-						String buff[] = cm.code.split("");
-						int roomId = Integer.parseInt(buff[2]); // 넘어온 방번호
-						
-						if(roomManager.rooms.get(roomId).roomUsers.get(0).ready &&
-								roomManager.rooms.get(roomId).roomUsers.get(1).ready) {
-							String protocol = "70" + Integer.toString(roomId);
-							cm = new ChatMsg("Server", protocol, "게임시작");
-							
-							try {
-								for(int i=0;i<roomManager.rooms.get(roomId).socketUser.size();i++) {
-									WriteOneObject(cm);
-								}
-							}
-							catch(Exception e) {
-								
-							}
-							
-							
-							
-						}
-						
-						
 					
-					}
 					
 //					else if (cm.code.matches("400")) { // logout message 처리
 //						Logout();
