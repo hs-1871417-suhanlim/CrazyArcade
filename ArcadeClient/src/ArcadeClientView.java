@@ -374,26 +374,21 @@ public class ArcadeClientView extends JFrame {
 								 
 						case "1200", "1201", "1202", "1203": //게임 종료
 							
+							roomIdBuff = Integer.parseInt(cm.code.substring(3)); // 방 번호
+						
+						if(roomIdBuff == roomId) {
 							//유저가 담고있는 방 정보 초기화
 							roomId = -1;
 							roomUserList = null;
 							roomTitle = null;
 							waitRoom = null;
 							
-							
+						}
 							
 							gameView = null;
 							
-								 break;	
-						
-//					case "900": //키보드 누를때
-//						gameView.keyPressedEvent(cm);
-//						break;
-//					case "1000": //키보드 뗄 때
-//						gameView.keyReleasedEvent(cm);
-//						
-//						break;
-					
+								 break;		
+
 					
 					}
 				} catch (IOException e) {

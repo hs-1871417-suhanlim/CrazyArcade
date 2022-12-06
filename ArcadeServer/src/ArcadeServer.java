@@ -561,7 +561,7 @@ public class ArcadeServer extends JFrame {
 				        }
 						
 						AppendText(cm.UserName +"가" + cm.data);
-						WriteOneObject(cm); //그대로 보내줌
+						WriteAllObject(cm); //그대로 보내줌
 						
 					}
 					
