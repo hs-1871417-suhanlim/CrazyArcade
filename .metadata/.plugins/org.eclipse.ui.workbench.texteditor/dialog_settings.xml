@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="process"/>
+		<item key="selection" value="effect"/>
 		<item key="wrap" value="false"/>
 		<item key="casesensitive" value="true"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="effect"/>
+			<item value="process_RESULT"/>
+			<item value="1P 패배"/>
+			<item value="물풍선"/>
+			<item value="process_MY"/>
+			<item value="캐릭터 사망"/>
+			<item value="게임종료 이벤트 관련"/>
+			<item value="myx&gt;=bkx*(j)*100)&amp;&amp;(myy&gt;=(bky+1)*(i)*100)&amp;&amp;"/>
+			<item value="gameView"/>
+			<item value="roomId"/>
+			<item value=" roomId"/>
+			<item value="roomid"/>
 			<item value="process"/>
 			<item value="keybuff"/>
 			<item value="keyprocess"/>
-			<item value="run"/>
-			<item value="BUBBLE_PRESSED"/>
-			<item value="System.out.println"/>
-			<item value="keyprocess()"/>
-			<item value="myx"/>
-			<item value="myx2"/>
-			<item value="System.out"/>
-			<item value="["/>
-			<item value="I2"/>
-			<item value="현재속도"/>
-			<item value="System"/>
-			<item value="system.out"/>
 		</list>
 		<list key="replacehistory">
 			<item value="ArcadeClientMain"/>
@@ -31,8 +31,8 @@
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="1274"/>
-		<item key="DIALOG_Y_ORIGIN" value="-42"/>
+		<item key="DIALOG_X_ORIGIN" value="1135"/>
+		<item key="DIALOG_Y_ORIGIN" value="49"/>
 		<item key="DIALOG_WIDTH" value="286"/>
 		<item key="DIALOG_HEIGHT" value="456"/>
 		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>

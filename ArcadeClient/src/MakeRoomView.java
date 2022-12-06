@@ -78,6 +78,7 @@ public class MakeRoomView extends JFrame {
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			new effectSound("./music/click.wav");
 			String RoomTitle = txtRoomName.getText().trim(); //Label에게서 값 알아내기
 			
 			

@@ -135,20 +135,17 @@ public class ArcadeClientMain extends JFrame{
 		txtIpAddress.addActionListener(action);
 		txtPortNumber.addActionListener(action);
 		
-		
-		
 	}
 	class Myaction implements ActionListener // 내부클래스로 액션 이벤트 처리 클래스
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			new effectSound("./music/click.wav");
 			String username = txtUserName.getText().trim();
 			String ip_addr = txtIpAddress.getText().trim();
 			String port_no = txtPortNumber.getText().trim();
 			
 			ArcadeClientView view = new ArcadeClientView(username, ip_addr, port_no);
-			
-			//ArcadeClientGameView view = new ArcadeClientGameView(username, ip_addr, port_no);
 			setVisible(false);
 		}
 	}

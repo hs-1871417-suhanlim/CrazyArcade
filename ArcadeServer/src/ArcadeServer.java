@@ -316,29 +316,29 @@ public class ArcadeServer extends JFrame {
 					} else
 						continue;
 					
-//client로부터 들어온 프로토콜에 따라 처리하는 구간 ---------------------------------------------
+               //client로부터 들어온 프로토콜에 따라 처리하는 구간 ---------------------------------------------
 					
 					if(cm.code.matches("999")) { //테스트 프로토콜
 						AppendText(cm.data);
 					}
 					
-					if(cm.code.matches("900")) { // key pressed protocol
-						AppendText(cm.data);
-						AppendText(cm.code);
-						AppendText(cm.UserName);
-						
-						ChatMsg newMsg = new ChatMsg(cm.UserName, "900", cm.data);
-						WriteAllObject(newMsg);
-					}
-					if(cm.code.matches("1000")) { // key Released protocol
-						AppendText(cm.data);
-						AppendText(cm.code);
-						AppendText(cm.UserName);
-						
-						ChatMsg newMsg = new ChatMsg(cm.UserName, "1000", cm.data);
-						WriteAllObject(newMsg);
-					}
-					
+//					if(cm.code.matches("900")) { // key pressed protocol
+//						AppendText(cm.data);
+//						AppendText(cm.code);
+//						AppendText(cm.UserName);
+//						
+//						ChatMsg newMsg = new ChatMsg(cm.UserName, "900", cm.data);
+//						WriteAllObject(newMsg);
+//					}
+//					if(cm.code.matches("1000")) { // key Released protocol
+//						AppendText(cm.data);
+//						AppendText(cm.code);
+//						AppendText(cm.UserName);
+//						
+//						ChatMsg newMsg = new ChatMsg(cm.UserName, "1000", cm.data);
+//						WriteAllObject(newMsg);
+//					}
+//					
 					if (cm.code.matches("100")) { //로그인
 						UserName = cm.UserName;
 						UserStatus = "O"; // Online 상태
@@ -359,15 +359,32 @@ public class ArcadeServer extends JFrame {
 						msg = String.format("[%s] %s", cm.UserName, cm.data);
 						AppendText(msg); // server 화면에 출력
 						
-						if(roomManager.makeRoom(cm.UserName, cm.data, client_socket)) { //방 만들기 성공
-							for(int i=0;i<roomManager.rooms.size();i++) { // 새로운 방 업데이트
+						int roomId = roomManager.makeRoom(cm.UserName, cm.data, client_socket);
+						
+						if(roomId != -1){ //방 만들기 성공
+							
+							
+							
+							for(int i=0;i<4;i++) { // 새로운 방 업데이트
 								
-								String data = (roomManager.rooms.get(i).RoomTitle + "+     +"+
-										roomManager.rooms.get(i).roomId); //+공백다섯개+ 로 구분
-								cm = new ChatMsg("Server", "300", data);
-								WriteAllObject(cm);			
+								if(roomManager.roomExist[i]==true) {
+									String data = (roomManager.rooms.get(i).RoomTitle + "+     +"+
+											roomManager.rooms.get(i).roomId); //+공백다섯개+ 로 구분
+									cm = new ChatMsg("Server", "300", data);
+									WriteAllObject(cm);	
+								}
+								
+										
 							}
-							int roomId = roomManager.rooms.size()-1; //방금 만들어준 방이니 이렇게 하면 roomId나옴 
+							
+//							for(int i=0;i<roomManager.rooms.size();i++) { // 새로운 방 업데이트
+//								
+//								String data = (roomManager.rooms.get(i).RoomTitle + "+     +"+
+//										roomManager.rooms.get(i).roomId); //+공백다섯개+ 로 구분
+//								cm = new ChatMsg("Server", "300", data);
+//								WriteAllObject(cm);			
+//							}
+							//int roomId = roomManager.rooms.size()-1; //방금 만들어준 방이니 이렇게 하면 roomId나옴 
 																	 //기존 방 개수로 id를 부여하기 때문에
 							
 							
@@ -384,11 +401,7 @@ public class ArcadeServer extends JFrame {
 							}
 							
 							buff+=roomManager.rooms.get(roomId).RoomTitle; //마지막에 방제목 붙여줌
-							
-							System.out.println("===================");
-							System.out.println(buff);
-							System.out.println("===================");
-							
+
 							cm = new ChatMsg("Server", protocol, buff);
 							WriteOneObject(cm);
 							
@@ -397,7 +410,75 @@ public class ArcadeServer extends JFrame {
 							//404 프로토콜을 보내줘서 더이상 못만든다고 알려줄까 싶음
 							
 						}
-					} else if(cm.code.matches("6(.*)")) { //정규표현식 6nn - 레디 관련 
+					}else if(cm.code.matches("40(.)")) { // 40n - 버튼으로 입장 관련
+						String buff[] = cm.code.split("");
+						int roomId = Integer.parseInt(buff[2]); // 넘어온 방번호
+						
+						 try {
+							 roomManager.rooms.get(roomId); //해당 번호의 방이 있는지 확인
+					            
+					        } catch (Exception e) {
+					        	cm = new ChatMsg("Server", "404", "방없음");
+					        	WriteOneObject(cm);		
+					        	AppendText(roomId+" 번 방이 없습니다.");
+//					            break;
+					        }
+						 
+						 try {
+							 if(roomManager.rooms.get(roomId).roomUsers.size()>=2) { 
+								 cm = new ChatMsg("Server", "404", "방 꽉 찼음");
+						        	WriteOneObject(cm);		
+									AppendText(roomId+" 번 방이 꽉 찼습니다.");
+								}
+							 else{//방입장 허가 
+								 
+								 //방입장 시도한 client에게 보냄--------------------------------------
+								 
+									roomManager.rooms.get(roomId).addUser(UserName,client_socket); //유저 추가
+									
+									String protocol = Integer.toString(500+roomId); //500, 501, 502, 503
+									
+									String buff1="";
+
+
+									for(int i=0;i<roomManager.rooms.get(roomId).roomUsers.size();i++) {
+										buff1+= roomManager.rooms.get(roomId).roomUsers.get(i).userName;
+										buff1+="++"; 
+									}
+									
+									buff1+=roomManager.rooms.get(roomId).RoomTitle; //마지막에 방제목 붙여줌
+									
+									
+									cm = new ChatMsg("Server", protocol, buff1);
+									WriteOneObject(cm);
+									
+									//----------------------------------------
+									
+									//기존 1p에게 방정보 업데이트
+									//새로운 user가 들어왔으니 기존 user에게 정보 보내줌
+									protocol = Integer.toString(510+roomId); //510, 511, 512, 513
+									cm = new ChatMsg("Server", protocol, buff1);
+									WriteAllObject(cm);
+									
+									
+//									for(int i=0;i<roomManager.rooms.size();i++) {
+//										String data = (roomManager.rooms.get(i).RoomTitle + "+     +"+
+//												roomManager.rooms.get(i).roomId); //+공백다섯개+ 로 구분
+//										cm = new ChatMsg("Server", "300", data);
+//										WriteAllObject(cm);			
+//									}
+									
+								}
+					            
+					        } catch (Exception e) {
+					        	
+					        }
+						
+						
+						
+					}
+					
+					else if(cm.code.matches("6(.*)")) { //정규표현식 6nn - 레디 관련 
 						
 						// 621  <- player2가 1번방에서 레디버튼을 누름
 						
@@ -409,28 +490,109 @@ public class ArcadeServer extends JFrame {
 						roomManager.rooms.get(roomId).roomUsers.get(userId).ready
 						=!roomManager.rooms.get(roomId).roomUsers.get(userId).ready;
 						
+						String data = (String.valueOf(roomManager.rooms.get(roomId).roomUsers.get(userId).ready));
+						
+						cm = new ChatMsg("Server", cm.code, data);
+						WriteAllObject(cm);
+						
 						
 						}
-					else if(cm.code.matches("8(.*)")) { //정규표현식 8nn - 나가기 관련 
+					
+					else if(cm.code.matches("70(.)")) { //시작 관련
+						String buff[] = cm.code.split("");
+						int roomId = Integer.parseInt(buff[2]); // 넘어온 방번호
 						
-						// 821  <- player2가 1번방에서 레디버튼을 누름
-						// 유저는 벡터를 통해 순서대로 관리되고 있음 - 유저소켓에서도 제거해줘야함
+						//레디여부를 따짐 - 둘다 레디상태라면 프로토콜 그대로 보내줌
+						if(roomManager.rooms.get(roomId).roomUsers.get(0).ready &&
+								roomManager.rooms.get(roomId).roomUsers.get(1).ready) {
+							String protocol = "70" + Integer.toString(roomId);
+							cm = new ChatMsg("Server", protocol, "게임시작");
+							WriteAllObject(cm);
+							
+						}
+					}
+					else if(cm.code.matches("80(.)")) { //keyPressed
+
+						AppendText(cm.UserName +"가" + cm.data);
+						WriteAllObject(cm); //그대로 보내줌
+						
+					}
+					else if(cm.code.matches("90(.)")) { //keyReleased
+
+						AppendText(cm.UserName +"가" + cm.data);
+						WriteAllObject(cm); //그대로 보내줌
+						
+					}
+					else if(cm.code.matches("100(.)")) { //keyReleased
+
+						AppendText(cm.UserName +"가" + cm.data);
+						WriteAllObject(cm); //그대로 보내줌
+						
+					}
+					else if(cm.code.matches("120(.)")) { // 게임 종료
 						
 						String buff[] = cm.code.split("");
-						int roomId = Integer.parseInt(buff[2]);
-						int userId = Integer.parseInt(buff[1])-1;
+						int roomId = Integer.parseInt(buff[3]); // 넘어온 방번호
 						
-						roomManager.rooms.get(roomId).userExit(userId); //유저 제거
 						
-						roomManager.rooms.get(roomId).roomUpdate(this); //업데이트된 방정보 뿌림
 						
+						try {
+							roomManager.rooms.remove(roomId); //방 없애버림
+							roomManager.roomExist[roomId]=false;
+							
+							for(int i=0;i<4;i++) { // 새로운 방 업데이트
+								
+								if(roomManager.roomExist[i]==true) {
+									String data = (roomManager.rooms.get(i).RoomTitle + "+     +"+
+											roomManager.rooms.get(i).roomId); //+공백다섯개+ 로 구분
+									cm = new ChatMsg("Server", "300", data);
+									WriteAllObject(cm);	
+								}else {
+									String data = ("빈 방"+ "+     +"+
+											i);
+									cm = new ChatMsg("Server", "300", data);
+									WriteAllObject(cm);	
+								}		
+							}
+						}
+						
+						catch (Exception e) {
+				        	
+				        }
+						
+						AppendText(cm.UserName +"가" + cm.data);
+						WriteOneObject(cm); //그대로 보내줌
 						
 					}
 					
-					else if (cm.code.matches("400")) { // logout message 처리
-						Logout();
-						break;
-					} else { // 300, 500, ... 기타 object는 모두 방송한다.
+//					else if(cm.code.matches("1d00(.)")) { //정규표현식 10nn - 나가기 관련 
+//						
+//
+////						
+//						// 821  <- player2가 1번방에서 레디버튼을 누름
+//						// 유저는 벡터를 통해 순서대로 관리되고 있음 - 유저소켓에서도 제거해줘야함
+//						
+//						String buff[] = cm.code.split("");
+//						int roomId = Integer.parseInt(buff[2]);
+//						
+//						//1번player or 2번 player
+//						//1번 플레이어가 먼저 들어온애
+//						int userId = Integer.parseInt(buff[1])-1; 
+//						
+//						roomManager.rooms.get(roomId).userExit(userId); //유저 제거
+//						roomManager.rooms.get(roomId).roomUpdate(this); //업데이트된 방정보 뿌림
+//						
+//						
+//					}
+					
+					
+					
+//					else if (cm.code.matches("400")) { // logout message 처리
+//						Logout();
+//						break;
+//					}
+					
+					else { // 300, 500, ... 기타 object는 모두 방송한다.
 						WriteAllObject(cm);
 					} 
 				} catch (IOException e) {

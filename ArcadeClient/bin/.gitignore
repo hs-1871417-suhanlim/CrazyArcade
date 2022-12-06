@@ -4,6 +4,10 @@
 /ArcadeClientMain$Myaction.class
 /ArcadeClientMain.class
 /ArcadeClientView$1.class
+/ArcadeClientView$EnterAction0.class
+/ArcadeClientView$EnterAction1.class
+/ArcadeClientView$EnterAction2.class
+/ArcadeClientView$EnterAction3.class
 /ArcadeClientView$ListenNetwork.class
 /ArcadeClientView$Myaction.class
 /ArcadeClientView$RoomBox.class
@@ -11,7 +15,6 @@
 /ArcadeClientWaitRoom$1.class
 /ArcadeClientWaitRoom$ActionReady1.class
 /ArcadeClientWaitRoom$ActionReady2.class
-/ArcadeClientWaitRoom$GameExit.class
 /ArcadeClientWaitRoom$GameStart.class
 /ArcadeClientWaitRoom.class
 /Bubble.class
