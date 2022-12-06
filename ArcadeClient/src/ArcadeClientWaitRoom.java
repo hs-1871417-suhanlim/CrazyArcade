@@ -236,7 +236,7 @@ public class ArcadeClientWaitRoom extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(p1) { //1번플레이어인경우
-				
+				new effectSound("./music/click.wav");
 				ready=!ready;
 				
 				String protocol = "61" + roomId;
@@ -249,12 +249,12 @@ public class ArcadeClientWaitRoom extends JFrame {
 			
 		}
 	}
-	class ActionReady2 implements ActionListener  //player1의 레디버튼
+	class ActionReady2 implements ActionListener  //player2의 레디버튼
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(!p1) { //2번플레이어인경우
-				
+				new effectSound("./music/click.wav");
 				ready=!ready;
 				
 				String protocol = "62" + roomId;
@@ -269,7 +269,7 @@ public class ArcadeClientWaitRoom extends JFrame {
 	{
 		@Override 
 		public void actionPerformed(ActionEvent e) { //시작버튼을 누름
-			
+			new effectSound("./music/gameStart.wav");
 			
 			String protocol = "70" + Integer.toString(roomId); //700, 701, 702, 703
 			

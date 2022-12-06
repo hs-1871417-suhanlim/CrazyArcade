@@ -417,6 +417,7 @@ public class ArcadeClientView extends JFrame {
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			new effectSound("./music/click.wav");
 			
 			if(roomId == 0 || roomId == 1 || roomId == 2 || roomId == 2) { 
 				//이미 방에 들어가있다면 방생성X
@@ -492,6 +493,7 @@ public class ArcadeClientView extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			new effectSound("./music/click.wav");
 			
 			if(roomId == 0 || roomId == 1 || roomId == 2 || roomId == 2) { 
 				//이미 방에 들어가있다면 못들어가게
@@ -513,6 +515,7 @@ public class ArcadeClientView extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			new effectSound("./music/click.wav");
 			
 			if(roomId == 0 || roomId == 1 || roomId == 2 || roomId == 2) { 
 				//이미 방에 들어가있다면 못들어가게
@@ -533,6 +536,7 @@ public class ArcadeClientView extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			new effectSound("./music/click.wav");
 			
 			if(roomId == 0 || roomId == 1 || roomId == 2 || roomId == 2) { 
 				//이미 방에 들어가있다면 못들어가게
@@ -554,6 +558,7 @@ public class ArcadeClientView extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			new effectSound("./music/click.wav");
 			
 			if(roomId == 0 || roomId == 1 || roomId == 2 || roomId == 2) { 
 				//이미 방에 들어가있다면 못들어가게

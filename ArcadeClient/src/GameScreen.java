@@ -26,6 +26,7 @@ public class GameScreen extends Canvas {
 	
 	Image win; //승리이미지
 	Image lose; //패배이미지
+	Image draw; //무승부 이미지
 	
 	Image block[]=new Image[12];
 	
@@ -117,11 +118,12 @@ public class GameScreen extends Canvas {
 			
 			Draw_Hide();
 			break;
-		case 4://게임오버
+		case 4:
+			//게임오버
 			
 			break;
 		case 3:
-			Draw_RESULT();
+			Draw_RESULT();//결과
 			break;
 		default:
 			break;
@@ -129,10 +131,13 @@ public class GameScreen extends Canvas {
 	}
 	
 	public void Draw_RESULT(){ //결과화면 그리기
-		if(!main.myDeath) {
+		if(main.isDraw) {//둘다 죽거나 살아있으면 (살아있을리가 없겠지만 오류처리)
+			gc.drawImage(draw, 234, 335, this);
+		}
+		else if(!main.isDraw && !main.myDeath) {//내가 살아있고 상대방이 죽고 무승부상태가 아니면
 			gc.drawImage(win, 217, 315, this);
 		}
-		else if(main.myDeath) {
+		else if(!main.isDraw &&main.myDeath) {//내가 죽고 상대방이 살아있고 무승부 상태가 아니면
 			gc.drawImage(lose, 159, 292, this);
 		}
 	}

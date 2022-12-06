@@ -123,6 +123,7 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 	int scrspeed=16;//스크롤 속도
 	//int level;//게임 레벨
 	
+	boolean isDraw = false;
 	
 	int bkimg; //block1...8 블록이미지
 	int bkx,bky;//타일블록 위치
@@ -166,11 +167,11 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 	
 		int[][] ItemArray = { // 아이템 위치
 				//1 : 스피드      2 : 물줄기      3: 풀풍선 최대 개수
-				{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
-				{0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
 				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0},
 				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0},
-				{0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0},
 				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
 				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0},
 				{0, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 3, 0, 0, 0},
@@ -382,7 +383,6 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
              try {
                  if (this.roof) {
                 	 
-                	 
                 	 //System.out.println(key);
                 	 
                      this.pretime = System.currentTimeMillis();
@@ -449,6 +449,15 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 	public void deathEvent(ChatMsg cm) {
 		
 		System.out.println("게임종료 이벤트 관련");
+		if(!isDraw && myDeath && !myDeath2) {
+			new effectSound("./music/defeat.wav");
+		}
+		else if(!isDraw && !myDeath && myDeath2) {
+			new effectSound("./music/win.wav");
+		}
+		else if(isDraw) {
+			new effectSound("./music/defeat.wav");
+		}
 		
 		if(cm.UserName.equals(clientView.UserName)) { 
 			myDeath = true;
@@ -636,8 +645,7 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 			
 			break;
 		case 3://게임오버
-
-			
+			//process_RESULT();
 			//myDeath=true;
 			
 			if(finalCnt>=270) {
@@ -655,6 +663,7 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 			
 			break;
 		case 4:
+			
 		//아무것도 안 하는 상태
 			break;
 		default:
@@ -1103,6 +1112,8 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 		gamescreen.win=makeImage("./connectIMG/win.png");//승리
 		
 		gamescreen.lose=makeImage("./connectIMG/lose.png");//패배
+		
+		gamescreen.draw=makeImage("./connectIMG/draw.png");//무승부
 
 		//일단 블록 여러 종류로
 		//for(i=0;i<8;i++) gamescreen.block[i]=makeImage("./title/block" + i + ".png"); 
@@ -1294,17 +1305,19 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 	
 	//process-------------------------------------------------------------------
 //	public void process_RESULT(){
-//		if(myDeath) {
+//		if(myDeath && !myDeath2) {
 //			System.out.println("1P 패배");
+//			System.out.println("2P 승리");
 //		}
-//		else if (!myDeath) {
+//		else if(!myDeath && myDeath2) {
 //			System.out.println("1P 승리");
-//		}
-//		if(myDeath2) {
 //			System.out.println("2P 패배");
 //		}
-//		else if(!myDeath2) {
-//			System.out.println("2P 승리");
+//		else if(myDeath && myDeath2){
+//			System.out.println("무승부");
+//		}
+//		else if(!myDeath && !myDeath2) {
+//			System.out.println("무승부");
 //		}
 //	}
 	
@@ -1342,20 +1355,34 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 				myx-=(myspeed*Math.sin(Math.toRadians(mydegree))*99.6);
 				myy-=(myspeed*Math.cos(Math.toRadians(mydegree))*99.6);
 			}
+			if(mymode2 == 3) {
+				if((myx-myx2>-3000 && myx-myx2<3000)&&
+					myy-myy2>-2800 && myy-myy2<2800) {
+					mymode2=4;
+				}
+			}
+			
+//			if((myx-myx2))
 
 			break;
 		case 3: // trap상태
 			if(mydegree>-1) { //키보드 방향대로 속도 맞춰서 이동
 				myx-=(Math.sin(Math.toRadians(mydegree))*50);
 				myy-=(Math.cos(Math.toRadians(mydegree))*50);
+				
 			}
 			
 			
 			if(trapCnt>=300) {//사망모션
-				System.out.println("사망모션 진입--------");
-				
+				System.out.println("1p 사망모션 진입--------");
+				myDeath=true;
 				mymode=4;
 			}
+			
+
+	    	
+
+			
 			
 			trapCnt++;
 			
@@ -1363,8 +1390,14 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 			
 			
 		case 4: 
+			
 			if(dCnt>=150) {
-				System.out.println("사망 -------");
+				//System.out.println("1p 사망 -------");
+				if(myDeath && myDeath2) {
+					isDraw = true;
+					//System.out.println("1P] isDraw = true");
+				}
+//				status=3;
 				String protocol = "100" + Integer.toString(clientView.roomId);
 				ChatMsg cm = new ChatMsg(clientView.UserName, protocol, "death");
 				clientView.SendObject(cm);
@@ -1514,7 +1547,7 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 //	    if(mymode2 == 3) { //상대측이 trap상태인 상황 
 //	    	if( myx>=myx2-500 && myx<=myx2+500 ) {
 //	    		if(myy>=myy2+500 && myy<=myy2-500) {
-//	    			System.out.println("ttttt");
+//	    			System.out.println("2P trap, 1P 닿음");
 //	    		}
 //	    	}
 //	    }
@@ -1547,7 +1580,15 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 			if(mydegree2>-1) { //키보드 방향대로 속도 맞춰서 이동
 				myx2-=(myspeed2*Math.sin(Math.toRadians(mydegree2))*100);
 				myy2-=(myspeed2*Math.cos(Math.toRadians(mydegree2))*100);
+				if(mymode == 3) {
+					if((myx-myx2>-3000 && myx-myx2<3000)&&
+						myy-myy2>-2800 && myy-myy2<2800) {
+						mymode=4;
+					}
+				}
 			}
+			
+			
 
 			break;
 		case 3: // trap상태
@@ -1558,7 +1599,8 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 			
 			
 			if(trapCnt2>=300) {
-				System.out.println("캐릭터 사망--------");
+				System.out.println("2p 사망모션 진입--------");
+				myDeath2=true;
 				mymode2=4;
 			}
 			
@@ -1568,14 +1610,15 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 			
 			
 		case 4: //죽은 경우
-			if(dCnt2>=150) {
-				System.out.println("사망 모션----");
-//				myDeath2=true;
+			if(dCnt2>=145) {
+				//System.out.println("2p 사망 ----");
+				if(myDeath && myDeath2) {
+					isDraw = true;
+					//System.out.println("2P] isDraw = true");
+				}
 //				status=3;
-				
-				
-				
 			}
+			
 			
 			dCnt2++;
 			
@@ -1706,6 +1749,14 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 	            }
 	         }
 	    }
+	    
+//	    if(mymode == 3) { //상대측이 trap상태인 상황 
+//	    	if( myx2>=myx-500 && myx2<=myx+500 ) {
+//	    		if(myy2>=myy+500 && myy2<=myy-500) {
+//	    			System.out.println("1P trap, 2P 닿음");
+//	    		}
+//	    	}
+//	    }
 	    
 	}
 	//---------------process_MY2 끝---
