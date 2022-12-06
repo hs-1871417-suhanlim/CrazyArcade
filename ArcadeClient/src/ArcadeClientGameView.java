@@ -1358,6 +1358,7 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 			if(mymode2 == 3) {
 				if((myx-myx2>-3000 && myx-myx2<3000)&&
 					myy-myy2>-2800 && myy-myy2<2800) {
+					myDeath2=true;
 					mymode2=4;
 				}
 			}
@@ -1371,19 +1372,11 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 				myy-=(Math.cos(Math.toRadians(mydegree))*50);
 				
 			}
-			
-			
 			if(trapCnt>=300) {//사망모션
 				System.out.println("1p 사망모션 진입--------");
 				myDeath=true;
 				mymode=4;
 			}
-			
-
-	    	
-
-			
-			
 			trapCnt++;
 			
 			break;
@@ -1395,9 +1388,8 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 				//System.out.println("1p 사망 -------");
 				if(myDeath && myDeath2) {
 					isDraw = true;
-					//System.out.println("1P] isDraw = true");
 				}
-//				status=3;
+				status=3;
 				String protocol = "100" + Integer.toString(clientView.roomId);
 				ChatMsg cm = new ChatMsg(clientView.UserName, protocol, "death");
 				clientView.SendObject(cm);
@@ -1406,13 +1398,6 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 			}
 			
 			dCnt++;
-			
-			
-			
-			
-		
-			
-			
 			
 			break;
 			
@@ -1583,6 +1568,7 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 				if(mymode == 3) {
 					if((myx-myx2>-3000 && myx-myx2<3000)&&
 						myy-myy2>-2800 && myy-myy2<2800) {
+						myDeath=true;
 						mymode=4;
 					}
 				}
@@ -1616,7 +1602,7 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 					isDraw = true;
 					//System.out.println("2P] isDraw = true");
 				}
-//				status=3;
+				status=3;
 			}
 			
 			
