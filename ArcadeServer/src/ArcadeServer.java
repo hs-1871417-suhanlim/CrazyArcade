@@ -321,24 +321,7 @@ public class ArcadeServer extends JFrame {
 					if(cm.code.matches("999")) { //테스트 프로토콜
 						AppendText(cm.data);
 					}
-					
-//					if(cm.code.matches("900")) { // key pressed protocol
-//						AppendText(cm.data);
-//						AppendText(cm.code);
-//						AppendText(cm.UserName);
-//						
-//						ChatMsg newMsg = new ChatMsg(cm.UserName, "900", cm.data);
-//						WriteAllObject(newMsg);
-//					}
-//					if(cm.code.matches("1000")) { // key Released protocol
-//						AppendText(cm.data);
-//						AppendText(cm.code);
-//						AppendText(cm.UserName);
-//						
-//						ChatMsg newMsg = new ChatMsg(cm.UserName, "1000", cm.data);
-//						WriteAllObject(newMsg);
-//					}
-//					
+
 					if (cm.code.matches("100")) { //로그인
 						UserName = cm.UserName;
 						UserStatus = "O"; // Online 상태
@@ -461,13 +444,6 @@ public class ArcadeServer extends JFrame {
 									WriteAllObject(cm);
 									
 									
-//									for(int i=0;i<roomManager.rooms.size();i++) {
-//										String data = (roomManager.rooms.get(i).RoomTitle + "+     +"+
-//												roomManager.rooms.get(i).roomId); //+공백다섯개+ 로 구분
-//										cm = new ChatMsg("Server", "300", data);
-//										WriteAllObject(cm);			
-//									}
-									
 								}
 					            
 					        } catch (Exception e) {
@@ -565,32 +541,7 @@ public class ArcadeServer extends JFrame {
 						
 					}
 					
-//					else if(cm.code.matches("1d00(.)")) { //정규표현식 10nn - 나가기 관련 
-//						
-//
-////						
-//						// 821  <- player2가 1번방에서 레디버튼을 누름
-//						// 유저는 벡터를 통해 순서대로 관리되고 있음 - 유저소켓에서도 제거해줘야함
-//						
-//						String buff[] = cm.code.split("");
-//						int roomId = Integer.parseInt(buff[2]);
-//						
-//						//1번player or 2번 player
-//						//1번 플레이어가 먼저 들어온애
-//						int userId = Integer.parseInt(buff[1])-1; 
-//						
-//						roomManager.rooms.get(roomId).userExit(userId); //유저 제거
-//						roomManager.rooms.get(roomId).roomUpdate(this); //업데이트된 방정보 뿌림
-//						
-//						
-//					}
-					
-					
-					
-//					else if (cm.code.matches("400")) { // logout message 처리
-//						Logout();
-//						break;
-//					}
+
 					
 					else { // 300, 500, ... 기타 object는 모두 방송한다.
 						WriteAllObject(cm);
@@ -598,8 +549,6 @@ public class ArcadeServer extends JFrame {
 				} catch (IOException e) {
 					AppendText("ois.readObject() error");
 					try {
-//						dos.close();
-//						dis.close();
 						ois.close();
 						oos.close();
 						client_socket.close();

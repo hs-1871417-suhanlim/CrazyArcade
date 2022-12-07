@@ -335,15 +335,19 @@ public class ArcadeClientView extends JFrame {
 						
 						case "700", "701", "702", "703": //게임시작 프로토콜
 							
-							
+							new effectSound("./music/gameStart.wav");
 							
 							String buff2[] = cm.code.split("");
 							roomIdBuff = Integer.parseInt(buff2[2]); //방번호
 							
-							if(roomId == roomIdBuff) //자신의 방에서 게임이 시작되면 게임 시작
+							if(roomId == roomIdBuff) {
+								//자신의 방에서 게임이 시작되면 게임 시작
 								gameView = waitRoom.gameStart();
-							
+								
 								waitRoom.setVisible(false);
+							}
+								
+								
 							
 							
 							break;

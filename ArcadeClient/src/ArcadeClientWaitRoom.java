@@ -269,7 +269,7 @@ public class ArcadeClientWaitRoom extends JFrame {
 	{
 		@Override 
 		public void actionPerformed(ActionEvent e) { //시작버튼을 누름
-			new effectSound("./music/gameStart.wav");
+			
 			
 			String protocol = "70" + Integer.toString(roomId); //700, 701, 702, 703
 			
