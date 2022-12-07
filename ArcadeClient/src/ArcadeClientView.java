@@ -250,7 +250,6 @@ public class ArcadeClientView extends JFrame {
 							roomUserList=new String[userCnt];
 							
 							
-							//roomUserList = cm.data.split(" ");
 							for(int i=0;i<buff.length;i++) { //test
 								
 								if(i==buff.length-1) //마지막은 방제목
@@ -263,10 +262,6 @@ public class ArcadeClientView extends JFrame {
 						
 							
 
-//						System.out.println("========");
-//						System.out.println(UserName);
-						
-						
 					
 					case "510", "511", "512", "513": //방 정보 (방하나) 업데이트 프로토콜
 

@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="(bkx*100*j) &amp;&amp; 10200"/>
+		<item key="selection" value="keybuff"/>
 		<item key="wrap" value="false"/>
 		<item key="casesensitive" value="true"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="keybuff"/>
+			<item value="p1"/>
+			<item value="make"/>
+			<item value="-1"/>
 			<item value="(bkx*100*j) &amp;&amp; 10200"/>
 			<item value="99"/>
 			<item value="effect"/>
@@ -19,10 +23,6 @@
 			<item value="게임종료 이벤트 관련"/>
 			<item value="myx&gt;=bkx*(j)*100)&amp;&amp;(myy&gt;=(bky+1)*(i)*100)&amp;&amp;"/>
 			<item value="gameView"/>
-			<item value="roomId"/>
-			<item value=" roomId"/>
-			<item value="roomid"/>
-			<item value="process"/>
 		</list>
 		<list key="replacehistory">
 			<item value="ArcadeClientMain"/>
@@ -31,8 +31,8 @@
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="1019"/>
-		<item key="DIALOG_Y_ORIGIN" value="56"/>
+		<item key="DIALOG_X_ORIGIN" value="206"/>
+		<item key="DIALOG_Y_ORIGIN" value="179"/>
 		<item key="DIALOG_WIDTH" value="286"/>
 		<item key="DIALOG_HEIGHT" value="456"/>
 		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>

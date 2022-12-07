@@ -360,16 +360,7 @@ public class ArcadeServer extends JFrame {
 										
 							}
 							
-//							for(int i=0;i<roomManager.rooms.size();i++) { // 새로운 방 업데이트
-//								
-//								String data = (roomManager.rooms.get(i).RoomTitle + "+     +"+
-//										roomManager.rooms.get(i).roomId); //+공백다섯개+ 로 구분
-//								cm = new ChatMsg("Server", "300", data);
-//								WriteAllObject(cm);			
-//							}
-							//int roomId = roomManager.rooms.size()-1; //방금 만들어준 방이니 이렇게 하면 roomId나옴 
-																	 //기존 방 개수로 id를 부여하기 때문에
-							
+
 							
 							//방을 만든 유저에겐 바로 입장 허가 프로토콜을 보냄 ---------------------------
 							
@@ -387,10 +378,6 @@ public class ArcadeServer extends JFrame {
 
 							cm = new ChatMsg("Server", protocol, buff);
 							WriteOneObject(cm);
-							
-						}
-						else { //방만들기 실패
-							//404 프로토콜을 보내줘서 더이상 못만든다고 알려줄까 싶음
 							
 						}
 					}else if(cm.code.matches("40(.)")) { // 40n - 버튼으로 입장 관련
