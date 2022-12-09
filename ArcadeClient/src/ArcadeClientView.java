@@ -373,7 +373,11 @@ public class ArcadeClientView extends JFrame {
 								 
 						case "1200", "1201", "1202", "1203": //게임 종료
 							
+							
+							
 							roomIdBuff = Integer.parseInt(cm.code.substring(3)); // 방 번호
+							
+						
 						
 						if(roomIdBuff == roomId) {
 							//유저가 담고있는 방 정보 초기화
@@ -381,12 +385,11 @@ public class ArcadeClientView extends JFrame {
 							roomUserList = null;
 							roomTitle = null;
 							waitRoom = null;
+							gameView = null;		
 							
 						}
 							
-							gameView = null;
 							
-								 break;		
 
 					
 					}

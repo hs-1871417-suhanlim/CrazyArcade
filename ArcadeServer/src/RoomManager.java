@@ -7,7 +7,8 @@ public class RoomManager {
 	private ArcadeServer server; 
 	
 	//int roomNum; //방 갯수
-	ArrayList<Room> rooms = new ArrayList();
+	//ArrayList<Room> rooms = new ArrayList();
+	Room rooms[] = new Room[4];
 	boolean roomExist[] = new boolean[4];
 	int roomId; 
 	int roomMax;
@@ -17,11 +18,15 @@ public class RoomManager {
 		//this.roomNum=0;
 		this.server=server;
 		this.roomMax = 4;
+		for(int i=0;i<roomMax;i++) {
+			this.roomExist[i]=false;
+		}
+		
 	}
 	
 	public int makeRoom(String userName, String RoomTitle, Socket client_socket) {
-		if(rooms.size()>=roomMax) //방은 네개까지 
-			return -1;
+
+		roomId=-1;
 		
 		for(int i=0;i<roomMax;i++) { //방번호 부여
 			if(roomExist[i]==false) {
@@ -29,11 +34,13 @@ public class RoomManager {
 				roomExist[i]=true;
 				break;
 			}
-				
 		}
 		Room room = new Room(userName, RoomTitle, roomId , client_socket);
 		
-		rooms.add(room); // room ArrayList에 생성한 방 추가
+		rooms[roomId] = room;
+		//rooms.add(room); // room ArrayList에 생성한 방 추가
+		
+		
 		
 		return roomId;
 	}
