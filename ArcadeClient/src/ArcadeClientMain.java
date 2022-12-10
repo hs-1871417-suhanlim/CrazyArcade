@@ -51,6 +51,7 @@ public class ArcadeClientMain extends JFrame{
 				try {
 					ArcadeClientMain frame = new ArcadeClientMain();
 					
+					
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

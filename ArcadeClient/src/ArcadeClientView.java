@@ -335,6 +335,10 @@ public class ArcadeClientView extends JFrame {
 							String buff2[] = cm.code.split("");
 							roomIdBuff = Integer.parseInt(buff2[2]); //방번호
 							
+							System.out.println("방번호");
+							System.out.println(roomIdBuff);
+							System.out.println(roomId);
+							
 							if(roomId == roomIdBuff) {
 								//자신의 방에서 게임이 시작되면 게임 시작
 								gameView = waitRoom.gameStart();
@@ -380,6 +384,7 @@ public class ArcadeClientView extends JFrame {
 						
 						
 						if(roomIdBuff == roomId) {
+							System.out.println("게임종료");
 							//유저가 담고있는 방 정보 초기화
 							roomId = -1;
 							roomUserList = null;
@@ -450,7 +455,6 @@ public class ArcadeClientView extends JFrame {
 		
 	    public RoomBox(int roomId) {
 	    	
-	    	//this.roomId = roomId;
 	    	
 	        panel.setSize(170,150);//방 패널 사이즈 (이미지 사이즈와 동일)
 	        panel.setLayout(null);

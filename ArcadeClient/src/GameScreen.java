@@ -51,6 +51,14 @@ public class GameScreen extends Canvas {
 	Image chrTrap[] = new Image [13];
 	Image chrDeath[] = new Image[10];
 	
+	Image chr2;
+	Image chrUp2[] = new Image[8];
+	Image chrDown2[] = new Image[8];
+	Image chrLeft2[] = new Image[6];
+	Image chrRight2[] = new Image[6];
+	Image chrTrap2[] = new Image [13];
+	Image chrDeath2[] = new Image[10];
+	
 	Image waterPop[] = new Image[6];
 	Image waterUpM[] = new Image[11];
 	Image waterUpE[] = new Image[11];
@@ -224,7 +232,6 @@ public class GameScreen extends Canvas {
 		switch(main.mymode){
 		case 0://무적
 		case 1://무적이면서 등장
-			//if(main.cnt%20<10) drawImageAnc(chr[2+(main.cnt/5)%2], myx, myy, 4);
 			break;
 		case 2://온플레이
 			if(main.myimg==0) drawImageAnc(chr, myx, myy, 4);
@@ -271,30 +278,30 @@ public class GameScreen extends Canvas {
 			//if(main.cnt%20<10) drawImageAnc(chr[2+(main.cnt/5)%2], myx, myy, 4);
 			break;
 		case 2://온플레이
-			if(main.myimg2==0) drawImageAnc(chr, myx2, myy2, 4);
-			else if(main.myimg2==1) drawImageAnc(chrUp[cnt/4%8], myx2, myy2, 4);
-			else if(main.myimg2==2) drawImageAnc(chrDown[cnt/4%8], myx2, myy2, 4);
-			else if(main.myimg2==3) drawImageAnc(chrLeft[cnt/4%6], myx2, myy2, 4);
-			else if(main.myimg2==4) drawImageAnc(chrRight[cnt/4%6], myx2, myy2, 4);
+			if(main.myimg2==0) drawImageAnc(chr2, myx2, myy2, 4);
+			else if(main.myimg2==1) drawImageAnc(chrUp2[cnt/4%8], myx2, myy2, 4);
+			else if(main.myimg2==2) drawImageAnc(chrDown2[cnt/4%8], myx2, myy2, 4);
+			else if(main.myimg2==3) drawImageAnc(chrLeft2[cnt/4%6], myx2, myy2, 4);
+			else if(main.myimg2==4) drawImageAnc(chrRight2[cnt/4%6], myx2, myy2, 4);
 			break;
 		case 3://trap상태
 			
 			if(main.trapCnt2>=200) {
 				if(cnt/30%4==3)
-					drawImageAnc(chrTrap[9], myx2, myy2, 4);
-				else if(cnt/30%4==2) drawImageAnc(chrTrap[10], myx2, myy2, 4);
-				else if(cnt/30%4==1) drawImageAnc(chrTrap[11], myx2, myy2, 4);
-				else if(cnt/30%4==0)drawImageAnc(chrTrap[12], myx2, myy2, 4);
+					drawImageAnc(chrTrap2[9], myx2, myy2, 4);
+				else if(cnt/30%4==2) drawImageAnc(chrTrap2[10], myx2, myy2, 4);
+				else if(cnt/30%4==1) drawImageAnc(chrTrap2[11], myx2, myy2, 4);
+				else if(cnt/30%4==0)drawImageAnc(chrTrap2[12], myx2, myy2, 4);
 			}
 			else
-				drawImageAnc(chrTrap[main.trapCnt2/20%13], myx2, myy2, 4);
+				drawImageAnc(chrTrap2[main.trapCnt2/20%13], myx2, myy2, 4);
 				//
 			break;
 		case 4: //사망모션
 				if(main.dCnt2<50)
-					drawImageAnc(chrDeath[main.dCnt2/6%10], myx2, myy2, 4);
+					drawImageAnc(chrDeath2[main.dCnt2/6%10], myx2, myy2, 4);
 				else
-					drawImageAnc(chrDeath[9], myx2, myy2, 4);
+					drawImageAnc(chrDeath2[9], myx2, myy2, 4);
 				break;
 		}
 	}

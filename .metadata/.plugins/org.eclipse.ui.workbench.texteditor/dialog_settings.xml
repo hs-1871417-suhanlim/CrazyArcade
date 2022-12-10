@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="keybuff"/>
+		<item key="selection" value="roomManager.rooms[i]"/>
 		<item key="wrap" value="false"/>
 		<item key="casesensitive" value="true"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="roomManager.rooms.get(roomId)"/>
 			<item value="keybuff"/>
 			<item value="p1"/>
 			<item value="make"/>
@@ -22,9 +23,9 @@
 			<item value="캐릭터 사망"/>
 			<item value="게임종료 이벤트 관련"/>
 			<item value="myx&gt;=bkx*(j)*100)&amp;&amp;(myy&gt;=(bky+1)*(i)*100)&amp;&amp;"/>
-			<item value="gameView"/>
 		</list>
 		<list key="replacehistory">
+			<item value="roomManager.rooms[i]"/>
 			<item value="ArcadeClientMain"/>
 			<item value="ArcadeClientGameView"/>
 			<item value="ArcadeServer"/>

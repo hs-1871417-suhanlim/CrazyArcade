@@ -1219,28 +1219,28 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 	//---------------2P---------------
 	public void Init_MY2(){
 		
-		gamescreen.chr=makeImage("./player/wait0.png");
+		gamescreen.chr2=makeImage("./player2/wait0.png");
 		
 		for(int i=0;i<8;i++)
-			gamescreen.chrUp[i]=makeImage("./player/up"+i+".png");
+			gamescreen.chrUp2[i]=makeImage("./player2/up"+i+".png");
 		
 		for(int i=0;i<8;i++)
-			gamescreen.chrDown[i]=makeImage("./player/down"+i+".png");
+			gamescreen.chrDown2[i]=makeImage("./player2/down"+i+".png");
 		
 		for(int i=0;i<6;i++)
-			gamescreen.chrLeft[i]=makeImage("./player/left"+i+".png");
+			gamescreen.chrLeft2[i]=makeImage("./player2/left"+i+".png");
 		
 		for(int i=0;i<6;i++)
-			gamescreen.chrRight[i]=makeImage("./player/right"+i+".png");
+			gamescreen.chrRight2[i]=makeImage("./player2/right"+i+".png");
 		
 		for(int i=0;i<13;i++){
 			if(i<10)
-				gamescreen.chrTrap[i]=makeImage("./player/trap"+i+".png"); //trap 0~9
+				gamescreen.chrTrap2[i]=makeImage("./player2/trap"+i+".png"); //trap 0~9
 			else
-				gamescreen.chrTrap[i]=makeImage("./player/trap"+i+".png"); //trap10 11 12 
+				gamescreen.chrTrap2[i]=makeImage("./player2/trap"+i+".png"); //trap10 11 12 
 		}
 		for(int i=0;i<10;i++) //사망모션
-			gamescreen.chrDeath[i]=makeImage("./player/death"+i+".png");
+			gamescreen.chrDeath2[i]=makeImage("./player2/death"+i+".png");
 		Init_MYDATA2();
 	}
 	public void Init_MYDATA2(){
@@ -1478,13 +1478,7 @@ public class ArcadeClientGameView extends JFrame implements FocusListener, KeyLi
 	            }
 	         }
 	    }
-//	    if(mymode2 == 3) { //상대측이 trap상태인 상황 
-//	    	if( myx>=myx2-500 && myx<=myx2+500 ) {
-//	    		if(myy>=myy2+500 && myy<=myy2-500) {
-//	    			System.out.println("2P trap, 1P 닿음");
-//	    		}
-//	    	}
-//	    }
+
 	    
 	}//---------------process_MY 끝---------------------------------------------------------------------
 	

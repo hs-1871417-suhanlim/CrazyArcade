@@ -545,55 +545,13 @@ public class ArcadeServer extends JFrame {
 									
 						}
 						
-//						for(int i=0;i<4;i++) {
-//							
-//							String j = Integer.toString(i);
-//		
-//							
-//							try {
-//								switch(j) {
-//									case "0", "1", "2", "3":
-//										
-//
-//										i = Integer.parseInt(j);
-//										
-//											if(roomManager.roomExist[i]==true) {
-//												
-//												
-//												
-//												AppendText("방번호"+j+"있음");
-//												
-//												String data = (roomManager.rooms.get(i).RoomTitle + "+     +"+
-//														roomManager.rooms.get(i).roomId); //+공백다섯개+ 로 구분
-//												cm = new ChatMsg("Server", "300", data);
-//												WriteAllObject(cm);	
-//											}else {
-//												
-//											}	
-//									break;
-//									
-//								}
-//								
-//							}
-//							catch (Exception e) {
-//					        	
-//					        }
-//							
-//							AppendText(cm.UserName +"가" + cm.data);
-//							WriteAllObject(cm); //그대로 보내줌
-//						}
-//						
-						
-						
-						
 						
 					}
 					
 
-					
-					else { // 300, 500, ... 기타 object는 모두 방송한다.
-						WriteAllObject(cm);
-					} 
+//					else { // 300, 500, ... 기타 object는 모두 방송한다.
+//						WriteAllObject(cm);
+//					} 
 				} catch (IOException e) {
 					AppendText("ois.readObject() error");
 					try {
