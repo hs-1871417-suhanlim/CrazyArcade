@@ -18,7 +18,7 @@ IP와 포트번호를 입력하여 2인 멀티플레이가 가능합니다.
 
 - 메인 화면<br/>
 <img
-  src="./readme_img/image3.png"
+  src="./readme_img/image3.PNG"
   width="70%" height="70%"
 />
 <br/>
@@ -27,26 +27,26 @@ IP와 포트번호를 입력하여 2인 멀티플레이가 가능합니다.
 <br/>
 - 대기실 (초기)<br/>
 <img
-  src="./readme_img/image5.png"
+  src="./readme_img/image5.PNG"
   width="50%"
 /><br/><br/>
 - 대기실 방 만들기<br/>
 <img
-  src="./readme_img/image6.png"
+  src="./readme_img/image6.PNG"
   width="40%"
 /><br/><br/>
 - 대기방 입장<br/>
 <img
-  src="./readme_img/image9.png"
+  src="./readme_img/image9.PNG"
   width="70%"
 /><br/><br/>
 - 게임 시작<br/>
 <img
-  src="./readme_img/image11.png"
+  src="./readme_img/image11.PNG"
 /><br/><br/>
 - 결과 화면<br/>
 <img
-  src="./readme_img/image12.png"
+  src="./readme_img/image12.PNG"
 /><br/><br/>
 ---
 <br/><br/>
